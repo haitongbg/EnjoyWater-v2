@@ -40,4 +40,7 @@
     <dimen name="text_11">11sp</dimen>
     <dimen name="text_10">10sp</dimen>
     <dimen name="size_180">180dp</dimen>
+    <dimen name="size_3">3dp</dimen>
+    <dimen name="size_18">18dp</dimen>
+    <dimen name="size_47">47dp</dimen>
 </resources>

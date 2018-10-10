@@ -9,4 +9,12 @@
     <string name="login">Đăng nhập</string>
     <string name="register">Đăng ký</string>
     <string name="skip">Bỏ qua</string>
+    <string name="tab_home">Tin tức</string>
+    <string name="tab_product">Đặt nước</string>
+    <string name="tab_orders">Đơn hàng</string>
+    <string name="tab_notif">Thông báo</string>
+    <string name="tab_personal">Cá nhân</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
