@@ -13,7 +13,7 @@ public class LevelInfo implements Parcelable {
     @SerializedName("name")
     private String name;
     @SerializedName("level")
-    private int level;
+    private String level;
 
     public LevelInfo() {
     }
@@ -22,7 +22,20 @@ public class LevelInfo implements Parcelable {
         icon = in.readString();
         description = in.readString();
         name = in.readString();
-        level = in.readInt();
+        level = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(icon);
+        dest.writeString(description);
+        dest.writeString(name);
+        dest.writeString(level);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<LevelInfo> CREATOR = new Creator<LevelInfo>() {
@@ -61,24 +74,11 @@ public class LevelInfo implements Parcelable {
         this.name = name;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(icon);
-        parcel.writeString(description);
-        parcel.writeString(name);
-        parcel.writeInt(level);
     }
 }

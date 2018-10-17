@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.enjoywater.R;
-import com.enjoywater.view.TvSegoeuiBolb;
+import com.enjoywater.view.TvSegoeuiBold;
 import com.enjoywater.view.TvSegoeuiRegular;
 import com.enjoywater.view.TvSegoeuiSemiBold;
 
@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.tv_dt)
     TvSegoeuiRegular tvDt;
     @BindView(R.id.tv_promote_point)
-    TvSegoeuiBolb tvPromotePoint;
+    TvSegoeuiBold tvPromotePoint;
     @BindView(R.id.layout_promote_point)
     LinearLayout layoutPromotePoint;
     @BindView(R.id.appbar)

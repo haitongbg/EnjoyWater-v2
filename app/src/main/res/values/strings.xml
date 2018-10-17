@@ -18,6 +18,9 @@
     <string name="phone">SĐT</string>
     <string name="promote_code">Mã giới thiệu</string>
     <string name="wellcome">Chào mừng quý khách hàng!</string>
-    <string name="slogan">Chúng tôi chỉ chọn những sản phẩm tốt nhất!</string>
+    <string name="slogan">Luôn chọn những sản phẩm tốt nhất!</string>
     <string name="promote_point">Điểm thưởng:</string>
+    <string name="empty_email">Vui lòng nhập Email</string>
+    <string name="empty_password">Vui lòng nhập mật khẩu</string>
+    <string name="login_success">Đăng nhập thành công!</string>
 </resources>

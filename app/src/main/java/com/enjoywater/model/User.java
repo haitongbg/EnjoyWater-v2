@@ -10,22 +10,34 @@ public class User implements Parcelable {
     private String createdAt;
     @SerializedName("updatedAt")
     private String updatedAt;
-    @SerializedName("password")
-    private String password;
+    @SerializedName("refId")
+    private String refId;
+    @SerializedName("status")
+    private String status;
+    @SerializedName("passport")
+    private String passport;
+    @SerializedName("address")
+    private String address;
+    @SerializedName("birthday")
+    private String birthday;
+    @SerializedName("gender")
+    private String gender;
+    @SerializedName("avatar")
+    private String avatar;
+    @SerializedName("group")
+    private String group;
     @SerializedName("phone")
     private String phone;
     @SerializedName("email")
     private String email;
+    @SerializedName("username")
+    private String username;
     @SerializedName("name")
     private String name;
     @SerializedName("id")
-    private int id;
-    @SerializedName("status")
-    private String status;
-    @SerializedName("gender")
-    private String gender;
-    @SerializedName("group")
-    private String group;
+    private String id;
+    @SerializedName("password")
+    private String password;
     @SerializedName("levelInfo")
     private LevelInfo levelInfo;
 
@@ -35,14 +47,20 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         createdAt = in.readString();
         updatedAt = in.readString();
-        password = in.readString();
+        refId = in.readString();
+        status = in.readString();
+        passport = in.readString();
+        address = in.readString();
+        birthday = in.readString();
+        gender = in.readString();
+        avatar = in.readString();
+        group = in.readString();
         phone = in.readString();
         email = in.readString();
+        username = in.readString();
         name = in.readString();
-        id = in.readInt();
-        status = in.readString();
-        gender = in.readString();
-        group = in.readString();
+        id = in.readString();
+        password = in.readString();
         levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
     }
 
@@ -74,12 +92,68 @@ public class User implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRefId() {
+        return refId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getPhone() {
@@ -98,6 +172,14 @@ public class User implements Parcelable {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getName() {
         return name;
     }
@@ -106,36 +188,20 @@ public class User implements Parcelable {
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getStatus() {
-        return status;
+    public String getPassword() {
+        return password;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public LevelInfo getLevelInfo() {
@@ -155,14 +221,20 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(createdAt);
         parcel.writeString(updatedAt);
-        parcel.writeString(password);
+        parcel.writeString(refId);
+        parcel.writeString(status);
+        parcel.writeString(passport);
+        parcel.writeString(address);
+        parcel.writeString(birthday);
+        parcel.writeString(gender);
+        parcel.writeString(avatar);
+        parcel.writeString(group);
         parcel.writeString(phone);
         parcel.writeString(email);
+        parcel.writeString(username);
         parcel.writeString(name);
-        parcel.writeInt(id);
-        parcel.writeString(status);
-        parcel.writeString(gender);
-        parcel.writeString(group);
+        parcel.writeString(id);
+        parcel.writeString(password);
         parcel.writeParcelable(levelInfo, i);
     }
 }

@@ -5,18 +5,18 @@ import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-public class TvSegoeuiBolb extends AppCompatTextView {
+public class TvSegoeuiBold extends AppCompatTextView {
     private static Typeface mTypeface;
 
-    public TvSegoeuiBolb(final Context context) {
+    public TvSegoeuiBold(final Context context) {
         this(context, null);
     }
 
-    public TvSegoeuiBolb(final Context context, final AttributeSet attrs) {
+    public TvSegoeuiBold(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TvSegoeuiBolb(final Context context, final AttributeSet attrs, final int defStyle) {
+    public TvSegoeuiBold(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
         if (mTypeface == null) {
             mTypeface = Typeface.createFromAsset(context.getAssets(), "segoeuib.ttf");

@@ -1,9 +1,10 @@
 package com.enjoywater.retrofit.response;
 
+import com.enjoywater.model.Error;
 import com.enjoywater.model.User;
 import com.google.gson.annotations.SerializedName;
 
-public abstract class RegisterResponse {
+public class RegisterResponse {
     @SerializedName("error")
     private Error error;
     @SerializedName("success")

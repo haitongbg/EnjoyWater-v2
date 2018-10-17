@@ -1,9 +1,8 @@
 package com.enjoywater.utils;
 
-public class ConstantsAPI {
-    public static final String DOMAIN = "http://35.240.146.185:8080/api/app/";
-
+public class Constants {
     public static class Url {
+        public static final String DOMAIN = "http://35.240.146.185:8080/api/app/";
         public static final String LOGIN = "user/login";
         public static final String REGISTER = "user/register";
         public static final String GET_USER_INFO = "user/profile";
@@ -12,7 +11,8 @@ public class ConstantsAPI {
         public static final String FORGET_PASSWORD = "user/forget-password";
     }
 
-    public static class Param {
+    public static class Key {
+        public static final String USER = "user";
         public static final String USERNAME = "username";
         public static final String NAME = "name";
         public static final String EMAIL = "email";
@@ -24,5 +24,10 @@ public class ConstantsAPI {
         public static final String ADDRESS = "address";
         public static final String PASSPORT = "passport";
         public static final String REF_ID = "refId";
+        public static final String TOKEN = "token";
+    }
+
+    public static class Value {
+
     }
 }

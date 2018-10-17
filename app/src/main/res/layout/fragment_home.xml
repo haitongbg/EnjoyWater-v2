@@ -82,7 +82,7 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_14" />
 
-                    <com.enjoywater.view.TvSegoeuiBolb
+                    <com.enjoywater.view.TvSegoeuiBold
                         android:id="@+id/tv_promote_point"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

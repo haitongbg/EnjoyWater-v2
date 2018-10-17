@@ -1,7 +1,8 @@
 package com.enjoywater.retrofit;
 
+import com.enjoywater.retrofit.response.LoginResponse;
 import com.enjoywater.retrofit.response.RegisterResponse;
-import com.enjoywater.utils.ConstantsAPI;
+import com.enjoywater.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,11 +23,15 @@ import retrofit2.http.POST;
 
 public interface MainService {
     @FormUrlEncoded
-    @POST(ConstantsAPI.Url.REGISTER)
-    Call<RegisterResponse> register(@Field(ConstantsAPI.Param.NAME) String name,
-                                    @Field(ConstantsAPI.Param.EMAIL) String email,
-                                    @Field(ConstantsAPI.Param.PHONE) String phone,
-                                    @Field(ConstantsAPI.Param.PASSWORD) String password);
+    @POST(Constants.Url.REGISTER)
+    Call<RegisterResponse> register(@Field(Constants.Key.NAME) String name,
+                                    @Field(Constants.Key.EMAIL) String email,
+                                    @Field(Constants.Key.PHONE) String phone,
+                                    @Field(Constants.Key.PASSWORD) String password);
+    @FormUrlEncoded
+    @POST(Constants.Url.LOGIN)
+    Call<LoginResponse> login(@Field(Constants.Key.EMAIL) String email,
+                              @Field(Constants.Key.PASSWORD) String password);
 
     //Factory
     class Factory {
@@ -41,7 +46,7 @@ public interface MainService {
                     .addInterceptor(interceptor)
                     .build();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(ConstantsAPI.DOMAIN)
+                    .baseUrl(Constants.Url.DOMAIN)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
