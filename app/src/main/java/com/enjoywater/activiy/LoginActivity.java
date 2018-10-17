@@ -36,5 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         rippleLogin.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(LoginActivity.this, MainActivity.class)));
+        rippleRegister.setOnRippleCompleteListener(rippleView -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
     }
 }

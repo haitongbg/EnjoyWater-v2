@@ -43,4 +43,5 @@
     <dimen name="size_3">3dp</dimen>
     <dimen name="size_18">18dp</dimen>
     <dimen name="size_47">47dp</dimen>
+    <dimen name="text_13_5">13.5dp</dimen>
 </resources>
