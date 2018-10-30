@@ -19,7 +19,6 @@ import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.LoginResponse;
 import com.enjoywater.utils.Constants;
-import com.enjoywater.utils.DataNotify;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
@@ -75,8 +74,11 @@ public class LoginActivity extends AppCompatActivity {
         mHandler.removeCallbacks(goMainRunnable);
         mHandler.removeCallbacks(showLoginRunnable);
         mHandler.postDelayed(showLoginRunnable, 2000);
-        String token = Utils.getString(this, Constants.Key.TOKEN, "");
-        if (!token.isEmpty()) {
+        String jsonUser = Utils.getString(this, Constants.Key.USER, "");
+        if (!jsonUser.isEmpty()) {
+            mUser = gson.fromJson(jsonUser, User.class);
+        }
+        if (mUser != null && mUser.getId() != null && !mUser.getId().isEmpty() && mUser.getToken() != null && !mUser.getToken().isEmpty()) {
             mHandler.removeCallbacks(showLoginRunnable);
             mHandler.postDelayed(goMainRunnable, 2000);
         }
@@ -130,15 +132,17 @@ public class LoginActivity extends AppCompatActivity {
                         String token = loginResponse.getData().getToken();
                         mUser = loginResponse.getData().getUser();
                         if (token != null && !token.isEmpty() && mUser != null && mUser.getId() != null && !mUser.getId().isEmpty()) {
-                            Utils.saveString(LoginActivity.this, Constants.Key.TOKEN, token);
+                            mUser.setToken(token);
                             Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                            Toast.makeText(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                             goMain();
-                        } else Toast.makeText(LoginActivity.this, DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
+                        } else Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
                     } else {
-                        String message = DataNotify.DATA_ERROR;
-                        if (loginResponse.getError() != null && loginResponse.getError().getMessage() != null && !loginResponse.getError().getMessage().isEmpty())
+                        String message = getResources().getString(R.string.data_error);
+                        if (loginResponse.getError() != null && loginResponse.getError().getMessage() != null && !loginResponse.getError().getMessage().isEmpty()) {
                             message = loginResponse.getError().getMessage();
+                            if (message.equalsIgnoreCase("User invalid")) message = getResources().getString(R.string.user_invalid);
+                            if (message.equalsIgnoreCase("Password invalid")) message = getResources().getString(R.string.password_invalid);
+                        }
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -147,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(LoginActivity.this, DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
                 layoutLoading.setVisibility(View.GONE);
             }
         });

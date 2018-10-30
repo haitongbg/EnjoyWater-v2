@@ -40,6 +40,7 @@ public class User implements Parcelable {
     private String password;
     @SerializedName("levelInfo")
     private LevelInfo levelInfo;
+    private String token;
 
     public User() {
     }
@@ -62,6 +63,34 @@ public class User implements Parcelable {
         id = in.readString();
         password = in.readString();
         levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
+        token = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(refId);
+        dest.writeString(status);
+        dest.writeString(passport);
+        dest.writeString(address);
+        dest.writeString(birthday);
+        dest.writeString(gender);
+        dest.writeString(avatar);
+        dest.writeString(group);
+        dest.writeString(phone);
+        dest.writeString(email);
+        dest.writeString(username);
+        dest.writeString(name);
+        dest.writeString(id);
+        dest.writeString(password);
+        dest.writeParcelable(levelInfo, flags);
+        dest.writeString(token);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -212,29 +241,11 @@ public class User implements Parcelable {
         this.levelInfo = levelInfo;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getToken() {
+        return token;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(createdAt);
-        parcel.writeString(updatedAt);
-        parcel.writeString(refId);
-        parcel.writeString(status);
-        parcel.writeString(passport);
-        parcel.writeString(address);
-        parcel.writeString(birthday);
-        parcel.writeString(gender);
-        parcel.writeString(avatar);
-        parcel.writeString(group);
-        parcel.writeString(phone);
-        parcel.writeString(email);
-        parcel.writeString(username);
-        parcel.writeString(name);
-        parcel.writeString(id);
-        parcel.writeString(password);
-        parcel.writeParcelable(levelInfo, i);
+    public void setToken(String token) {
+        this.token = token;
     }
 }

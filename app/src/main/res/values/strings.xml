@@ -23,4 +23,8 @@
     <string name="empty_email">Vui lòng nhập Email</string>
     <string name="empty_password">Vui lòng nhập mật khẩu</string>
     <string name="login_success">Đăng nhập thành công!</string>
+    <string name="user_invalid">Tài khoản không tồn tại</string>
+    <string name="data_error">Lỗi dữ liệu, xin thử lại</string>
+    <string name="password_invalid">Mật khẩu không đúng</string>
+    <string name="guest">Guest</string>
 </resources>

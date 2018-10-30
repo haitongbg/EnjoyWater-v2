@@ -44,4 +44,10 @@
     <dimen name="size_18">18dp</dimen>
     <dimen name="size_47">47dp</dimen>
     <dimen name="text_13_5">13.5dp</dimen>
+    <dimen name="size_165">165dp</dimen>
+    <dimen name="size_115">115dp</dimen>
+    <dimen name="size_7">7dp</dimen>
+    <dimen name="size_8">8dp</dimen>
+    <dimen name="size_4">4dp</dimen>
+    <dimen name="size_200">200dp</dimen>
 </resources>
