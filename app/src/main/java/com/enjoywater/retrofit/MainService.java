@@ -78,7 +78,7 @@ public interface MainService {
                                       @Nullable @Field(Constants.Key.PHONE) String phone,
                                       @Nullable @Field(Constants.Key.EMAIL) String email);
 
-    // Home
+    //Home
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_LIST_NEWS)
     Call<BaseResponse> getListNews(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
@@ -89,7 +89,20 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_NEWS_DETAILS)
     Call<BaseResponse> getNewsDetails(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
-                                      @Nullable @Query(Constants.Key.NEWS_ID) String newsId);
+                                      @Query(Constants.Key.NEWS_ID) String newsId);
+
+    //Product
+    @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_LIST_PRODUCTS)
+    Call<BaseResponse> getListProducts(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
+                                       @Nullable @Query(Constants.Key.LIMIT) String limit,
+                                       @Nullable @Query(Constants.Key.PAGE) String page,
+                                       @Nullable @Query(Constants.Key.SEARCH_KEY) String q);
+
+    @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_PRODUCT_DETAILS)
+    Call<BaseResponse> getProductDetails(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
+                                         @Query(Constants.Key.PRODUCT_ID) String productId);
 
     //Factory
     class Factory {

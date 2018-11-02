@@ -14,6 +14,9 @@ public class Constants {
         //Home
         public static final String GET_LIST_NEWS = "news/list";
         public static final String GET_NEWS_DETAILS = "news/info";
+        //Product
+        public static final String GET_LIST_PRODUCTS = "product/list";
+        public static final String GET_PRODUCT_DETAILS = "product/info";
     }
 
     public static class Key {
@@ -36,6 +39,7 @@ public class Constants {
         public static final String PAGE = "page";
         public static final String SEARCH_KEY = "q";
         public static final String NEWS_ID = "newsId";
+        public static final String PRODUCT_ID = "productId";
     }
 
     public static class Value {
