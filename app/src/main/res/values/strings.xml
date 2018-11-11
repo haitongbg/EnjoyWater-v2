@@ -6,6 +6,7 @@
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="retrieve_password">Lấy lại mật khẩu</string>
+    <string name="forget_password">Quên?</string>
     <string name="login">Đăng nhập</string>
     <string name="register">Đăng ký</string>
     <string name="skip">Bỏ qua</string>

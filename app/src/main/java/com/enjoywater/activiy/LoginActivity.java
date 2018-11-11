@@ -7,11 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enjoywater.R;
@@ -33,28 +32,16 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.iv_logo)
     ImageView ivLogo;
-    @BindView(R.id.v_center)
-    View vCenter;
-    @BindView(R.id.tv_slogan)
-    TextView tvSlogan;
-    @BindView(R.id.iv_email)
-    ImageView ivEmail;
     @BindView(R.id.edt_email)
     EditText edtEmail;
-    @BindView(R.id.iv_password)
-    ImageView ivPassword;
     @BindView(R.id.edt_password)
     EditText edtPassword;
-    @BindView(R.id.ripple_retrieve_password)
-    RippleView rippleRetrievePassword;
-    @BindView(R.id.ripple_login)
-    RippleView rippleLogin;
-    @BindView(R.id.ripple_register)
-    RippleView rippleRegister;
-    @BindView(R.id.ripple_skip)
-    RippleView rippleSkip;
-    @BindView(R.id.layout_login)
-    LinearLayout layoutLogin;
+    @BindView(R.id.ripple_forget_password)
+    RippleView rippleForgetPassword;
+    @BindView(R.id.btn_login)
+    Button btnLogin;
+    @BindView(R.id.btn_login_by_google)
+    RelativeLayout btnLoginByGoogle;
     @BindView(R.id.progress_loading)
     ProgressWheel progressLoading;
     @BindView(R.id.layout_loading)
@@ -71,16 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mainService = MyApplication.getInstance().getMainService();
         initUI();
-        mHandler.removeCallbacks(goMainRunnable);
-        mHandler.removeCallbacks(showLoginRunnable);
-        mHandler.postDelayed(showLoginRunnable, 2000);
         String jsonUser = Utils.getString(this, Constants.Key.USER, "");
         if (!jsonUser.isEmpty()) {
             mUser = gson.fromJson(jsonUser, User.class);
-        }
-        if (mUser != null && mUser.getId() != null && !mUser.getId().isEmpty() && mUser.getToken() != null && !mUser.getToken().isEmpty()) {
-            mHandler.removeCallbacks(showLoginRunnable);
-            mHandler.postDelayed(goMainRunnable, 2000);
         }
     }
 
@@ -94,10 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         layoutLoading.setVisibility(View.GONE);
-        layoutLogin.setVisibility(View.GONE);
-        vCenter.setVisibility(View.VISIBLE);
-        tvSlogan.setVisibility(View.VISIBLE);
-        rippleLogin.setOnRippleCompleteListener(rippleView -> {
+        btnLogin.setOnClickListener(view -> {
             String email = edtEmail.getText().toString();
             String password = edtPassword.getText().toString();
             if (email.isEmpty())
@@ -106,16 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.empty_password, Toast.LENGTH_SHORT).show();
             else login(email, password);
         });
-        rippleRegister.setOnRippleCompleteListener(rippleView -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
-        });
-        rippleRetrievePassword.setOnRippleCompleteListener(rippleView -> {
-
-        });
-        rippleSkip.setOnRippleCompleteListener(rippleView -> {
-            goMain();
+        btnLoginByGoogle.setOnClickListener(view -> {
         });
     }
 
@@ -135,13 +103,16 @@ public class LoginActivity extends AppCompatActivity {
                             mUser.setToken(token);
                             Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
                             goMain();
-                        } else Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
                     } else {
                         String message = getResources().getString(R.string.data_error);
                         if (loginResponse.getError() != null && loginResponse.getError().getMessage() != null && !loginResponse.getError().getMessage().isEmpty()) {
                             message = loginResponse.getError().getMessage();
-                            if (message.equalsIgnoreCase("User invalid")) message = getResources().getString(R.string.user_invalid);
-                            if (message.equalsIgnoreCase("Password invalid")) message = getResources().getString(R.string.password_invalid);
+                            if (message.equalsIgnoreCase("User invalid"))
+                                message = getResources().getString(R.string.user_invalid);
+                            if (message.equalsIgnoreCase("Password invalid"))
+                                message = getResources().getString(R.string.password_invalid);
                         }
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
@@ -156,35 +127,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-    private Runnable showLoginRunnable = () -> {
-        vCenter.setVisibility(View.GONE);
-        Animation animation = new AlphaAnimation(1, 0);
-        animation.setDuration(250);
-        animation.setFillEnabled(true);
-        animation.setFillAfter(true);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                tvSlogan.setVisibility(View.GONE);
-                layoutLogin.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        tvSlogan.startAnimation(animation);
-    };
-
-    private Runnable goMainRunnable = () -> {
-        goMain();
-    };
 
     private void goMain() {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
