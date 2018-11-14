@@ -56,6 +56,7 @@ public class HomeFragment extends Fragment {
     TvSegoeuiSemiBold tvWellcome;
     private Context mContext;
     private User mUser;
+    private String mToken;
     private Gson gson = new Gson();
 
     public static HomeFragment newInstance() {
@@ -67,10 +68,8 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
-        String jsonUser = Utils.getString(mContext, Constants.Key.USER, "");
-        if (!jsonUser.isEmpty()) {
-            mUser = gson.fromJson(jsonUser, User.class);
-        }
+        mUser = Utils.getUser(mContext);
+        mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
     }
 
     @Override
@@ -87,7 +86,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initUI() {
-        if (mUser != null && mUser.getId() != null && !mUser.getId().isEmpty() && mUser.getToken() != null && !mUser.getToken().isEmpty()) {
+        if (mUser != null && mUser.getId() != null && !mUser.getId().isEmpty() && mToken != null && !mToken.isEmpty()) {
             tvWellcome.setVisibility(View.GONE);
             tvName.setVisibility(View.VISIBLE);
             layoutPromotePoint.setVisibility(View.VISIBLE);

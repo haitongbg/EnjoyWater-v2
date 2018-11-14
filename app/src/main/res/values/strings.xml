@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Enjoy Water</string>
+    <string name="app_name">Gọi nước</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -25,7 +25,15 @@
     <string name="empty_password">Vui lòng nhập mật khẩu</string>
     <string name="login_success">Đăng nhập thành công!</string>
     <string name="user_invalid">Tài khoản không tồn tại</string>
+    <string name="email_invalid">Email không hợp lệ</string>
     <string name="data_error">Lỗi dữ liệu, xin thử lại</string>
     <string name="password_invalid">Mật khẩu không đúng</string>
     <string name="guest">Guest</string>
+    <string name="login_by_google">Đăng nhập với Google</string>
+    <string name="login_by_facebook">Đăng nhập với facebook</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="order">Đặt hàng</string>
 </resources>

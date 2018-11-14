@@ -1,6 +1,7 @@
 package com.enjoywater.retrofit.response;
 
 import com.enjoywater.model.Error;
+import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
 
 public class BaseResponse {
@@ -8,6 +9,8 @@ public class BaseResponse {
     private Error error;
     @SerializedName("success")
     private boolean success;
+    @SerializedName("data")
+    private JsonElement data;
 
     public Error getError() {
         return error;
@@ -15,5 +18,9 @@ public class BaseResponse {
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public JsonElement getData() {
+        return data;
     }
 }

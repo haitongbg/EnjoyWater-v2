@@ -40,7 +40,6 @@ public class User implements Parcelable {
     private String password;
     @SerializedName("levelInfo")
     private LevelInfo levelInfo;
-    private String token;
 
     public User() {
     }
@@ -63,7 +62,6 @@ public class User implements Parcelable {
         id = in.readString();
         password = in.readString();
         levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
-        token = in.readString();
     }
 
     @Override
@@ -85,7 +83,6 @@ public class User implements Parcelable {
         dest.writeString(id);
         dest.writeString(password);
         dest.writeParcelable(levelInfo, flags);
-        dest.writeString(token);
     }
 
     @Override
@@ -239,13 +236,5 @@ public class User implements Parcelable {
 
     public void setLevelInfo(LevelInfo levelInfo) {
         this.levelInfo = levelInfo;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.enjoywater.model.User;
+import com.google.gson.Gson;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -234,6 +237,17 @@ public class Utils {
 
     public static String getString(Context context, String key, String defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultValue);
+    }
+
+    public static User getUser(Context context) {
+        String stringUser = Utils.getString(context, Constants.Key.USER, "");
+        if (!stringUser.isEmpty()) {
+            User user = (new Gson()).fromJson(stringUser, User.class);
+            if (user != null && user.getId() != null) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public static void removeString(Context context, String key) {

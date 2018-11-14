@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#006fcb</color>
     <color name="colorPrimaryLight">#82ceff</color>
     <color name="colorAccent">#92dd3a</color>
+    <color name="colorAccentDark">#5d9f10</color>
     <color name="white">#ffffff</color>
     <color name="orange">#ff9001</color>
     <color name="black_0">#000000</color>
@@ -18,4 +19,6 @@
     <color name="black_f6">#f6f6f6</color>
     <color name="black_trans_50">#7A000000</color>
     <color name="indigo_blue">#002e56</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

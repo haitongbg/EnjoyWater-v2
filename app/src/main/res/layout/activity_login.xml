@@ -12,8 +12,6 @@
         android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/size_40"
-        android:paddingRight="@dimen/size_40"
         tools:context=".activiy.LoginActivity">
 
         <ImageView
@@ -26,7 +24,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_30">
+            android:layout_marginLeft="@dimen/size_40"
+            android:layout_marginTop="@dimen/size_30"
+            android:layout_marginRight="@dimen/size_40">
 
             <EditText
                 android:id="@+id/edt_email"
@@ -51,7 +51,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_15">
+            android:layout_marginLeft="@dimen/size_40"
+            android:layout_marginTop="@dimen/size_15"
+            android:layout_marginRight="@dimen/size_40">
 
             <EditText
                 android:id="@+id/edt_password"
@@ -98,10 +100,12 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40"
+            android:layout_marginLeft="@dimen/size_40"
             android:layout_marginTop="@dimen/size_30"
+            android:layout_marginRight="@dimen/size_40"
             android:background="@drawable/bg_btn_login"
-            android:text="@string/login"
             android:clickable="true"
+            android:text="@string/login"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/white"
@@ -115,6 +119,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_40"
+            android:layout_marginRight="@dimen/size_40"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -139,30 +145,38 @@
                 android:background="@color/black_9" />
         </LinearLayout>
 
-        <RelativeLayout
+        <Button
             android:id="@+id/btn_login_by_google"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40"
+            android:layout_marginLeft="@dimen/size_40"
             android:layout_marginTop="@dimen/size_20"
-            android:layout_marginBottom="@dimen/size_30"
+            android:layout_marginRight="@dimen/size_40"
             android:background="@drawable/bg_btn_login_by_google"
-            android:clickable="true">
+            android:drawableLeft="@drawable/ic_google_white"
+            android:drawablePadding="@dimen/size_30_reverse"
+            android:paddingLeft="@dimen/size_10"
+            android:text="@string/login_by_google"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/size_15"
-                android:src="@drawable/ic_google_white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Đăng nhập với Google"
-                android:textColor="@color/white"
-                android:textSize="@dimen/size_15" />
-        </RelativeLayout>
+        <Button
+            android:id="@+id/btn_login_by_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_40"
+            android:layout_marginLeft="@dimen/size_40"
+            android:layout_marginTop="@dimen/size_15"
+            android:layout_marginRight="@dimen/size_40"
+            android:layout_marginBottom="@dimen/size_30"
+            android:background="@drawable/bg_btn_login_by_facebook"
+            android:drawableLeft="@drawable/ic_fb_white"
+            android:drawablePadding="@dimen/size_30_reverse"
+            android:paddingLeft="@dimen/size_10"
+            android:text="@string/login_by_facebook"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_15" />
     </LinearLayout>
 
     <RelativeLayout

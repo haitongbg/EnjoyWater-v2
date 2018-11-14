@@ -3,7 +3,10 @@ package com.enjoywater.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class Product implements Parcelable {
     @SerializedName("updatedAt")
@@ -17,7 +20,7 @@ public class Product implements Parcelable {
     @SerializedName("catId")
     private String catId;
     @SerializedName("images")
-    private String images;
+    private ArrayList<Image> images;
     @SerializedName("thumbnail")
     private String thumbnail;
     @SerializedName("desctiption")
@@ -34,6 +37,8 @@ public class Product implements Parcelable {
     private int ask;
     @SerializedName("bid")
     private int bid;
+    private boolean isSelected = false;
+    private int count = 1;
 
     public Product() {
     }
@@ -44,7 +49,7 @@ public class Product implements Parcelable {
         createdBy = in.readString();
         status = in.readString();
         catId = in.readString();
-        images = in.readString();
+        images = in.createTypedArrayList(Image.CREATOR);
         thumbnail = in.readString();
         desctiption = in.readString();
         name = in.readString();
@@ -53,6 +58,8 @@ public class Product implements Parcelable {
         discount = in.readInt();
         ask = in.readInt();
         bid = in.readInt();
+        isSelected = in.readByte() != 0;
+        count = in.readInt();
     }
 
     @Override
@@ -62,7 +69,7 @@ public class Product implements Parcelable {
         dest.writeString(createdBy);
         dest.writeString(status);
         dest.writeString(catId);
-        dest.writeString(images);
+        dest.writeTypedList(images);
         dest.writeString(thumbnail);
         dest.writeString(desctiption);
         dest.writeString(name);
@@ -71,6 +78,8 @@ public class Product implements Parcelable {
         dest.writeInt(discount);
         dest.writeInt(ask);
         dest.writeInt(bid);
+        dest.writeByte((byte) (isSelected ? 1 : 0));
+        dest.writeInt(count);
     }
 
     @Override
@@ -130,11 +139,11 @@ public class Product implements Parcelable {
         this.catId = catId;
     }
 
-    public String getImages() {
+    public ArrayList<Image> getImages() {
         return images;
     }
 
-    public void setImages(String images) {
+    public void setImages(ArrayList<Image> images) {
         this.images = images;
     }
 
@@ -200,5 +209,25 @@ public class Product implements Parcelable {
 
     public void setBid(int bid) {
         this.bid = bid;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public static Creator<Product> getCREATOR() {
+        return CREATOR;
     }
 }

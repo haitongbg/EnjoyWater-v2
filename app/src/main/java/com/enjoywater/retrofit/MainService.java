@@ -3,8 +3,6 @@ package com.enjoywater.retrofit;
 import android.support.annotation.Nullable;
 
 import com.enjoywater.retrofit.response.BaseResponse;
-import com.enjoywater.retrofit.response.LoginResponse;
-import com.enjoywater.retrofit.response.RegisterResponse;
 import com.enjoywater.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
@@ -33,13 +31,13 @@ public interface MainService {
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.LOGIN)
-    Call<LoginResponse> login(@Field(Constants.Key.EMAIL) String email,
+    Call<BaseResponse> login(@Field(Constants.Key.EMAIL) String email,
                               @Field(Constants.Key.PASSWORD) String password);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.REGISTER)
-    Call<RegisterResponse> register(@Field(Constants.Key.NAME) String name,
+    Call<BaseResponse> register(@Field(Constants.Key.NAME) String name,
                                     @Field(Constants.Key.EMAIL) String email,
                                     @Field(Constants.Key.PHONE) String phone,
                                     @Field(Constants.Key.PASSWORD) String password);
@@ -57,7 +55,7 @@ public interface MainService {
 
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_USER_INFO)
-    Call<RegisterResponse> getUserInfo(@Header(Constants.Key.TOKEN_LOGIN) String token);
+    Call<BaseResponse> getUserInfo(@Header(Constants.Key.TOKEN_LOGIN) String token);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
@@ -68,40 +66,38 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.UPDATE_USER_INFO)
     Call<BaseResponse> updateUserInfo(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                      @Nullable @Field(Constants.Key.NAME) String name,
-                                      @Nullable @Field(Constants.Key.PASSWORD) String password,
-                                      @Nullable @Field(Constants.Key.AVATAR) String avatar,
-                                      @Nullable @Field(Constants.Key.GENDER) String gender,
-                                      @Nullable @Field(Constants.Key.BIRTHDAY) String birthday,
-                                      @Nullable @Field(Constants.Key.ADDRESS) String address,
-                                      @Nullable @Field(Constants.Key.PASSPORT) String passport,
-                                      @Nullable @Field(Constants.Key.PHONE) String phone,
-                                      @Nullable @Field(Constants.Key.EMAIL) String email);
+                                      @Field(Constants.Key.NAME) String name,
+                                      @Field(Constants.Key.PASSWORD) String password,
+                                      @Field(Constants.Key.AVATAR) String avatar,
+                                      @Field(Constants.Key.GENDER) String gender,
+                                      @Field(Constants.Key.BIRTHDAY) String birthday,
+                                      @Field(Constants.Key.ADDRESS) String address,
+                                      @Field(Constants.Key.PASSPORT) String passport,
+                                      @Field(Constants.Key.PHONE) String phone,
+                                      @Field(Constants.Key.EMAIL) String email);
 
     //Home
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_LIST_NEWS)
-    Call<BaseResponse> getListNews(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
-                                   @Nullable @Query(Constants.Key.LIMIT) String limit,
-                                   @Nullable @Query(Constants.Key.PAGE) String page,
-                                   @Nullable @Query(Constants.Key.SEARCH_KEY) String q);
+    Call<BaseResponse> getListNews(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                   @Query(Constants.Key.LIMIT) int limit,
+                                   @Query(Constants.Key.PAGE) int page);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_NEWS_DETAILS)
-    Call<BaseResponse> getNewsDetails(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
+    Call<BaseResponse> getNewsDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                       @Query(Constants.Key.NEWS_ID) String newsId);
 
     //Product
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_LIST_PRODUCTS)
-    Call<BaseResponse> getListProducts(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
-                                       @Nullable @Query(Constants.Key.LIMIT) String limit,
-                                       @Nullable @Query(Constants.Key.PAGE) String page,
-                                       @Nullable @Query(Constants.Key.SEARCH_KEY) String q);
+    Call<BaseResponse> getListProducts(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                       @Query(Constants.Key.LIMIT) int limit,
+                                       @Query(Constants.Key.PAGE) int page);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_PRODUCT_DETAILS)
-    Call<BaseResponse> getProductDetails(@Nullable @Header(Constants.Key.TOKEN_LOGIN) String token,
+    Call<BaseResponse> getProductDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                          @Query(Constants.Key.PRODUCT_ID) String productId);
 
     //Factory

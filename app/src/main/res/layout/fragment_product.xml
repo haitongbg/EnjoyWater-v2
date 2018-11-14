@@ -1,323 +1,318 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_products"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_200"
-        android:background="@drawable/bg_products" />
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rv_products"
-        android:fitsSystemWindows="false">
+        android:background="@drawable/bg">
 
-        <LinearLayout
-            android:id="@+id/layout_order"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_products"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="@dimen/size_200"
+            android:background="@drawable/bg_products" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_selected_products"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_80"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginTop="@dimen/size_15"
-                android:layout_marginRight="@dimen/size_10"
-                android:overScrollMode="never" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:includeFontPadding="false"
-                    android:text="Tổng tiền"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_15" />
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:id="@+id/tv_total_product_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="265.000 đ"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_15" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0_5"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginTop="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
-                android:background="@color/black_c" />
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rv_products"
+            android:overScrollMode="never"
+            android:scrollbars="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_60">
 
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:layout_marginTop="@dimen/size_5"
-                    android:layout_marginBottom="@dimen/size_5"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:checked="true"
-                    android:text="Giao hàng trên tầng cao"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_12" />
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:id="@+id/tv_total_delivery_fee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_selected_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_80"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_marginTop="@dimen/size_15"
                     android:layout_marginRight="@dimen/size_10"
-                    android:text="20.000 đ"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_14" />
-            </LinearLayout>
+                    android:overScrollMode="never" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0_5"
-                android:layout_marginLeft="@dimen/size_35"
-                android:layout_marginRight="@dimen/size_35"
-                android:background="@color/black_c"
-                android:visibility="gone" />
-
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_5"
-                android:layout_marginTop="@dimen/size_5"
-                android:layout_marginBottom="@dimen/size_5"
-                android:background="@null"
-                android:checked="false"
-                android:text="Giao hàng trong 2 giờ (giảm 0%)"
-                android:textColor="@color/indigo_blue"
-                android:textSize="@dimen/text_12" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0_5"
-                android:layout_marginLeft="@dimen/size_35"
-                android:layout_marginRight="@dimen/size_35"
-                android:background="@color/black_c"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:layout_marginTop="@dimen/size_5"
-                    android:layout_marginBottom="@dimen/size_5"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:checked="true"
-                    android:text="Giao hàng trong 24 giờ (12.5%)"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_12" />
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:id="@+id/tv_total_discount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/size_10"
-                    android:text="-27.000 đ"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_14" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0_5"
-                android:layout_marginLeft="@dimen/size_35"
-                android:layout_marginRight="@dimen/size_35"
-                android:background="@color/black_c"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:includeFontPadding="false"
-                    android:text="Tổng thanh toán"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_15" />
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:id="@+id/tv_total_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="258.000 đ"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_5"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:checked="true"
-                    android:text="Tiền mặt"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_12" />
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:text="Điểm thưởng"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_12" />
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:text="Hóa đơn"
-                    android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_12" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0_5"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginTop="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
-                android:background="@color/black_c" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/size_5">
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_10"
-                    android:layout_weight="1"
-                    android:includeFontPadding="false"
-                    android:text="Địa chỉ giao hàng"
+                    android:layout_marginRight="@dimen/size_10"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:includeFontPadding="false"
+                        android:text="Tổng tiền"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_15" />
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:id="@+id/tv_total_product_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="265.000 đ"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_15" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_10"
+                    android:background="@color/black_c" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:layout_marginTop="@dimen/size_5"
+                        android:layout_marginBottom="@dimen/size_5"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:checked="true"
+                        android:text="Giao hàng trên tầng cao"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_12" />
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:id="@+id/tv_total_delivery_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/size_10"
+                        android:text="20.000 đ"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_14" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_marginLeft="@dimen/size_35"
+                    android:layout_marginRight="@dimen/size_35"
+                    android:background="@color/black_c"
+                    android:visibility="gone" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:layout_marginBottom="@dimen/size_5"
+                    android:background="@null"
+                    android:checked="false"
+                    android:text="Giao hàng trong 2 giờ (giảm 0%)"
                     android:textColor="@color/indigo_blue"
-                    android:textSize="@dimen/text_15" />
+                    android:textSize="@dimen/text_12" />
 
-                <com.enjoywater.view.TvSegoeuiSemiBold
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_marginLeft="@dimen/size_35"
+                    android:layout_marginRight="@dimen/size_35"
+                    android:background="@color/black_c"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:layout_marginTop="@dimen/size_5"
+                        android:layout_marginBottom="@dimen/size_5"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:checked="true"
+                        android:text="Giao hàng trong 24 giờ (12.5%)"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_12" />
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:id="@+id/tv_total_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/size_10"
+                        android:text="-27.000 đ"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_14" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_marginLeft="@dimen/size_35"
+                    android:layout_marginRight="@dimen/size_35"
+                    android:background="@color/black_c"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_10"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:includeFontPadding="false"
+                        android:text="Tổng thanh toán"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_15" />
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:id="@+id/tv_total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="258.000 đ"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:checked="true"
+                        android:text="Tiền mặt"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_12" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:text="Điểm thưởng"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_12" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:text="Hóa đơn"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_12" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_10"
+                    android:background="@color/black_c" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/size_5">
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_weight="1"
+                        android:includeFontPadding="false"
+                        android:text="Địa chỉ giao hàng"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_15" />
+
+                    <com.enjoywater.view.TvSegoeuiSemiBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/size_5"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:padding="@dimen/size_5"
+                        android:text="Thay đổi"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/size_15" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/size_5"
-                    android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:padding="@dimen/size_5"
-                    android:text="Thay đổi"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/size_15" />
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:text="Tống Văn Hải,"
+                    android:textColor="@color/indigo_blue"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:text="0388326555,"
+                    android:textColor="@color/indigo_blue"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/tv_adress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:text="Số 320 Quan Nhân, Thanh Xuân, Hà Nội."
+                    android:textColor="@color/indigo_blue"
+                    android:textSize="@dimen/text_14" />
             </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_10"
-                android:text="Tống Văn Hải,"
-                android:textColor="@color/indigo_blue"
-                android:textSize="@dimen/text_14" />
-
-            <TextView
-                android:id="@+id/tv_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_10"
-                android:text="0388326555,"
-                android:textColor="@color/indigo_blue"
-                android:textSize="@dimen/text_14" />
-
-            <TextView
-                android:id="@+id/tv_adress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_10"
-                android:text="Số 320 Quan Nhân, Thanh Xuân, Hà Nội."
-                android:textColor="@color/indigo_blue"
-                android:textSize="@dimen/text_14" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_0_5"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginTop="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
-                android:background="@color/black_c" />
-
-            <com.enjoywater.view.RippleView
-                android:id="@+id/ripple_btn_order"
-                android:layout_width="@dimen/size_200"
-                android:layout_height="@dimen/size_35"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/size_10"
-                android:layout_marginBottom="@dimen/size_15"
-                android:background="@drawable/bg_green_corner15"
-                app:rv_alpha="0"
-                app:rv_color="@android:color/transparent"
-                app:rv_zoomScale="1.1">
-
-                <com.enjoywater.view.TvSegoeuiSemiBold
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:includeFontPadding="false"
-                    android:text="Đặt hàng"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_18" />
-            </com.enjoywater.view.RippleView>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</RelativeLayout>
-
+        <Button
+            android:id="@+id/btn_order"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_40"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/size_40"
+            android:layout_marginRight="@dimen/size_40"
+            android:layout_marginBottom="@dimen/size_10"
+            android:background="@drawable/bg_btn_order"
+            android:clickable="true"
+            android:text="@string/order"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_16"
+            android:visibility="visible" />
+    </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

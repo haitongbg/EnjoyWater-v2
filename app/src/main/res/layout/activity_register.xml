@@ -139,7 +139,7 @@
             android:layout_width="@dimen/size_180"
             android:layout_height="@dimen/size_30"
             android:layout_marginTop="@dimen/size_25"
-            android:background="@drawable/bg_green_corner15"
+            android:background="@drawable/bg_green_corner_4"
             app:rv_alpha="0"
             app:rv_color="@android:color/transparent"
             app:rv_zoomScale="1.1">
