@@ -17,7 +17,10 @@ import com.enjoywater.listener.ProductListener;
 import com.enjoywater.model.Product;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.TvSegoeuiBold;
+import com.enjoywater.view.TvSegoeuiRegular;
+import com.enjoywater.view.TvSegoeuiSemiBold;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -27,23 +30,19 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
     private Context mContext;
     private ArrayList<Product> mProducts;
     private LayoutInflater mInflater;
-    private RequestManager mRequestManager;
     private ProductListener mProductListener;
-    private int mScreenWidth;
 
     public SelectedProductAdapter(Context context, ArrayList<Product> products, ProductListener productListener) {
         this.mContext = context;
         this.mProducts = products;
         this.mProductListener = productListener;
         this.mInflater = LayoutInflater.from(mContext);
-        this.mRequestManager = Glide.with(mContext);
-        this.mScreenWidth = Utils.getScreenWidth(mContext);
     }
 
     @NonNull
     @Override
     public CustomViewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View itemView = mInflater.inflate(R.layout.item_product, viewGroup, false);
+        View itemView = mInflater.inflate(R.layout.item_selected_product, viewGroup, false);
         return new CustomViewholder(itemView);
     }
 
@@ -55,18 +54,19 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
     @Override
     public int getItemCount() {
         return mProducts.size();
-        //return Integer.MAX_VALUE;
     }
 
     public class CustomViewholder extends RecyclerView.ViewHolder {
-        @BindView(R.id.item_view)
-        LinearLayout itemView;
-        @BindView(R.id.iv_image)
-        ImageView ivImage;
         @BindView(R.id.tv_name)
-        TvSegoeuiBold tvName;
-        @BindView(R.id.iv_selected)
-        ImageView ivSelected;
+        TvSegoeuiSemiBold tvName;
+        @BindView(R.id.btn_subtract)
+        ImageView btnSubtract;
+        @BindView(R.id.tv_count)
+        TvSegoeuiSemiBold tvCount;
+        @BindView(R.id.btn_add)
+        ImageView btnAdd;
+        @BindView(R.id.tv_price)
+        TvSegoeuiSemiBold tvPrice;
 
         public CustomViewholder(@NonNull View itemView) {
             super(itemView);
@@ -76,41 +76,53 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
         public void setData(int position) {
             int realPosition = position % mProducts.size();
             Product product = mProducts.get(realPosition);
-            //size
-            itemView.getLayoutParams().width = mScreenWidth / 3;
-            //image
-            String image = product.getThumbnail();
-            RequestOptions requestOptions = new RequestOptions()
-                    .centerInside()
-                    .placeholder(R.drawable.test_img_product)
-                    .error(R.drawable.test_img_product);
-            if (image != null && image.isEmpty())
-                mRequestManager.load(image).apply(requestOptions).into(ivImage);
-            else ivImage.setImageResource(R.drawable.test_img_product);
             //name
             String name = product.getName();
             if (name != null && !name.isEmpty()) {
                 tvName.setText(name);
                 tvName.setVisibility(View.VISIBLE);
             } else tvName.setVisibility(View.INVISIBLE);
-            //selected
-            if (product.isSelected()) {
-                ivSelected.setImageResource(R.drawable.ic_radio_button_active);
-            } else {
-                ivSelected.setImageResource(R.drawable.ic_radio_button);
-            }
-            //click
-            itemView.setOnClickListener(v -> {
-                if (product.isSelected()) {
-                    product.setSelected(false);
-                    mProducts.get(realPosition).setSelected(false);
-                    mProductListener.selectProduct(product, false);
-                    ivSelected.setImageResource(R.drawable.ic_radio_button);
-                } else {
-                    product.setSelected(true);
-                    mProducts.get(realPosition).setSelected(true);
-                    mProductListener.selectProduct(product, true);
-                    ivSelected.setImageResource(R.drawable.ic_radio_button_active);
+            //price
+            DecimalFormat formatVNĐ = new DecimalFormat("###,###,###");
+            tvPrice.setText(formatVNĐ.format(product.getAsk()) + " đ");
+            //count
+            int count = product.getCount();
+            tvCount.setText(String .valueOf(count));
+            if (count <= 1) btnSubtract.setImageResource(R.drawable.ic_subtract);
+            else btnSubtract.setImageResource(R.drawable.ic_subtract_active);
+            if (count >= 999) btnAdd.setImageResource(R.drawable.ic_add);
+            else btnAdd.setImageResource(R.drawable.ic_add_active);
+            btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int count = product.getCount();
+                    if (count < 999) {
+                        count++;
+                        product.setCount(count);
+                        tvCount.setText(count + "");
+                        mProducts.get(position).setCount(count);
+                        mProductListener.updateProduct(product);
+                        if (count == 2) btnSubtract.setImageResource(R.drawable.ic_subtract_active);
+                        if (count == 999) btnAdd.setImageResource(R.drawable.ic_add);
+                    }
+                }
+            });
+            btnSubtract.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int count = product.getCount();
+                    if (count > 1) {
+                        count--;
+                        product.setCount(count);
+                        tvCount.setText(count + "");
+                        mProducts.get(position).setCount(count);
+                        mProductListener.updateProduct(product);
+                        if (count == 1) btnSubtract.setImageResource(R.drawable.ic_subtract);
+                        if (count == 998) btnAdd.setImageResource(R.drawable.ic_add_active);
+                    } /*else {
+                        product.setSelected(false);
+                        mProductListener.selectProduct(product);
+                    }*/
                 }
             });
         }

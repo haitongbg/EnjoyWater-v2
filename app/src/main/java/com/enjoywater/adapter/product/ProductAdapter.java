@@ -104,12 +104,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.CustomVi
                 if (product.isSelected()) {
                     product.setSelected(false);
                     mProducts.get(realPosition).setSelected(false);
-                    mProductListener.selectProduct(product, false);
+                    mProductListener.selectProduct(product);
                     ivSelected.setImageResource(R.drawable.ic_radio_button);
                 } else {
                     product.setSelected(true);
                     mProducts.get(realPosition).setSelected(true);
-                    mProductListener.selectProduct(product, true);
+                    mProductListener.selectProduct(product);
                     ivSelected.setImageResource(R.drawable.ic_radio_button_active);
                 }
             });

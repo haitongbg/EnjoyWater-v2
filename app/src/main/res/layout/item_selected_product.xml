@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/size_10"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <com.enjoywater.view.TvSegoeuiSemiBold
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4.5"
+        android:includeFontPadding="false"
+        android:singleLine="true"
+        android:textColor="@color/indigo_blue"
+        android:textSize="@dimen/text_12" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.5"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/btn_subtract"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_subtract_active" />
+
+        <com.enjoywater.view.TvSegoeuiSemiBold
+            android:id="@+id/tv_count"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:text="444"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_13" />
+
+        <ImageView
+            android:id="@+id/btn_add"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_add_active" />
+    </LinearLayout>
+
+    <com.enjoywater.view.TvSegoeuiSemiBold
+        android:id="@+id/tv_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:gravity="right"
+        android:text="50.000 đ"
+        android:textColor="@color/indigo_blue"
+        android:textSize="@dimen/text_13" />
+</LinearLayout>
