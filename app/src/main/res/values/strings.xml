@@ -31,7 +31,6 @@
     <string name="guest">Guest</string>
     <string name="login_by_google">Đăng nhập với Google</string>
     <string name="login_by_facebook">Đăng nhập với facebook</string>
-
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>

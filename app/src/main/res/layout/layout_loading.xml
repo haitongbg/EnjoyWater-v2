@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_loading"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.enjoywater.view.ProgressWheel
+        android:id="@+id/progress_loading"
+        android:layout_width="@dimen/size_80"
+        android:layout_height="@dimen/size_80"
+        android:padding="@dimen/size_20"
+        android:background="@drawable/bg_loading"
+        android:layout_centerInParent="true"
+        app:matProg_barColor="@color/colorAccent"
+        app:matProg_barWidth="@dimen/size_2_5" />
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.enjoywater.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +28,15 @@ import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.adapter.product.ProductAdapter;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
 import com.enjoywater.listener.ProductListener;
+import com.enjoywater.model.Address;
 import com.enjoywater.model.Product;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
+import com.enjoywater.view.ProgressWheel;
+import com.enjoywater.view.RippleView;
 import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -46,6 +51,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductFragment extends Fragment {
+    public static final int REQUEST_CODE_LOGIN = 111;
+    public static final int REQUEST_CODE_ADDRESS = 112;
     @BindView(R.id.rv_products)
     RecyclerView rvProducts;
     @BindView(R.id.rv_selected_products)
@@ -72,20 +79,34 @@ public class ProductFragment extends Fragment {
     CheckBox checkboxPayByBill;
     @BindView(R.id.btn_change_address)
     TvSegoeuiSemiBold btnChangeAddress;
+    @BindView(R.id.ripple_forget_password)
+    RippleView rippleForgetPassword;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_phone)
     TextView tvPhone;
     @BindView(R.id.tv_adress)
     TextView tvAdress;
+    @BindView(R.id.layout_address)
+    LinearLayout layoutAddress;
     @BindView(R.id.layout_order)
     LinearLayout layoutOrder;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
     @BindView(R.id.btn_order)
     Button btnOrder;
+    @BindView(R.id.layout_content)
+    RelativeLayout layoutContent;
+    @BindView(R.id.progress_loading)
+    ProgressWheel progressLoading;
+    @BindView(R.id.layout_loading)
+    RelativeLayout layoutLoading;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.tv_error)
+    TextView tvError;
+    @BindView(R.id.layout_error)
+    RelativeLayout layoutError;
     private Context mContext;
     private MainService mainService;
     private boolean isLoading = false;
@@ -96,6 +117,9 @@ public class ProductFragment extends Fragment {
     private ArrayList<Product> mSelectedProducts = new ArrayList<>();
     private ProductAdapter mProductAdapter;
     private SelectedProductAdapter mSelectedProductAdapter;
+    private Address mAddress;
+    private boolean isValidAddress = false;
+    long mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee;
 
     public static ProductFragment newInstance() {
         ProductFragment productFragment = new ProductFragment();
@@ -131,7 +155,13 @@ public class ProductFragment extends Fragment {
             public void onRefresh() {
                 if (Utils.isInternetOn(mContext)) {
                     if (!isLoading) {
-
+                        mProducts.clear();
+                        if (mProductAdapter != null) mProductAdapter.notifyDataSetChanged();
+                        mSelectedProducts.clear();
+                        if (mSelectedProductAdapter != null)
+                            mSelectedProductAdapter.notifyDataSetChanged();
+                        updatePrice();
+                        getProducts();
                     } else {
                         swipeRefresh.setRefreshing(false);
                     }
@@ -142,6 +172,14 @@ public class ProductFragment extends Fragment {
             }
         });
         swipeRefresh.setEnabled(false);
+        progressLoading.setProgress(0.5f);
+        progressLoading.setCallback(progress -> {
+            if (progress == 0) {
+                progressLoading.setProgress(1.0f);
+            } else if (progress == 1.0f) {
+                progressLoading.setProgress(0.0f);
+            }
+        });
         rvSelectedProducts.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false));
         rvSelectedProducts.setNestedScrollingEnabled(false);
         rvProducts.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
@@ -176,9 +214,49 @@ public class ProductFragment extends Fragment {
             checkboxPayByPoint.setChecked(false);
             checkboxPayByBill.setChecked(true);
         });
+        checkboxPayByBill.setVisibility(View.GONE);
+        if (mUser != null && mToken != null && !mToken.isEmpty()) {
+            String name = mUser.getName();
+            tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
+            tvName.setVisibility(View.VISIBLE);
+            String phone = mUser.getPhone();
+            tvPhone.setText(((phone != null && !phone.isEmpty()) ? name : "Unknown phone") + ",");
+            tvPhone.setVisibility(View.VISIBLE);
+            mAddress = mUser.getObjectAddress();
+            if (mAddress != null) {
+                int count = 0;
+                String fullAddress = mAddress.getAddressDetail();
+                if (mAddress.getWard() != null && mAddress.getWard().getId() != -1 && mAddress.getWard().getName() != null && !mAddress.getWard().getName().isEmpty()) {
+                    if (mAddress.getWard().getType() != null && !mAddress.getWard().getType().isEmpty())
+                        fullAddress += (", " + mAddress.getWard().getType() + " " + mAddress.getWard().getName());
+                    else fullAddress += (", " + mAddress.getWard().getName());
+                    count++;
+                }
+                if (mAddress.getDistrict() != null && mAddress.getDistrict().getId() != -1 && mAddress.getDistrict().getName() != null && !mAddress.getDistrict().getName().isEmpty()) {
+                    if (mAddress.getDistrict().getType() != null && !mAddress.getDistrict().getType().isEmpty())
+                        fullAddress += (", " + mAddress.getDistrict().getType() + " " + mAddress.getDistrict().getName());
+                    else fullAddress += (", " + mAddress.getDistrict().getName());
+                    count++;
+                }
+                if (mAddress.getCity() != null && mAddress.getCity().getId() != -1 && mAddress.getCity().getName() != null && !mAddress.getCity().getName().isEmpty()) {
+                    if (mAddress.getCity().getType() != null && !mAddress.getCity().getType().isEmpty())
+                        fullAddress += (", " + mAddress.getCity().getType() + " " + mAddress.getCity().getName());
+                    else fullAddress += (", " + mAddress.getCity().getName());
+                    count++;
+                }
+                isValidAddress = count >= 2;
+                tvAdress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
+            } else {
+                tvName.setVisibility(View.GONE);
+                tvPhone.setVisibility(View.GONE);
+                tvAdress.setText("Chưa có địa chỉ.");
+                isValidAddress = false;
+            }
+        }
         btnOrder.setOnClickListener(v -> {
-
+            validateOrder();
         });
+        showLoading(true);
         getProducts();
     }
 
@@ -226,6 +304,7 @@ public class ProductFragment extends Fragment {
 
     private void setDataProducts(ArrayList<Product> products) {
         if (!products.isEmpty()) {
+            showContent();
             int insertPosition = mProducts.size();
             mProducts.addAll(products);
             if (mProductAdapter == null) {
@@ -292,20 +371,20 @@ public class ProductFragment extends Fragment {
     private void updatePrice() {
         DecimalFormat formatVND = new DecimalFormat("###,###,###");
         DecimalFormat formatPercent = new DecimalFormat("#.0");
-        long totalProductsPrice = 0;
-        long totalProductDiscount = 0;
-        long totalDeliveryFee = 0;
+        mTotalProductsPrice = 0;
+        mTotalProductDiscount = 0;
+        mTotalDeliveryFee = 0;
         if (mSelectedProducts != null && !mSelectedProducts.isEmpty()) {
             for (Product product : mSelectedProducts) {
-                totalProductsPrice += product.getCount() * product.getAsk();
-                totalProductDiscount += product.getCount() * product.getDiscount();
-                totalDeliveryFee += product.getCount() * product.getDeliveryFee();
+                mTotalProductsPrice += product.getCount() * product.getAsk();
+                mTotalProductDiscount += product.getCount() * product.getDiscount();
+                mTotalDeliveryFee += product.getCount() * product.getDeliveryFee();
             }
-            tvTotalProductPrice.setText(formatVND.format(totalProductsPrice) + " đ");
-            tvTotalDeliveryFee.setText(formatVND.format(totalDeliveryFee) + " đ");
-            tvShipIn24HoursDiscount.setText("-" + formatVND.format(totalProductDiscount) + " đ");
-            if (totalProductDiscount > 0) {
-                float discountPercent = (float) (totalProductDiscount * 100) / totalProductsPrice;
+            tvTotalProductPrice.setText(formatVND.format(mTotalProductsPrice) + " đ");
+            tvTotalDeliveryFee.setText(formatVND.format(mTotalDeliveryFee) + " đ");
+            tvShipIn24HoursDiscount.setText("-" + formatVND.format(mTotalProductDiscount) + " đ");
+            if (mTotalProductDiscount > 0) {
+                float discountPercent = (float) (mTotalProductDiscount * 100) / mTotalProductsPrice;
                 if (discountPercent >= 1.0f)
                     checkboxShipIn24Hours.setText("Giao hàng trong 24 giờ (giảm " + formatPercent.format(discountPercent) + "%)");
                 else
@@ -317,21 +396,81 @@ public class ProductFragment extends Fragment {
             tvShipIn24HoursDiscount.setText("-0 đ");
             checkboxShipIn24Hours.setText("Giao hàng trong 24 giờ (giảm 0%)");
         }
-        long totalPrice = totalProductsPrice;
-        if (checkboxDelivery.isChecked()) totalPrice += totalDeliveryFee;
-        if (checkboxShipIn24Hours.isChecked()) totalPrice -= totalProductDiscount;
-        tvTotalPrice.setText(formatVND.format(totalPrice) + " đ");
+        mTotalPrice = mTotalProductsPrice;
+        if (checkboxDelivery.isChecked()) mTotalPrice += mTotalDeliveryFee;
+        if (checkboxShipIn24Hours.isChecked()) mTotalPrice -= mTotalProductDiscount;
+        tvTotalPrice.setText(formatVND.format(mTotalPrice) + " đ");
     }
 
-    private void showLoading() {
+    private void validateOrder() {
+        if (mSelectedProducts == null || mSelectedProducts.isEmpty()) {
+            Toast.makeText(mContext, "Vui lòng chọn sản phẩm", Toast.LENGTH_SHORT).show();
+        } else if (mUser == null || mToken == null || mToken.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage("Vui lòng đăng nhập để tiến hành đặt hàng.")
+                    .setCancelable(false)
+                    .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivityForResult(new Intent(mContext, LoginActivity.class), REQUEST_CODE_LOGIN);
+                        }
+                    })
+                    .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else if (!isValidAddress) {
 
+        } else if (checkboxPayByPoint.isChecked() && mUser.getCoin() < mTotalPrice) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này \n Sử dụng phương thức thanh toán bằng tiền mặt?")
+                    .setCancelable(false)
+                    .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            checkboxPayByCash.setChecked(true);
+                            checkboxPayByPoint.setChecked(false);
+                            confirmOrder();
+                        }
+                    })
+                    .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+    private void confirmOrder() {
+        makeOrder();
+    }
+
+    private void makeOrder() {
+        showLoading(false);
+    }
+
+    private void showLoading(boolean goneContent) {
+        layoutLoading.setVisibility(View.VISIBLE);
+        layoutContent.setVisibility(goneContent ? View.GONE : View.VISIBLE);
+        layoutError.setVisibility(View.GONE);
+        swipeRefresh.setEnabled(false);
     }
 
     private void showContent() {
-
+        layoutLoading.setVisibility(View.GONE);
+        layoutContent.setVisibility(View.VISIBLE);
+        layoutError.setVisibility(View.GONE);
+        swipeRefresh.setEnabled(false);
     }
 
-    private void showError(String error) {
-
+    private void showError(@NonNull String error) {
+        layoutLoading.setVisibility(View.GONE);
+        layoutContent.setVisibility(View.GONE);
+        layoutError.setVisibility(View.VISIBLE);
+        tvError.setText(error);
+        swipeRefresh.setEnabled(true);
     }
 }

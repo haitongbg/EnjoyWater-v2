@@ -6,83 +6,102 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class User implements Parcelable {
-    @SerializedName("createdAt")
-    private String createdAt;
     @SerializedName("updatedAt")
     private String updatedAt;
-    @SerializedName("refId")
-    private String refId;
+    @SerializedName("createdAt")
+    private String createdAt;
+    @SerializedName("enablePaymentBill")
+    private boolean enablePaymentBill;
     @SerializedName("status")
     private String status;
-    @SerializedName("passport")
-    private String passport;
-    @SerializedName("address")
-    private String address;
-    @SerializedName("birthday")
-    private String birthday;
+    @SerializedName("activated")
+    private boolean activated;
     @SerializedName("gender")
     private String gender;
-    @SerializedName("avatar")
-    private String avatar;
     @SerializedName("group")
     private String group;
     @SerializedName("phone")
     private String phone;
+    @SerializedName("emailVerified")
+    private boolean emailVerified;
+    @SerializedName("id")
+    private String id;
+    @SerializedName("coin")
+    private int coin;
+    @SerializedName("refId")
+    private String refId;
+    @SerializedName("myCode")
+    private String myCode;
+    @SerializedName("birthday")
+    private String birthday;
+    @SerializedName("address")
+    private String address;
+    @SerializedName("avatar")
+    private String avatar;
+    @SerializedName("passport")
+    private String passport;
+    @SerializedName("levelInfo")
+    private LevelInfo levelInfo;
     @SerializedName("email")
     private String email;
     @SerializedName("username")
     private String username;
     @SerializedName("name")
     private String name;
-    @SerializedName("id")
-    private String id;
-    @SerializedName("password")
-    private String password;
-    @SerializedName("levelInfo")
-    private LevelInfo levelInfo;
+    private Address objectAddress;
 
     public User() {
     }
 
     protected User(Parcel in) {
-        createdAt = in.readString();
         updatedAt = in.readString();
-        refId = in.readString();
+        createdAt = in.readString();
+        enablePaymentBill = in.readByte() != 0;
         status = in.readString();
-        passport = in.readString();
-        address = in.readString();
-        birthday = in.readString();
+        activated = in.readByte() != 0;
         gender = in.readString();
-        avatar = in.readString();
         group = in.readString();
         phone = in.readString();
+        emailVerified = in.readByte() != 0;
+        id = in.readString();
+        coin = in.readInt();
+        refId = in.readString();
+        myCode = in.readString();
+        birthday = in.readString();
+        address = in.readString();
+        avatar = in.readString();
+        passport = in.readString();
+        levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
         email = in.readString();
         username = in.readString();
         name = in.readString();
-        id = in.readString();
-        password = in.readString();
-        levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
+        objectAddress = in.readParcelable(Address.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(createdAt);
         dest.writeString(updatedAt);
-        dest.writeString(refId);
+        dest.writeString(createdAt);
+        dest.writeByte((byte) (enablePaymentBill ? 1 : 0));
         dest.writeString(status);
-        dest.writeString(passport);
-        dest.writeString(address);
-        dest.writeString(birthday);
+        dest.writeByte((byte) (activated ? 1 : 0));
         dest.writeString(gender);
-        dest.writeString(avatar);
         dest.writeString(group);
         dest.writeString(phone);
+        dest.writeByte((byte) (emailVerified ? 1 : 0));
+        dest.writeString(id);
+        dest.writeInt(coin);
+        dest.writeString(refId);
+        dest.writeString(myCode);
+        dest.writeString(birthday);
+        dest.writeString(address);
+        dest.writeString(avatar);
+        dest.writeString(passport);
+        dest.writeParcelable(levelInfo, flags);
         dest.writeString(email);
         dest.writeString(username);
         dest.writeString(name);
-        dest.writeString(id);
-        dest.writeString(password);
-        dest.writeParcelable(levelInfo, flags);
+        dest.writeParcelable(objectAddress, flags);
     }
 
     @Override
@@ -102,14 +121,6 @@ public class User implements Parcelable {
         }
     };
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public String getUpdatedAt() {
         return updatedAt;
     }
@@ -118,12 +129,20 @@ public class User implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
-    public String getRefId() {
-        return refId;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setRefId(String refId) {
-        this.refId = refId;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isEnablePaymentBill() {
+        return enablePaymentBill;
+    }
+
+    public void setEnablePaymentBill(boolean enablePaymentBill) {
+        this.enablePaymentBill = enablePaymentBill;
     }
 
     public String getStatus() {
@@ -134,28 +153,12 @@ public class User implements Parcelable {
         this.status = status;
     }
 
-    public String getPassport() {
-        return passport;
+    public boolean isActivated() {
+        return activated;
     }
 
-    public void setPassport(String passport) {
-        this.passport = passport;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     public String getGender() {
@@ -164,14 +167,6 @@ public class User implements Parcelable {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getGroup() {
@@ -188,6 +183,86 @@ public class User implements Parcelable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
+    public String getMyCode() {
+        return myCode;
+    }
+
+    public void setMyCode(String myCode) {
+        this.myCode = myCode;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
+    }
+
+    public LevelInfo getLevelInfo() {
+        return levelInfo;
+    }
+
+    public void setLevelInfo(LevelInfo levelInfo) {
+        this.levelInfo = levelInfo;
     }
 
     public String getEmail() {
@@ -214,27 +289,11 @@ public class User implements Parcelable {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public Address getObjectAddress() {
+        return objectAddress;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LevelInfo getLevelInfo() {
-        return levelInfo;
-    }
-
-    public void setLevelInfo(LevelInfo levelInfo) {
-        this.levelInfo = levelInfo;
+    public void setObjectAddress(Address objectAddress) {
+        this.objectAddress = objectAddress;
     }
 }

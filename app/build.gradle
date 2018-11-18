@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        release {
+        /*release {
             keyAlias 'haitong'
             keyPassword '1qazxsw2!@#'
             storeFile file('D:/Projects/haitongkeystore.jks')
             storePassword '1qazxsw2!@#'
-        }
+        }*/
     }
     compileSdkVersion 27
     defaultConfig {

@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (token != null && !token.isEmpty() && mUser != null && mUser.getId() != null && !mUser.getId().isEmpty()) {
                                 Utils.saveString(LoginActivity.this, Constants.Key.TOKEN, token);
                                 Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                                goMain();
+                                onBackPressed();
                             } else
                                 Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
                         } else
@@ -134,9 +134,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void goMain() {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
         overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
-        finish();
     }
 }
