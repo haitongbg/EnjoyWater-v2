@@ -412,6 +412,7 @@ public class ProductFragment extends Fragment {
                     .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             startActivityForResult(new Intent(mContext, LoginActivity.class), REQUEST_CODE_LOGIN);
+                            (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
                         }
                     })
                     .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -421,24 +422,18 @@ public class ProductFragment extends Fragment {
                     });
             AlertDialog alert = builder.create();
             alert.show();
-        } else if (!isValidAddress) {
+        } else if (isValidAddress) {
 
         } else if (checkboxPayByPoint.isChecked() && mUser.getCoin() < mTotalPrice) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này \n Sử dụng phương thức thanh toán bằng tiền mặt?")
+            builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này. \n\nThanh toán bằng tiền mặt?")
                     .setCancelable(false)
-                    .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            checkboxPayByCash.setChecked(true);
-                            checkboxPayByPoint.setChecked(false);
-                            confirmOrder();
-                        }
+                    .setPositiveButton("Đồng ý", (dialog, id) -> {
+                        checkboxPayByCash.setChecked(true);
+                        checkboxPayByPoint.setChecked(false);
+                        confirmOrder();
                     })
-                    .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
+                    .setNegativeButton("Hủy", (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
         }
