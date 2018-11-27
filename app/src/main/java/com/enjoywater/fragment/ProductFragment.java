@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
+import com.enjoywater.view.DialogOrderAddress;
 import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
 import com.enjoywater.view.TvSegoeuiSemiBold;
@@ -422,8 +424,8 @@ public class ProductFragment extends Fragment {
                     });
             AlertDialog alert = builder.create();
             alert.show();
-        } else if (isValidAddress) {
-
+        } else if (!isValidAddress) {
+            new DialogOrderAddress(mContext, new Handler());
         } else if (checkboxPayByPoint.isChecked() && mUser.getCoin() < mTotalPrice) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này. \n\nThanh toán bằng tiền mặt?")

@@ -11,10 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/size_15"
-        android:background="@color/white"
+        android:layout_margin="@dimen/size_20"
+        android:background="@drawable/bg_white_corner_4"
         android:orientation="vertical"
         android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_40"
+            android:background="@drawable/bg_blue_corner_4_top"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:paddingLeft="@dimen/size_10"
+            android:text="Nhập địa chỉ giao hàng"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0_5"
+            android:background="@color/black_c" />
 
     </LinearLayout>
 </RelativeLayout>
