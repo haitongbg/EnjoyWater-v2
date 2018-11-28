@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Gọi nước</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="retrieve_password">Lấy lại mật khẩu</string>
@@ -32,7 +29,10 @@
     <string name="login_by_google">Đăng nhập với Google</string>
     <string name="login_by_facebook">Đăng nhập với facebook</string>
     <string name="title_activity_splash">SplashActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="order">Đặt hàng</string>
+    <string name="name">Tên</string>
+    <string name="city">Tỉnh/Thành phố</string>
+    <string name="distict">Quận/Huyện</string>
+    <string name="ward">Phường/Xã</string>
+    <string name="save">Lưu</string>
 </resources>

@@ -357,7 +357,7 @@
                 android:visibility="visible" />
         </RelativeLayout>
 
-        <include layout="@layout/layout_loading"/>
+        <include layout="@layout/layout_loading" android:visibility="gone"/>
         <include layout="@layout/layout_error" android:visibility="gone"/>
     </RelativeLayout>
 
