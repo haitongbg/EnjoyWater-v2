@@ -44,6 +44,7 @@ public class Constants {
 
     public static class Value {
         public static final String SECRET_HEADER = "X-API-TOKEN: abcxyz";
+        public static final int ACTION_CLOSE = 0;
     }
 
     public static class DataNotify {

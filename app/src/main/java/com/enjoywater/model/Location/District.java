@@ -4,13 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.enjoywater.model.Address;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
 public class District implements Parcelable {
+    @SerializedName("i")
     private int id;
+    @SerializedName("n")
     private String name;
+    @SerializedName("t")
     private String type;
+    @SerializedName("c")
     private ArrayList<Ward> wards;
 
     public District() {

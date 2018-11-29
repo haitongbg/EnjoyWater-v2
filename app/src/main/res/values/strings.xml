@@ -35,4 +35,6 @@
     <string name="distict">Quận/Huyện</string>
     <string name="ward">Phường/Xã</string>
     <string name="save">Lưu</string>
+    <string name="yes">Đồng ý</string>
+    <string name="confirm">Xác nhận</string>
 </resources>

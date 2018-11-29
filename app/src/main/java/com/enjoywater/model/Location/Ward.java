@@ -3,9 +3,14 @@ package com.enjoywater.model.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Ward implements Parcelable {
+    @SerializedName("i")
     private int id;
+    @SerializedName("n")
     private String name;
+    @SerializedName("t")
     private String type;
 
     public Ward() {

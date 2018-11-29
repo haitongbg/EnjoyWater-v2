@@ -1,311 +1,381 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_trans_30">
+    android:background="@color/black_trans_50">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:background="@drawable/bg_white_corner_4"
-        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_20"
+        android:layout_marginBottom="@dimen/size_30"
+        android:background="@drawable/bg_blackf1_corner_4"
         android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_45"
-            android:background="@color/colorPrimary"
-            android:elevation="@dimen/size_3"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_save"
+            android:animateLayoutChanges="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/btn_close"
-                android:layout_width="@dimen/size_45"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/size_45"
-                android:padding="@dimen/size_15"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_close_white" />
+                android:background="@drawable/bg_blue_corner_4_top"
+                android:elevation="@dimen/size_2"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <com.enjoywater.view.TvSegoeuiSemiBold
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                <com.enjoywater.view.TvSegoeuiSemiBold
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:text="Nhập địa chỉ giao hàng"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_17" />
+
+                <ImageView
+                    android:id="@+id/btn_close"
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
+                    android:clickable="true"
+                    android:padding="@dimen/size_15"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_close_white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_45"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name"
+                    android:textColor="@color/black_3"
+                    android:textSize="@dimen/text_14" />
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="Nhập tên người nhận"
+                    android:singleLine="true"
+                    android:textColor="@color/black_3"
+                    android:textColorHint="@color/black_9"
+                    android:textSize="@dimen/text_14" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0_5"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:background="@color/black_e6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_45"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số điện thoại"
+                    android:textColor="@color/black_3"
+                    android:textSize="@dimen/text_14" />
+
+                <EditText
+                    android:id="@+id/edt_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right|center_vertical"
+                    android:hint="Nhập SĐT người nhận"
+                    android:singleLine="true"
+                    android:textColor="@color/black_3"
+                    android:textColorHint="@color/black_9"
+                    android:textSize="@dimen/text_14" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0_5"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:background="@color/black_e6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_45"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/city"
+                    android:textColor="@color/black_3"
+                    android:textSize="@dimen/text_14" />
+
+                <LinearLayout
+                    android:id="@+id/btn_select_city"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="Chọn Tỉnh/Thành phố"
+                        android:singleLine="true"
+                        android:textColor="@color/black_3"
+                        android:textColorHint="@color/black_9"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="@dimen/size_20"
+                        android:layout_height="@dimen/size_15"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:rotation="270"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_back_black3" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_city"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
                 android:layout_weight="1"
-                android:includeFontPadding="false"
-                android:text="Nhập địa chỉ giao hàng"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_17" />
-        </LinearLayout>
+                android:overScrollMode="never"
+                android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_45"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/size_10"
-            android:paddingRight="@dimen/size_10">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0_5"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:background="@color/black_e6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_45"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/distict"
+                    android:textColor="@color/black_3"
+                    android:textSize="@dimen/text_14" />
+
+                <LinearLayout
+                    android:id="@+id/btn_select_district"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_district"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="Chọn Quận/Huyện"
+                        android:singleLine="true"
+                        android:textColor="@color/black_3"
+                        android:textColorHint="@color/black_9"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="@dimen/size_20"
+                        android:layout_height="@dimen/size_15"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:rotation="270"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_back_black3" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_district"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:layout_weight="1"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0_5"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:background="@color/black_e6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_45"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ward"
+                    android:textColor="@color/black_3"
+                    android:textSize="@dimen/text_14" />
+
+                <LinearLayout
+                    android:id="@+id/btn_select_ward"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_ward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="Chọn Xã/Phường"
+                        android:singleLine="true"
+                        android:textColor="@color/black_3"
+                        android:textColorHint="@color/black_9"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="@dimen/size_20"
+                        android:layout_height="@dimen/size_15"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:rotation="270"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_back_black3" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_ward"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:layout_weight="1"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0_5"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_10"
+                android:background="@color/black_e6" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
-                android:textColor="@color/black_3"
-                android:textSize="@dimen/text_14" />
+                android:background="@color/white"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingTop="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:text="Địa chỉ cụ thể (số nhà, tên tòa nhà, tên đường...)"
+                android:textColor="@color/black_3" />
 
             <EditText
-                android:id="@+id/edt_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="right|center_vertical"
-                android:hint="Nhập tên người nhận"
+                android:id="@+id/edt_addressDetail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_40"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:hint="Nhập địa chỉ cụ thể"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
                 android:singleLine="true"
                 android:textColor="@color/black_3"
                 android:textColorHint="@color/black_9"
                 android:textSize="@dimen/text_14" />
-        </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0_5"
-            android:background="@color/black_c" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_45"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/size_10"
-            android:paddingRight="@dimen/size_10">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Số điện thoại"
-                android:textColor="@color/black_3"
-                android:textSize="@dimen/text_14" />
-
-            <EditText
-                android:id="@+id/edt_phone"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_0_5"
                 android:layout_marginLeft="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="right|center_vertical"
-                android:hint="Nhập SĐT người nhận"
-                android:singleLine="true"
-                android:textColor="@color/black_3"
-                android:textColorHint="@color/black_9"
-                android:textSize="@dimen/text_14" />
+                android:layout_marginRight="@dimen/size_10"
+                android:background="@color/black_e6" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0_5"
-            android:background="@color/black_c" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_45"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/size_10"
-            android:paddingRight="@dimen/size_10">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/city"
-                android:textColor="@color/black_3"
-                android:textSize="@dimen/text_14" />
-
-            <LinearLayout
-                android:id="@+id/btn_select_city"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/tv_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Chọn Tỉnh/Thành phố"
-                    android:singleLine="true"
-                    android:textColor="@color/black_3"
-                    android:textColorHint="@color/black_9"
-                    android:textSize="@dimen/text_14" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/size_15"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:adjustViewBounds="true"
-                    android:rotation="180"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_back_black3" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0_5"
-            android:background="@color/black_c" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_45"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/size_10"
-            android:paddingRight="@dimen/size_10">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distict"
-                android:textColor="@color/black_3"
-                android:textSize="@dimen/text_14" />
-
-            <LinearLayout
-                android:id="@+id/btn_select_district"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/tv_district"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Chọn Quận/Huyện"
-                    android:singleLine="true"
-                    android:textColor="@color/black_3"
-                    android:textColorHint="@color/black_9"
-                    android:textSize="@dimen/text_14" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/size_15"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:adjustViewBounds="true"
-                    android:rotation="180"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_back_black3" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0_5"
-            android:background="@color/black_c" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_45"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/size_10"
-            android:paddingRight="@dimen/size_10">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ward"
-                android:textColor="@color/black_3"
-                android:textSize="@dimen/text_14" />
-
-            <LinearLayout
-                android:id="@+id/btn_select_ward"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/tv_ward"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Chọn Xã/Phường"
-                    android:singleLine="true"
-                    android:textColor="@color/black_3"
-                    android:textColorHint="@color/black_9"
-                    android:textSize="@dimen/text_14" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/size_15"
-                    android:layout_marginLeft="@dimen/size_5"
-                    android:adjustViewBounds="true"
-                    android:rotation="180"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_back_black3" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0_5"
-            android:background="@color/black_c" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/size_10"
-            android:layout_marginTop="@dimen/size_10"
-            android:text="Địa chỉ cụ thể (số nhà, tên tòa nhà, tên đường...)"
-            android:textColor="@color/black_3" />
-
-        <EditText
-            android:id="@+id/edt_addressDetail"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_40"
-            android:layout_marginLeft="@dimen/size_10"
-            android:layout_marginRight="@dimen/size_10"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:hint="Nhập địa chỉ cụ thể"
-            android:singleLine="true"
-            android:textColor="@color/black_3"
-            android:textColorHint="@color/black_9"
-            android:textSize="@dimen/text_14" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_0_5"
-            android:background="@color/black_c" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/black_f1" />
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_45"
-            android:background="@color/colorAccent"
-            android:elevation="@dimen/size_3"
-            android:text="@string/save"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_btn_green_corner_4_bottom"
+            android:elevation="@dimen/size_2"
+            android:text="@string/confirm"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/text_16"
+            android:textStyle="bold"
             android:visibility="visible" />
-    </LinearLayout>
+    </RelativeLayout>
+
+    <com.enjoywater.view.ProgressWheel
+        android:id="@+id/progress_loading"
+        android:layout_width="@dimen/size_45"
+        android:layout_height="@dimen/size_45"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:matProg_barColor="@color/colorAccent"
+        app:matProg_barWidth="@dimen/size_2_5" />
 </RelativeLayout>

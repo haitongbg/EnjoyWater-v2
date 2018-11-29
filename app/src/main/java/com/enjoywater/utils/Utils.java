@@ -12,15 +12,24 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.enjoywater.model.Location.City;
 import com.enjoywater.model.User;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -29,6 +38,8 @@ import java.util.regex.Pattern;
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Utils {
+    private static Gson gson = new Gson();
+
     public static String convertDateTimeToDateTime(String date, int old_format, int new_format) {
         String dateTimeReturn = "";
         DateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -350,5 +361,34 @@ public class Utils {
             share.putExtra(Intent.EXTRA_TEXT, url);
             context.startActivity(Intent.createChooser(share, "Chia sẻ"));
         }
+    }
+
+    public static ArrayList<City> getCities(Context context) {
+        try {
+            InputStream is = context.getAssets().open("cities.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String data = new String(buffer, "UTF-8");
+            if (!data.isEmpty()) {
+                JSONArray arrayCity = new JSONArray(data);
+                if (arrayCity.length() > 0) {
+                    ArrayList<City> cities = new ArrayList<>();
+                    for (int i = 0, z = arrayCity.length(); i < z; i++) {
+                        if (arrayCity.get(i) instanceof JSONObject) {
+                            JSONObject objectCity = arrayCity.getJSONObject(i);
+                            City city = gson.fromJson(objectCity.toString(), City.class);
+                            if (city != null && city.getName() != null && !city.getName().isEmpty()) cities.add(city);
+                        }
+                    }
+                    return cities;
+                }
+            }
+        } catch (IOException | JSONException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return null;
     }
 }

@@ -347,7 +347,7 @@
                 android:layout_marginLeft="@dimen/size_40"
                 android:layout_marginRight="@dimen/size_40"
                 android:layout_marginBottom="@dimen/size_10"
-                android:background="@drawable/bg_btn_order"
+                android:background="@drawable/bg_btn_green_corner_4"
                 android:clickable="true"
                 android:text="@string/order"
                 android:textAlignment="center"
