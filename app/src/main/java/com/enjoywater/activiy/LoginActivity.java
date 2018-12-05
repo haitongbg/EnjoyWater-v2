@@ -27,6 +27,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
+    public static final int RESULT_CODE_LOGIN_SUCCESS = 200;
+    public static final int RESULT_CODE_LOGIN_CANCEL = 201;
     @BindView(R.id.iv_logo)
     ImageView ivLogo;
     @BindView(R.id.edt_email)
@@ -103,7 +105,9 @@ public class LoginActivity extends AppCompatActivity {
                             if (token != null && !token.isEmpty() && mUser != null && mUser.getId() != null && !mUser.getId().isEmpty()) {
                                 Utils.saveString(LoginActivity.this, Constants.Key.TOKEN, token);
                                 Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                                onBackPressed();
+                                setResult(RESULT_CODE_LOGIN_SUCCESS);
+                                finish();
+                                overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
                             } else
                                 Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
                         } else
@@ -137,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        setResult(RESULT_CODE_LOGIN_CANCEL);
         overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
     }
 }

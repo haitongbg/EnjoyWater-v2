@@ -31,15 +31,21 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_subtract_active" />
 
-        <com.enjoywater.view.TvSegoeuiSemiBold
-            android:id="@+id/tv_count"
-            android:layout_width="30dp"
+        <EditText
+            android:id="@+id/edt_count"
+            android:layout_width="@dimen/size_25"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:includeFontPadding="false"
             android:singleLine="true"
-            android:text="444"
+            android:text="99"
+            android:inputType="numberSigned"
+            android:background="@null"
+            android:maxLength="2"
+            android:imeOptions="actionDone"
             android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorPrimaryLight"
+            android:textCursorDrawable="@drawable/cursor_blue_1dp"
             android:textSize="@dimen/text_13" />
 
         <ImageView

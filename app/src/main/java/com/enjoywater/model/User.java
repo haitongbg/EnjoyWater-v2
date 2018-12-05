@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class User implements Parcelable {
     @SerializedName("updatedAt")
     private String updatedAt;
@@ -36,6 +38,8 @@ public class User implements Parcelable {
     private String birthday;
     @SerializedName("address")
     private String address;
+    @SerializedName("otherAddress")
+    private ArrayList<Address> otherAddress;
     @SerializedName("avatar")
     private String avatar;
     @SerializedName("passport")
@@ -48,7 +52,6 @@ public class User implements Parcelable {
     private String username;
     @SerializedName("name")
     private String name;
-    private Address objectAddress;
 
     public User() {
     }
@@ -69,13 +72,13 @@ public class User implements Parcelable {
         myCode = in.readString();
         birthday = in.readString();
         address = in.readString();
+        otherAddress = in.createTypedArrayList(Address.CREATOR);
         avatar = in.readString();
         passport = in.readString();
         levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
         email = in.readString();
         username = in.readString();
         name = in.readString();
-        objectAddress = in.readParcelable(Address.class.getClassLoader());
     }
 
     @Override
@@ -95,13 +98,13 @@ public class User implements Parcelable {
         dest.writeString(myCode);
         dest.writeString(birthday);
         dest.writeString(address);
+        dest.writeTypedList(otherAddress);
         dest.writeString(avatar);
         dest.writeString(passport);
         dest.writeParcelable(levelInfo, flags);
         dest.writeString(email);
         dest.writeString(username);
         dest.writeString(name);
-        dest.writeParcelable(objectAddress, flags);
     }
 
     @Override
@@ -241,6 +244,14 @@ public class User implements Parcelable {
         this.address = address;
     }
 
+    public ArrayList<Address> getOtherAddress() {
+        return otherAddress;
+    }
+
+    public void setOtherAddress(ArrayList<Address> otherAddress) {
+        this.otherAddress = otherAddress;
+    }
+
     public String getAvatar() {
         return avatar;
     }
@@ -287,13 +298,5 @@ public class User implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Address getObjectAddress() {
-        return objectAddress;
-    }
-
-    public void setObjectAddress(Address objectAddress) {
-        this.objectAddress = objectAddress;
     }
 }

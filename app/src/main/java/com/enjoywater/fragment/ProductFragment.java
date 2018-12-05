@@ -30,6 +30,9 @@ import com.enjoywater.adapter.product.ProductAdapter;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
 import com.enjoywater.listener.ProductListener;
 import com.enjoywater.model.Address;
+import com.enjoywater.model.Location.City;
+import com.enjoywater.model.Location.District;
+import com.enjoywater.model.Location.Ward;
 import com.enjoywater.model.Product;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
@@ -53,7 +56,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductFragment extends Fragment {
-    public static final int REQUEST_CODE_LOGIN = 111;
+    public static final int REQUEST_CODE_LOGIN_FROM_PRODUCT = 111;
     public static final int REQUEST_CODE_ADDRESS = 112;
     @BindView(R.id.rv_products)
     RecyclerView rvProducts;
@@ -121,7 +124,8 @@ public class ProductFragment extends Fragment {
     private SelectedProductAdapter mSelectedProductAdapter;
     private Address mAddress;
     private boolean isValidAddress = false;
-    long mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee;
+    private long mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee;
+    private ArrayList<City> mCities;
 
     public static ProductFragment newInstance() {
         ProductFragment productFragment = new ProductFragment();
@@ -135,6 +139,7 @@ public class ProductFragment extends Fragment {
         mainService = MyApplication.getInstance().getMainService();
         mUser = Utils.getUser(mContext);
         mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+        mCities = MyApplication.getInstance().getCities();
     }
 
     @Override
@@ -217,44 +222,6 @@ public class ProductFragment extends Fragment {
             checkboxPayByBill.setChecked(true);
         });
         checkboxPayByBill.setVisibility(View.GONE);
-        if (mUser != null && mToken != null && !mToken.isEmpty()) {
-            String name = mUser.getName();
-            tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
-            tvName.setVisibility(View.VISIBLE);
-            String phone = mUser.getPhone();
-            tvPhone.setText(((phone != null && !phone.isEmpty()) ? name : "Unknown phone") + ",");
-            tvPhone.setVisibility(View.VISIBLE);
-            mAddress = mUser.getObjectAddress();
-            if (mAddress != null) {
-                int count = 0;
-                String fullAddress = mAddress.getAddressDetail();
-                if (mAddress.getWard() != null && mAddress.getWard().getId() != -1 && mAddress.getWard().getName() != null && !mAddress.getWard().getName().isEmpty()) {
-                    if (mAddress.getWard().getType() != null && !mAddress.getWard().getType().isEmpty())
-                        fullAddress += (", " + mAddress.getWard().getType() + " " + mAddress.getWard().getName());
-                    else fullAddress += (", " + mAddress.getWard().getName());
-                    count++;
-                }
-                if (mAddress.getDistrict() != null && mAddress.getDistrict().getId() != -1 && mAddress.getDistrict().getName() != null && !mAddress.getDistrict().getName().isEmpty()) {
-                    if (mAddress.getDistrict().getType() != null && !mAddress.getDistrict().getType().isEmpty())
-                        fullAddress += (", " + mAddress.getDistrict().getType() + " " + mAddress.getDistrict().getName());
-                    else fullAddress += (", " + mAddress.getDistrict().getName());
-                    count++;
-                }
-                if (mAddress.getCity() != null && mAddress.getCity().getId() != -1 && mAddress.getCity().getName() != null && !mAddress.getCity().getName().isEmpty()) {
-                    if (mAddress.getCity().getType() != null && !mAddress.getCity().getType().isEmpty())
-                        fullAddress += (", " + mAddress.getCity().getType() + " " + mAddress.getCity().getName());
-                    else fullAddress += (", " + mAddress.getCity().getName());
-                    count++;
-                }
-                isValidAddress = count >= 2;
-                tvAdress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
-            } else {
-                tvName.setVisibility(View.GONE);
-                tvPhone.setVisibility(View.GONE);
-                tvAdress.setText("Chưa có địa chỉ.");
-                isValidAddress = false;
-            }
-        }
         btnOrder.setOnClickListener(v -> {
             validateOrder();
         });
@@ -317,7 +284,71 @@ public class ProductFragment extends Fragment {
             } else {
                 mProductAdapter.notifyItemRangeInserted(insertPosition, products.size());
             }
+            setDataAddress();
         } else if (mProducts.isEmpty()) showError("Lỗi dữ liệu sản phẩm, xin thử lại");
+    }
+
+    private void setDataAddress() {
+        if (mUser != null && mToken != null && !mToken.isEmpty()) {
+            String name = mUser.getName();
+            tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
+            tvName.setVisibility(View.VISIBLE);
+            String phone = mUser.getPhone();
+            tvPhone.setText(((phone != null && !phone.isEmpty()) ? phone : "Unknown phone") + ",");
+            tvPhone.setVisibility(View.VISIBLE);
+            mAddress = mUser.getOtherAddress().get(0);
+            if (mAddress != null) {
+                int count = 0;
+                String fullAddress = mAddress.getAddress();
+                if (mAddress.getCityId() != null && !mAddress.getCityId().isEmpty()) {
+                    for (City city : mCities) {
+                        if (city.getId() != null && city.getId().equals(mAddress.getCityId()) && city.getName() != null && !city.getName().isEmpty()) {
+                            ArrayList<District> districts = city.getDistricts();
+                            if (districts != null && !districts.isEmpty() && mAddress.getDistrictId() != null && !mAddress.getDistrictId().isEmpty()) {
+                                for (District district : districts) {
+                                    if (district.getId() != null && district.getId().equals(mAddress.getDistrictId()) && district.getName() != null && !district.getName().isEmpty()) {
+                                        ArrayList<Ward> wards = district.getWards();
+                                        if (wards != null && !wards.isEmpty() && mAddress.getWardId() != null && !mAddress.getWardId().isEmpty()) {
+                                            for (Ward ward : wards) {
+                                                if (ward.getId() != null && !ward.getId().equals(mAddress.getWardId()) && ward.getName() != null && !ward.getName().isEmpty()) {
+                                                    if (ward.getType() != null && !ward.getType().isEmpty())
+                                                        fullAddress += (", " + ward.getType() + " " + ward.getName());
+                                                    else fullAddress += (", " + ward.getName());
+                                                    count++;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (district.getType() != null && !district.getType().isEmpty())
+                                            fullAddress += (", " + district.getType() + " " + district.getName());
+                                        else fullAddress += (", " + district.getName());
+                                        count++;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (city.getType() != null && !city.getType().isEmpty())
+                                fullAddress += (", " + city.getType() + " " + city.getName());
+                            else fullAddress += (", " + city.getName());
+                            count++;
+                        }
+                    }
+
+                }
+                isValidAddress = count >= 2;
+                tvAdress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
+            } else {
+                tvName.setVisibility(View.GONE);
+                tvPhone.setVisibility(View.GONE);
+                tvAdress.setText("Chưa có địa chỉ.");
+                isValidAddress = false;
+            }
+        } else {
+            tvName.setVisibility(View.GONE);
+            tvPhone.setVisibility(View.GONE);
+            tvAdress.setText("Chưa có địa chỉ.");
+            isValidAddress = false;
+        }
     }
 
     private ProductListener mProductListener = new ProductListener() {
@@ -385,7 +416,7 @@ public class ProductFragment extends Fragment {
             tvTotalProductPrice.setText(formatVND.format(mTotalProductsPrice) + " đ");
             tvTotalDeliveryFee.setText(formatVND.format(mTotalDeliveryFee) + " đ");
             tvShipIn24HoursDiscount.setText("-" + formatVND.format(mTotalProductDiscount) + " đ");
-            if (mTotalProductDiscount > 0) {
+            if (mTotalProductDiscount > 0 && mTotalProductsPrice > 0) {
                 float discountPercent = (float) (mTotalProductDiscount * 100) / mTotalProductsPrice;
                 if (discountPercent >= 1.0f)
                     checkboxShipIn24Hours.setText("Giao hàng trong 24 giờ (giảm " + formatPercent.format(discountPercent) + "%)");
@@ -401,19 +432,21 @@ public class ProductFragment extends Fragment {
         mTotalPrice = mTotalProductsPrice;
         if (checkboxDelivery.isChecked()) mTotalPrice += mTotalDeliveryFee;
         if (checkboxShipIn24Hours.isChecked()) mTotalPrice -= mTotalProductDiscount;
-        tvTotalPrice.setText(formatVND.format(mTotalPrice) + " đ");
+        tvTotalPrice.setText((mTotalPrice > 0 ? formatVND.format(mTotalPrice) : 0) + " đ");
     }
 
     private void validateOrder() {
         if (mSelectedProducts == null || mSelectedProducts.isEmpty()) {
             Toast.makeText(mContext, "Vui lòng chọn sản phẩm", Toast.LENGTH_SHORT).show();
+        } else if (mTotalProductsPrice <= 0) {
+            Toast.makeText(mContext, "Vui lòng đặt số lượng sản phẩm", Toast.LENGTH_SHORT).show();
         } else if (mUser == null || mToken == null || mToken.isEmpty()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage("Vui lòng đăng nhập để tiến hành đặt hàng.")
                     .setCancelable(false)
                     .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            startActivityForResult(new Intent(mContext, LoginActivity.class), REQUEST_CODE_LOGIN);
+                            startActivityForResult(new Intent(mContext, LoginActivity.class), REQUEST_CODE_LOGIN_FROM_PRODUCT);
                             (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
                         }
                     })
@@ -469,5 +502,16 @@ public class ProductFragment extends Fragment {
         layoutError.setVisibility(View.VISIBLE);
         tvError.setText(error);
         swipeRefresh.setEnabled(true);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_LOGIN_FROM_PRODUCT && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
+            mUser = Utils.getUser(mContext);
+            mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+            setDataAddress();
+            validateOrder();
+        } else Toast.makeText(mContext, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
     }
 }

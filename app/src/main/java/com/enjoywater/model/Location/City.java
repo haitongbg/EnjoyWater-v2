@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class City implements Parcelable {
     @SerializedName("i")
-    private int id;
+    private String id;
     @SerializedName("n")
     private String name;
     @SerializedName("t")
@@ -22,7 +22,7 @@ public class City implements Parcelable {
     }
 
     protected City(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         name = in.readString();
         type = in.readString();
         districts = in.createTypedArrayList(District.CREATOR);
@@ -30,7 +30,7 @@ public class City implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(type);
         dest.writeTypedList(districts);
@@ -53,11 +53,11 @@ public class City implements Parcelable {
         }
     };
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

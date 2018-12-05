@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class District implements Parcelable {
     @SerializedName("i")
-    private int id;
+    private String id;
     @SerializedName("n")
     private String name;
     @SerializedName("t")
@@ -22,14 +22,14 @@ public class District implements Parcelable {
     }
 
     protected District(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         name = in.readString();
         type = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(type);
     }
@@ -51,11 +51,11 @@ public class District implements Parcelable {
         }
     };
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

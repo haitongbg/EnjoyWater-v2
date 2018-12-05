@@ -3,32 +3,46 @@ package com.enjoywater.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.enjoywater.model.Location.City;
-import com.enjoywater.model.Location.District;
-import com.enjoywater.model.Location.Ward;
+import com.google.gson.annotations.SerializedName;
 
-public class Address implements Parcelable{
-    private City city;
-    private District district;
-    private Ward ward;
-    private String addressDetail;
+public class Address implements Parcelable {
+    @SerializedName("key")
+    private int key;
+    @SerializedName("districtId")
+    private String districtId;
+    @SerializedName("provinceId")
+    private String cityId;
+    @SerializedName("wardId")
+    private String wardId;
+    @SerializedName("phone")
+    private String phone;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("address")
+    private String address;
 
     public Address() {
     }
 
     protected Address(Parcel in) {
-        city = in.readParcelable(City.class.getClassLoader());
-        district = in.readParcelable(District.class.getClassLoader());
-        ward = in.readParcelable(Ward.class.getClassLoader());
-        addressDetail = in.readString();
+        key = in.readInt();
+        districtId = in.readString();
+        cityId = in.readString();
+        wardId = in.readString();
+        phone = in.readString();
+        name = in.readString();
+        address = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(city, flags);
-        dest.writeParcelable(district, flags);
-        dest.writeParcelable(ward, flags);
-        dest.writeString(addressDetail);
+        dest.writeInt(key);
+        dest.writeString(districtId);
+        dest.writeString(cityId);
+        dest.writeString(wardId);
+        dest.writeString(phone);
+        dest.writeString(name);
+        dest.writeString(address);
     }
 
     @Override
@@ -48,35 +62,59 @@ public class Address implements Parcelable{
         }
     };
 
-    public City getCity() {
-        return city;
+    public int getKey() {
+        return key;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setKey(int key) {
+        this.key = key;
     }
 
-    public District getDistrict() {
-        return district;
+    public String getDistrictId() {
+        return districtId;
     }
 
-    public void setDistrict(District district) {
-        this.district = district;
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
     }
 
-    public Ward getWard() {
-        return ward;
+    public String getCityId() {
+        return cityId;
     }
 
-    public void setWard(Ward ward) {
-        this.ward = ward;
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 
-    public String getAddressDetail() {
-        return addressDetail;
+    public String getWardId() {
+        return wardId;
     }
 
-    public void setAddressDetail(String addressDetail) {
-        this.addressDetail = addressDetail;
+    public void setWardId(String wardId) {
+        this.wardId = wardId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

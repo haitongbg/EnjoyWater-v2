@@ -17,6 +17,7 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        mCities = Utils.getCities(this);
     }
 
     public static synchronized MyApplication getInstance() {
