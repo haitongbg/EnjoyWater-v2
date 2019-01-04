@@ -660,6 +660,8 @@ public class ProductFragment extends Fragment {
                     .setNegativeButton("Hủy", (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
+        } else {
+            confirmOrder();
         }
     }
 
