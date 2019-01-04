@@ -54,4 +54,5 @@
     <dimen name="size_30_reverse">-30dp</dimen>
     <dimen name="size_120">120dp</dimen>
     <dimen name="size_12">12dp</dimen>
+    <dimen name="size_22">22dp</dimen>
 </resources>

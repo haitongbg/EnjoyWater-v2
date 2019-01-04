@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activiy.MainActivity" />
+        <activity android:name=".activiy.MainActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activiy.LoginActivity" />
         <activity android:name=".activiy.RegisterActivity" />
         <activity

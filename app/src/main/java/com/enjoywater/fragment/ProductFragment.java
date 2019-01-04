@@ -1,5 +1,6 @@
 package com.enjoywater.fragment;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +34,7 @@ import com.enjoywater.adapter.product.ProductAdapter;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
 import com.enjoywater.listener.ProductListener;
 import com.enjoywater.model.Address;
+import com.enjoywater.model.Coupon;
 import com.enjoywater.model.Location.City;
 import com.enjoywater.model.Location.District;
 import com.enjoywater.model.Location.Ward;
@@ -48,6 +53,7 @@ import com.google.gson.JsonArray;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +64,9 @@ import retrofit2.Response;
 public class ProductFragment extends Fragment {
     public static final int REQUEST_CODE_LOGIN_FROM_PRODUCT = 111;
     public static final int REQUEST_CODE_ADDRESS = 112;
+    public static final int TYPE_2H = 1;
+    public static final int TYPE_24H = 2;
+    public static final int TYPE_DATE = 3;
     @BindView(R.id.rv_products)
     RecyclerView rvProducts;
     @BindView(R.id.rv_selected_products)
@@ -74,6 +83,28 @@ public class ProductFragment extends Fragment {
     CheckBox checkboxShipIn24Hours;
     @BindView(R.id.tv_ship_in_24_hours_discount)
     TvSegoeuiSemiBold tvShipIn24HoursDiscount;
+    @BindView(R.id.checkbox_choose_ship_date)
+    CheckBox checkboxChooseShipDate;
+    @BindView(R.id.tv_choose_ship_date_discount)
+    TvSegoeuiSemiBold tvChooseShipDateDiscount;
+    @BindView(R.id.layout_choose_ship_date)
+    LinearLayout layoutChooseShipDate;
+    @BindView(R.id.tv_coupon)
+    TvSegoeuiSemiBold tvCoupon;
+    @BindView(R.id.edt_coupon)
+    EditText edtCoupon;
+    @BindView(R.id.btn_apply_coupon)
+    Button btnApplyCoupon;
+    @BindView(R.id.tv_coupon_code)
+    TvSegoeuiSemiBold tvCouponCode;
+    @BindView(R.id.btn_cancel_coupon)
+    ImageView btnCancelCoupon;
+    @BindView(R.id.tv_counpon_discount)
+    TvSegoeuiSemiBold tvCounponDiscount;
+    @BindView(R.id.layout_coupon_discount)
+    LinearLayout layoutCouponDiscount;
+    @BindView(R.id.layout_coupon)
+    LinearLayout layoutCoupon;
     @BindView(R.id.tv_total_price)
     TvSegoeuiSemiBold tvTotalPrice;
     @BindView(R.id.checkbox_pay_by_cash)
@@ -106,12 +137,12 @@ public class ProductFragment extends Fragment {
     ProgressWheel progressLoading;
     @BindView(R.id.layout_loading)
     RelativeLayout layoutLoading;
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.tv_error)
     TextView tvError;
     @BindView(R.id.layout_error)
     RelativeLayout layoutError;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
     private Context mContext;
     private MainService mainService;
     private boolean isLoading = false;
@@ -124,8 +155,14 @@ public class ProductFragment extends Fragment {
     private SelectedProductAdapter mSelectedProductAdapter;
     private Address mAddress;
     private boolean isValidAddress = false;
-    private long mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee;
+    private int mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee, mCouponDiscount;
     private ArrayList<City> mCities;
+    private int currentShipType;
+    private DatePickerDialog datePickerDialog;
+    private Calendar calendar = Calendar.getInstance();
+    private String mCouponCode;
+    private DecimalFormat formatVND = new DecimalFormat("###,###,###");
+    private DecimalFormat formatPercent = new DecimalFormat("#.0");
 
     public static ProductFragment newInstance() {
         ProductFragment productFragment = new ProductFragment();
@@ -193,18 +230,52 @@ public class ProductFragment extends Fragment {
         /*SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(rvProducts);*/
         //
-        checkboxDelivery.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            updatePrice();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        datePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                currentShipType = TYPE_DATE;
+                checkboxChooseShipDate.setText("Giao ngày " + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                updatePrice();
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        calendar.add(Calendar.DAY_OF_MONTH, 30);
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        datePickerDialog.setOnCancelListener(dialog -> {
+            if (currentShipType == TYPE_2H) {
+                checkboxChooseShipDate.setChecked(false);
+                checkboxShipIn2Hours.setChecked(true);
+            } else if (currentShipType == TYPE_24H) {
+                checkboxChooseShipDate.setChecked(false);
+                checkboxShipIn24Hours.setChecked(true);
+            }
         });
-        checkboxShipIn24Hours.setOnClickListener(v -> {
-            checkboxShipIn2Hours.setChecked(false);
-            checkboxShipIn24Hours.setChecked(true);
+        checkboxDelivery.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updatePrice();
         });
         checkboxShipIn2Hours.setOnClickListener(v -> {
             checkboxShipIn24Hours.setChecked(false);
+            checkboxChooseShipDate.setChecked(false);
             checkboxShipIn2Hours.setChecked(true);
+            currentShipType = TYPE_2H;
             updatePrice();
+        });
+        checkboxShipIn24Hours.setOnClickListener(v -> {
+            checkboxShipIn2Hours.setChecked(false);
+            checkboxChooseShipDate.setChecked(false);
+            checkboxShipIn24Hours.setChecked(true);
+            currentShipType = TYPE_24H;
+            updatePrice();
+        });
+        checkboxChooseShipDate.setOnClickListener(v -> {
+            checkboxShipIn2Hours.setChecked(false);
+            checkboxShipIn24Hours.setChecked(false);
+            checkboxChooseShipDate.setChecked(true);
+            datePickerDialog.show();
         });
         checkboxPayByCash.setOnClickListener(v -> {
             checkboxPayByCash.setChecked(true);
@@ -221,7 +292,22 @@ public class ProductFragment extends Fragment {
             checkboxPayByPoint.setChecked(false);
             checkboxPayByBill.setChecked(true);
         });
+        checkboxDelivery.setChecked(false);
+        checkboxShipIn2Hours.setChecked(false);
+        checkboxShipIn24Hours.setChecked(true);
+        checkboxChooseShipDate.setChecked(false);
+        currentShipType = TYPE_24H;
+        checkboxPayByCash.setChecked(true);
+        checkboxPayByPoint.setChecked(false);
         checkboxPayByBill.setVisibility(View.GONE);
+        tvChooseShipDateDiscount.setVisibility(View.GONE);
+        layoutCouponDiscount.setVisibility(View.GONE);
+        btnApplyCoupon.setOnClickListener(v -> {
+            applyCoupon();
+        });
+        btnCancelCoupon.setOnClickListener(v -> {
+            cancelCoupon();
+        });
         btnOrder.setOnClickListener(v -> {
             validateOrder();
         });
@@ -333,7 +419,6 @@ public class ProductFragment extends Fragment {
                             count++;
                         }
                     }
-
                 }
                 isValidAddress = count >= 2;
                 tvAdress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
@@ -401,9 +486,87 @@ public class ProductFragment extends Fragment {
         }
     };
 
+    private void applyCoupon() {
+        String code = edtCoupon.getText().toString();
+        if (code.isEmpty()) {
+            Toast.makeText(mContext, "Bạn chưa nhập mã giảm giá", Toast.LENGTH_SHORT).show();
+        } else {
+            isLoading = true;
+            layoutLoading.setVisibility(View.VISIBLE);
+            Call<BaseResponse> getCouponDetails = mainService.getCouponDetails(code);
+            getCouponDetails.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    isLoading = false;
+                    layoutLoading.setVisibility(View.GONE);
+                    BaseResponse getCounponDetailsResponse = response.body();
+                    if (getCounponDetailsResponse != null) {
+                        if (getCounponDetailsResponse.isSuccess() && getCounponDetailsResponse.getData() != null) {
+                            if (getCounponDetailsResponse.getData().isJsonObject()) {
+                                Coupon coupon = gson.fromJson(getCounponDetailsResponse.getData().getAsJsonObject(), Coupon.class);
+                                if (coupon != null && coupon.isEnabled() && (coupon.getEnded() * 1000 + 300000) > System.currentTimeMillis()) {
+                                    mCouponCode = code;
+                                    layoutCouponDiscount.setVisibility(View.VISIBLE);
+                                    edtCoupon.setText("");
+                                    tvCouponCode.setText(code);
+                                    mCouponDiscount = 0;
+                                    if (coupon.getType() != null) {
+                                        if (coupon.getType().equals("unit")) {
+                                            mCouponDiscount = coupon.getValue();
+                                        } else if (coupon.getType().equals("percent")) {
+
+                                        }
+                                    }
+                                    tvCounponDiscount.setText("-" + formatVND.format(mCouponDiscount) + " đ");
+                                    updatePrice();
+                                } else {
+                                    layoutCouponDiscount.setVisibility(View.GONE);
+                                    Toast.makeText(mContext, "Mã đã hết hạn", Toast.LENGTH_SHORT).show();
+                                }
+                            } else
+                                Toast.makeText(mContext, "Mã không đúng", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String message = "Mã không đúng";
+                            if (getCounponDetailsResponse.getError() != null && getCounponDetailsResponse.getError().getMessage() != null && !getCounponDetailsResponse.getError().getMessage().isEmpty())
+                                message = getCounponDetailsResponse.getError().getMessage();
+                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                        }
+                    } else Toast.makeText(mContext, "Mã không đúng", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    isLoading = false;
+                    layoutLoading.setVisibility(View.GONE);
+                    t.printStackTrace();
+                    Toast.makeText(mContext, Constants.DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void cancelCoupon() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Bạn muốn gỡ bỏ mã giảm giá này?")
+                .setCancelable(false)
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mCouponCode = "";
+                        mCouponDiscount = 0;
+                        layoutCouponDiscount.setVisibility(View.GONE);
+                        updatePrice();
+                    }
+                })
+                .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     private void updatePrice() {
-        DecimalFormat formatVND = new DecimalFormat("###,###,###");
-        DecimalFormat formatPercent = new DecimalFormat("#.0");
         mTotalProductsPrice = 0;
         mTotalProductDiscount = 0;
         mTotalDeliveryFee = 0;
@@ -430,8 +593,34 @@ public class ProductFragment extends Fragment {
             checkboxShipIn24Hours.setText("Giao hàng trong 24 giờ (giảm 0%)");
         }
         mTotalPrice = mTotalProductsPrice;
-        if (checkboxDelivery.isChecked()) mTotalPrice += mTotalDeliveryFee;
-        if (checkboxShipIn24Hours.isChecked()) mTotalPrice -= mTotalProductDiscount;
+        if (checkboxDelivery.isChecked()) {
+            mTotalPrice += mTotalDeliveryFee;
+            tvTotalDeliveryFee.setTextColor(mContext.getResources().getColor(R.color.indigo_blue));
+        } else tvTotalDeliveryFee.setTextColor(mContext.getResources().getColor(R.color.black_c));
+        if (checkboxShipIn24Hours.isChecked()) {
+            mTotalPrice -= mTotalProductDiscount;
+            tvShipIn24HoursDiscount.setTextColor(mContext.getResources().getColor(R.color.indigo_blue));
+        } else
+            tvShipIn24HoursDiscount.setTextColor(mContext.getResources().getColor(R.color.black_c));
+        if (checkboxChooseShipDate.isChecked()) {
+            mTotalPrice -= mTotalProductDiscount;
+            tvChooseShipDateDiscount.setVisibility(View.VISIBLE);
+            tvChooseShipDateDiscount.setTextColor(mContext.getResources().getColor(R.color.indigo_blue));
+            String text = checkboxChooseShipDate.getText().toString();
+            if (mTotalProductDiscount > 0 && mTotalProductsPrice > 0) {
+                tvChooseShipDateDiscount.setText("-" + formatVND.format(mTotalProductDiscount) + " đ");
+                float discountPercent = (float) (mTotalProductDiscount * 100) / mTotalProductsPrice;
+                if (discountPercent >= 1.0f)
+                    checkboxChooseShipDate.setText(text + " (giảm " + formatPercent.format(discountPercent) + "%)");
+                else
+                    checkboxChooseShipDate.setText(text + " (giảm 0" + formatPercent.format(discountPercent) + "%)");
+            } else {
+                checkboxChooseShipDate.setText(text + " (giảm 0%)");
+                tvChooseShipDateDiscount.setText("-0 đ");
+            }
+        } else
+            tvChooseShipDateDiscount.setTextColor(mContext.getResources().getColor(R.color.black_c));
+        if (mCouponCode != null && !mCouponCode.isEmpty()) mTotalPrice -= mCouponDiscount;
         tvTotalPrice.setText((mTotalPrice > 0 ? formatVND.format(mTotalPrice) : 0) + " đ");
     }
 

@@ -17,6 +17,8 @@ public class Constants {
         //Product
         public static final String GET_LIST_PRODUCTS = "product/list";
         public static final String GET_PRODUCT_DETAILS = "product/info";
+        //Promotion
+        public static final String GET_COUPON_DETAILS = "promotion/coupon-info/{code}";
     }
 
     public static class Key {

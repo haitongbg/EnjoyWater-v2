@@ -18,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -96,9 +97,8 @@ public interface MainService {
                                        @Query(Constants.Key.PAGE) int page);
 
     @Headers(Constants.Value.SECRET_HEADER)
-    @GET(Constants.Url.GET_PRODUCT_DETAILS)
-    Call<BaseResponse> getProductDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                         @Query(Constants.Key.PRODUCT_ID) String productId);
+    @GET(Constants.Url.GET_COUPON_DETAILS)
+    Call<BaseResponse> getCouponDetails(@Path("code") String code);
 
     //Factory
     class Factory {
