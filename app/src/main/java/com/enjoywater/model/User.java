@@ -39,7 +39,7 @@ public class User implements Parcelable {
     @SerializedName("address")
     private String address;
     @SerializedName("otherAddress")
-    private ArrayList<Address> otherAddress;
+    private ArrayList<Address> otherAddress = new ArrayList<>();
     @SerializedName("avatar")
     private String avatar;
     @SerializedName("passport")

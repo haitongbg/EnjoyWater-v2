@@ -8,9 +8,10 @@ public class Constants {
         public static final String REGISTER = "user/register";
         public static final String GET_USER_INFO = "user/profile";
         public static final String UPDATE_USER_INFO = "user/update-info";
-        public static final String ACTIVE_MAIL = "user/mail-activate";
+        public static final String GET_ACTIVE_CODE = "user/resend-mail-activate";
         public static final String ACTIVE_BY_CODE = "user/active-by-code";
         public static final String FORGET_PASSWORD = "user/forget-password";
+        public static final String ADD_NEW_ADDRESS = "user/add-address";
         //Home
         public static final String GET_LIST_NEWS = "news/list";
         public static final String GET_NEWS_DETAILS = "news/info";
@@ -42,25 +43,21 @@ public class Constants {
         public static final String SEARCH_KEY = "q";
         public static final String NEWS_ID = "newsId";
         public static final String PRODUCT_ID = "productId";
+        public static final String CITY_ID = "provinceId";
+        public static final String DISTRICT_ID = "districtId";
+        public static final String WARD_ID = "wardId";
+        public static final String IS_DEFAULT = "isDefault";
     }
 
     public static class Value {
         public static final String SECRET_HEADER = "X-API-TOKEN: abcxyz";
         public static final int ACTION_CLOSE = 0;
+        public static final int ACTION_SUCCESS = 1;
     }
 
     public static class DataNotify {
-        public static final String ERROR_MORE= "Lỗi không xác định.";
         public static final String DATA_ERROR = "Không tìm thấy dữ liệu.";
-        public static final String DATA_HASH_ERROR = "Mã hash không trùng khớp.";
-        public static final String DATA_EMPTY = "Không tìm thấy dữ liệu.";
-        public static final String DATA_SERVER_EROR = "Dữ liệu server lỗi.";
-        public static final String DATA_ERROR_SERVER = "Dữ liệu bị lỗi";
-        public static final String DATA_MISSING = "Dữ liệu thiếu.";
-        public static final String SUCCECC = "Thành công";
-        public static final String ERROR = "Không thành công";
-        public static final String SEARCH_ERROR = "Không tìm thấy kết quả.";
         public static final String NO_CONNECTION = "Không có kết nối mạng.";
-        public static final String SEARCH_EMPTY = "Nội dung tìm kiếm rỗng.";
+        public static final String DATA_ERROR_TRY_AGAIN = "Lỗi dữ liệu, xin thử lại.";
     }
 }

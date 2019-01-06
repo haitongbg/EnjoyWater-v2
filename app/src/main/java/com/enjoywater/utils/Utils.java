@@ -231,13 +231,15 @@ public class Utils {
 
     public static boolean isInternetOn(Context context) {
         ConnectivityManager connec = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
-        if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
-                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
-            return true;
-        } else if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED || connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
-            return false;
+        if (connec != null) {
+            if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
+                    connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                    connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                    connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
+                return true;
+            } else if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED || connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
+                return false;
+            }
         }
         return false;
     }
@@ -379,7 +381,8 @@ public class Utils {
                         if (arrayCity.get(i) instanceof JSONObject) {
                             JSONObject objectCity = arrayCity.getJSONObject(i);
                             City city = gson.fromJson(objectCity.toString(), City.class);
-                            if (city != null && city.getName() != null && !city.getName().isEmpty()) cities.add(city);
+                            if (city != null && city.getName() != null && !city.getName().isEmpty())
+                                cities.add(city);
                         }
                     }
                     return cities;

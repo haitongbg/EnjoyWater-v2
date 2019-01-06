@@ -1,11 +1,14 @@
 package com.enjoywater.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -44,6 +47,7 @@ import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
+import com.enjoywater.view.DialogActiveAccount;
 import com.enjoywater.view.DialogOrderAddress;
 import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
@@ -163,6 +167,7 @@ public class ProductFragment extends Fragment {
     private String mCouponCode;
     private DecimalFormat formatVND = new DecimalFormat("###,###,###");
     private DecimalFormat formatPercent = new DecimalFormat("#.0");
+    private long delaySendingActiveCode = 0;
 
     public static ProductFragment newInstance() {
         ProductFragment productFragment = new ProductFragment();
@@ -308,6 +313,9 @@ public class ProductFragment extends Fragment {
         btnCancelCoupon.setOnClickListener(v -> {
             cancelCoupon();
         });
+        btnChangeAddress.setOnClickListener(v -> {
+            changeAddress();
+        });
         btnOrder.setOnClickListener(v -> {
             validateOrder();
         });
@@ -375,15 +383,15 @@ public class ProductFragment extends Fragment {
     }
 
     private void setDataAddress() {
-        if (mUser != null && mToken != null && !mToken.isEmpty()) {
-            String name = mUser.getName();
-            tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
-            tvName.setVisibility(View.VISIBLE);
-            String phone = mUser.getPhone();
-            tvPhone.setText(((phone != null && !phone.isEmpty()) ? phone : "Unknown phone") + ",");
-            tvPhone.setVisibility(View.VISIBLE);
+        if (mUser != null && mUser.getOtherAddress() != null && !mUser.getOtherAddress().isEmpty()) {
             mAddress = mUser.getOtherAddress().get(0);
             if (mAddress != null) {
+                String name = mAddress.getName();
+                tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
+                tvName.setVisibility(View.VISIBLE);
+                String phone = mAddress.getPhone();
+                tvPhone.setText(((phone != null && !phone.isEmpty()) ? phone : "Unknown phone") + ",");
+                tvPhone.setVisibility(View.VISIBLE);
                 int count = 0;
                 String fullAddress = mAddress.getAddress();
                 if (mAddress.getCityId() != null && !mAddress.getCityId().isEmpty()) {
@@ -422,18 +430,25 @@ public class ProductFragment extends Fragment {
                 }
                 isValidAddress = count >= 2;
                 tvAdress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
+                btnChangeAddress.setVisibility(View.VISIBLE);
             } else {
                 tvName.setVisibility(View.GONE);
                 tvPhone.setVisibility(View.GONE);
+                btnChangeAddress.setVisibility(View.GONE);
                 tvAdress.setText("Chưa có địa chỉ.");
                 isValidAddress = false;
             }
         } else {
             tvName.setVisibility(View.GONE);
             tvPhone.setVisibility(View.GONE);
+            btnChangeAddress.setVisibility(View.GONE);
             tvAdress.setText("Chưa có địa chỉ.");
             isValidAddress = false;
         }
+    }
+
+    private void changeAddress() {
+
     }
 
     private ProductListener mProductListener = new ProductListener() {
@@ -624,6 +639,9 @@ public class ProductFragment extends Fragment {
         tvTotalPrice.setText((mTotalPrice > 0 ? formatVND.format(mTotalPrice) : 0) + " đ");
     }
 
+    private CountDownTimer countDownDelaySending;
+
+    @SuppressLint("HandlerLeak")
     private void validateOrder() {
         if (mSelectedProducts == null || mSelectedProducts.isEmpty()) {
             Toast.makeText(mContext, "Vui lòng chọn sản phẩm", Toast.LENGTH_SHORT).show();
@@ -646,8 +664,58 @@ public class ProductFragment extends Fragment {
                     });
             AlertDialog alert = builder.create();
             alert.show();
+        } else if (!mUser.isActivated()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage("Vui lòng kích hoạt tài khoản của bạn để tiến hành đặt hàng.")
+                    .setCancelable(false)
+                    .setPositiveButton("Kích hoạt", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            new DialogActiveAccount(mContext, new Handler() {
+                                @Override
+                                public void handleMessage(Message msg) {
+                                    super.handleMessage(msg);
+                                    if (msg.what == Constants.Value.ACTION_SUCCESS) {
+                                        mUser.setActivated(true);
+                                        Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
+                                        validateOrder();
+                                    } else if (msg.what == Constants.Value.ACTION_CLOSE) {
+                                        delaySendingActiveCode  = (long) msg.obj;
+                                        countDownDelaySending = new CountDownTimer(delaySendingActiveCode, 1000) {
+                                            public void onTick(long millisUntilFinished) {
+                                                delaySendingActiveCode = millisUntilFinished;
+                                            }
+
+                                            public void onFinish() {
+                                                delaySendingActiveCode = 0;
+                                            }
+                                        };
+                                        countDownDelaySending.start();
+                                    }
+                                }
+                            }, delaySendingActiveCode);
+                        }
+                    })
+                    .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         } else if (!isValidAddress) {
-            new DialogOrderAddress(mContext, new Handler());
+            new DialogOrderAddress(mContext, new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    if (msg.what == Constants.Value.ACTION_SUCCESS) {
+                        Address address = (Address) msg.obj;
+                        mUser.getOtherAddress().add(address);
+                        Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
+                        setDataAddress();
+                        validateOrder();
+                    }
+                }
+            });
         } else if (checkboxPayByPoint.isChecked() && mUser.getCoin() < mTotalPrice) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này. \n\nThanh toán bằng tiền mặt?")
@@ -666,11 +734,25 @@ public class ProductFragment extends Fragment {
     }
 
     private void confirmOrder() {
-        makeOrder();
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Xác nhận đặt hàng")
+                .setCancelable(false)
+                .setPositiveButton("Đồng ý", (dialog, id) -> {
+                    makeOrder();
+                })
+                .setNegativeButton("Hủy", (dialog, id) -> dialog.cancel());
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void makeOrder() {
-        showLoading(false);
+        if (!Utils.isInternetOn(mContext)) {
+            Toast.makeText(mContext,Constants.DataNotify.NO_CONNECTION, Toast.LENGTH_SHORT).show();
+        } else if (!isLoading){
+            isLoading = true;
+            showLoading(false);
+
+        }
     }
 
     private void showLoading(boolean goneContent) {

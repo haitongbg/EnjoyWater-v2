@@ -15,8 +15,7 @@
         android:layout_marginTop="@dimen/size_30"
         android:layout_marginRight="@dimen/size_20"
         android:layout_marginBottom="@dimen/size_30"
-        android:background="@drawable/bg_blackf1_corner_4"
-        android:visibility="visible">
+        android:background="@drawable/bg_blackf1_corner_4">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -263,6 +262,7 @@
                 android:background="@color/black_e6" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/layout_select_ward"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_45"

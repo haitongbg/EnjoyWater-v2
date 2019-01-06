@@ -1,7 +1,5 @@
 package com.enjoywater.retrofit;
 
-import android.support.annotation.Nullable;
-
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 
@@ -33,15 +31,20 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.LOGIN)
     Call<BaseResponse> login(@Field(Constants.Key.EMAIL) String email,
-                              @Field(Constants.Key.PASSWORD) String password);
+                             @Field(Constants.Key.PASSWORD) String password);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.REGISTER)
     Call<BaseResponse> register(@Field(Constants.Key.NAME) String name,
-                                    @Field(Constants.Key.EMAIL) String email,
-                                    @Field(Constants.Key.PHONE) String phone,
-                                    @Field(Constants.Key.PASSWORD) String password);
+                                @Field(Constants.Key.EMAIL) String email,
+                                @Field(Constants.Key.PHONE) String phone,
+                                @Field(Constants.Key.PASSWORD) String password);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.GET_ACTIVE_CODE)
+    Call<BaseResponse> getActiveCode(@Field(Constants.Key.EMAIL) String email);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
@@ -60,7 +63,7 @@ public interface MainService {
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
-    @POST(Constants.Url.ACTIVE_MAIL)
+    @POST(Constants.Url.GET_ACTIVE_CODE)
     Call<BaseResponse> resendActiveMaild(@Field(Constants.Key.EMAIL) String email);
 
     @FormUrlEncoded
@@ -76,6 +79,18 @@ public interface MainService {
                                       @Field(Constants.Key.PASSPORT) String passport,
                                       @Field(Constants.Key.PHONE) String phone,
                                       @Field(Constants.Key.EMAIL) String email);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.ADD_NEW_ADDRESS)
+    Call<BaseResponse> addNewAddress(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                     @Field(Constants.Key.NAME) String name,
+                                     @Field(Constants.Key.PHONE) String phone,
+                                     @Field(Constants.Key.CITY_ID) String provinceId,
+                                     @Field(Constants.Key.DISTRICT_ID) String districtId,
+                                     //@Field(Constants.Key.WARD_ID) String wardId,
+                                     @Field(Constants.Key.ADDRESS) String address,
+                                     @Field(Constants.Key.IS_DEFAULT) int isDefault);
 
     //Home
     @Headers(Constants.Value.SECRET_HEADER)

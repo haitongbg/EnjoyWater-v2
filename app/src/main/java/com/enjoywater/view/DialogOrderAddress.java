@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enjoywater.R;
 import com.enjoywater.activiy.MyApplication;
@@ -32,6 +33,8 @@ import com.enjoywater.model.Location.City;
 import com.enjoywater.model.Location.District;
 import com.enjoywater.model.Location.Ward;
 import com.enjoywater.model.User;
+import com.enjoywater.retrofit.MainService;
+import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 
@@ -39,9 +42,13 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DialogOrderAddress {
+
     @BindView(R.id.btn_close)
     ImageView btnClose;
     @BindView(R.id.edt_name)
@@ -75,20 +82,33 @@ public class DialogOrderAddress {
     @BindView(R.id.progress_loading)
     ProgressWheel progressLoading;
     private Context mContext;
+    private MainService mainService;
     private Dialog mDialog;
     private Handler mCallBackHandler;
     private User mUser;
+    private String mToken;
     private City mCitySelected;
     private District mDistrictSelected;
     private Ward mWardSelected;
-    private String mAddressDetail;
     private Address mAddress;
     private ArrayList<City> mCities;
     private AddressListener mAddressListener;
+    private boolean isLoading;
 
     public DialogOrderAddress(Context context, Handler callbackHandler) {
         mContext = context;
+        mainService = MyApplication.getInstance().getMainService();
         mCallBackHandler = callbackHandler;
+        mUser = Utils.getUser(mContext);
+        mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+        mCities = MyApplication.getInstance().getCities();
+        initUI();
+    }
+
+    public DialogOrderAddress(Context context, Handler callbackHandler, Address address) {
+        mContext = context;
+        mCallBackHandler = callbackHandler;
+        mAddress = address;
         mUser = Utils.getUser(mContext);
         mCities = MyApplication.getInstance().getCities();
         initUI();
@@ -147,7 +167,7 @@ public class DialogOrderAddress {
         mAddressListener = new AddressListener() {
             @Override
             public void selectCity(City city) {
-                if (mCitySelected == null || mCitySelected.getId() != city.getId()) {
+                if (mCitySelected == null || !mCitySelected.getId().equals(city.getId())) {
                     mDistrictSelected = null;
                     tvDistrict.setText("");
                     mWardSelected = null;
@@ -160,7 +180,7 @@ public class DialogOrderAddress {
 
             @Override
             public void selectDistrict(District district) {
-                if (mDistrictSelected == null || mDistrictSelected.getId() != district.getId()) {
+                if (mDistrictSelected == null || !mDistrictSelected.getId().equals(district.getId())) {
                     mWardSelected = null;
                     tvWard.setText("");
                 }
@@ -198,10 +218,72 @@ public class DialogOrderAddress {
             });
             layoutContent.startAnimation(endAnimation);
         });
+        btnSave.setOnClickListener(v -> {
+            if (!isLoading) validateAddress();
+        });
         if (mCities == null || mCities.isEmpty()) {
             //load data cities from api
         }
         mDialog.show();
+    }
+
+    private void validateAddress() {
+        String name = edtName.getText().toString();
+        String phone = edtPhone.getText().toString();
+        String addressDetail = edtAddressDetail.getText().toString();
+        if (name.isEmpty())
+            Toast.makeText(mContext, "Vui lòng nhập Họ và Tên", Toast.LENGTH_SHORT).show();
+        else if (!Utils.isValidPhone(phone))
+            Toast.makeText(mContext, "Vui lòng nhập SĐT hợp lệ", Toast.LENGTH_SHORT).show();
+        else if (mCitySelected == null)
+            Toast.makeText(mContext, "Vui lòng chọn Tỉnh/Thành phố", Toast.LENGTH_SHORT).show();
+        else if (mDistrictSelected == null)
+            Toast.makeText(mContext, "Vui lòng chọn Quận/Huyện", Toast.LENGTH_SHORT).show();
+            //else if (mWardSelected == null) Toast.makeText(mContext,"Vui lòng chọn Phường/Xã", Toast.LENGTH_SHORT).show();
+        else if (addressDetail.isEmpty())
+            Toast.makeText(mContext, "Vui lòng nhập địa chỉ cụ thể của bạn", Toast.LENGTH_SHORT).show();
+        else {
+            //mAddress = new Address(name, phone, mCitySelected.getId(), mDistrictSelected.getId(), mWardSelected.getId(), addressDetail);
+            mAddress = new Address(name, phone, mCitySelected.getId(), mDistrictSelected.getId(), addressDetail);
+            addNewAddress(mAddress);
+        }
+    }
+
+    private void addNewAddress(Address address) {
+        isLoading = true;
+        layoutContent.setVisibility(View.GONE);
+        progressLoading.setVisibility(View.VISIBLE);
+        //Call<BaseResponse> addNewAddress = mainService.addNewAddress(mToken, address.getName(), address.getPhone(), address.getCityId(), address.getDistrictId(), address.getWardId(), address.getAddress(), 1);
+        Call<BaseResponse> addNewAddress = mainService.addNewAddress(mToken, address.getName(), address.getPhone(), address.getCityId(), address.getDistrictId(), address.getAddress(), 1);
+        addNewAddress.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                isLoading = false;
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null) {
+                    if (baseResponse.isSuccess()) {
+                        Toast.makeText(mContext, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                        Message message = new Message();
+                        message.what = Constants.Value.ACTION_SUCCESS;
+                        message.obj = address;
+                        mCallBackHandler.sendMessage(message);
+                        mDialog.dismiss();
+                    } else {
+                        String message = Constants.DataNotify.DATA_ERROR;
+                        if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty())
+                            message = baseResponse.getError().getMessage();
+                        showError(message);
+                    }
+                } else showError(Constants.DataNotify.DATA_ERROR);
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                isLoading = false;
+                t.printStackTrace();
+                showError(Constants.DataNotify.DATA_ERROR);
+            }
+        });
     }
 
     private void showListCity() {
@@ -261,5 +343,11 @@ public class DialogOrderAddress {
                 }
             }
         } else rvWard.setVisibility(View.GONE);
+    }
+
+    private void showError(String message) {
+        progressLoading.setVisibility(View.GONE);
+        layoutContent.setVisibility(View.VISIBLE);
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
 }

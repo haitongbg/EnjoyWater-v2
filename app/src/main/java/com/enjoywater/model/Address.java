@@ -8,20 +8,37 @@ import com.google.gson.annotations.SerializedName;
 public class Address implements Parcelable {
     @SerializedName("key")
     private int key;
-    @SerializedName("districtId")
-    private String districtId;
-    @SerializedName("provinceId")
-    private String cityId;
-    @SerializedName("wardId")
-    private String wardId;
-    @SerializedName("phone")
-    private String phone;
     @SerializedName("name")
     private String name;
+    @SerializedName("phone")
+    private String phone;
+    @SerializedName("provinceId")
+    private String cityId;
+    @SerializedName("districtId")
+    private String districtId;
+    @SerializedName("wardId")
+    private String wardId;
     @SerializedName("address")
     private String address;
 
     public Address() {
+    }
+
+    public Address(String name, String phone, String cityId, String districtId, String wardId, String address) {
+        this.name = name;
+        this.phone = phone;
+        this.cityId = cityId;
+        this.districtId = districtId;
+        this.wardId = wardId;
+        this.address = address;
+    }
+
+    public Address(String name, String phone, String cityId, String districtId, String address) {
+        this.name = name;
+        this.phone = phone;
+        this.cityId = cityId;
+        this.districtId = districtId;
+        this.address = address;
     }
 
     protected Address(Parcel in) {

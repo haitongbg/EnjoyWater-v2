@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                             String token = loginResponse.getData().getAsJsonObject().get("token").getAsString();
                             mUser = gson.fromJson(loginResponse.getData().getAsJsonObject().get("userInfo").getAsJsonObject().toString(), User.class);
                             if (token != null && !token.isEmpty() && mUser != null && mUser.getId() != null && !mUser.getId().isEmpty()) {
-                                Utils.saveString(LoginActivity.this, Constants.Key.TOKEN, token);
+                                Utils.saveString(LoginActivity.this, Constants.Key.TOKEN, "Bearer " + token);
                                 Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
                                 setResult(RESULT_CODE_LOGIN_SUCCESS);
                                 finish();

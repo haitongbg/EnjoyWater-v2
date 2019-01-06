@@ -37,4 +37,7 @@
     <string name="save">Lưu</string>
     <string name="yes">Đồng ý</string>
     <string name="confirm">Xác nhận</string>
+    <string name="tutorial_email_active_sent">Một mã xác nhận đã được gửi cho bạn qua Email. Vui lòng điền mã để kích hoạt tài khoản của bạn. Quá trình này có thể mất một vài phút.</string>
+    <string name="tutorial_email_active">Ấn nút Lấy mã ở dưới để nhận được mã xác nhận qua Email:</string>
+    <string name="active">Kích hoạt</string>
 </resources>
