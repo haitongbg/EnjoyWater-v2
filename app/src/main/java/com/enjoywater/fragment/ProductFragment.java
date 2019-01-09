@@ -41,6 +41,7 @@ import com.enjoywater.model.Coupon;
 import com.enjoywater.model.Location.City;
 import com.enjoywater.model.Location.District;
 import com.enjoywater.model.Location.Ward;
+import com.enjoywater.model.Order;
 import com.enjoywater.model.Product;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
@@ -68,17 +69,20 @@ import retrofit2.Response;
 public class ProductFragment extends Fragment {
     public static final int REQUEST_CODE_LOGIN_FROM_PRODUCT = 111;
     public static final int REQUEST_CODE_ADDRESS = 112;
-    public static final int TYPE_2H = 1;
-    public static final int TYPE_24H = 2;
-    public static final int TYPE_DATE = 3;
+    public static final int SHIP_TYPE_2H = 1;
+    public static final int SHIP_TYPE_24H = 2;
+    public static final int SHIP_TYPE_DATE = 3;
+    public static final String PAYMENT_TYPE_CASH = "cash";
+    public static final String PAYMENT_TYPE_COIN = "coin";
+    public static final String PAYMENT_TYPE_BILL = "bill";
     @BindView(R.id.rv_products)
     RecyclerView rvProducts;
     @BindView(R.id.rv_selected_products)
     RecyclerView rvSelectedProducts;
     @BindView(R.id.tv_total_product_price)
     TvSegoeuiSemiBold tvTotalProductPrice;
-    @BindView(R.id.checkbox_delivery)
-    CheckBox checkboxDelivery;
+    @BindView(R.id.checkbox_delivery_climb)
+    CheckBox checkboxDeliveryClimb;
     @BindView(R.id.tv_total_delivery_fee)
     TvSegoeuiSemiBold tvTotalDeliveryFee;
     @BindView(R.id.checkbox_ship_in_2_hours)
@@ -113,8 +117,8 @@ public class ProductFragment extends Fragment {
     TvSegoeuiSemiBold tvTotalPrice;
     @BindView(R.id.checkbox_pay_by_cash)
     CheckBox checkboxPayByCash;
-    @BindView(R.id.checkbox_pay_by_point)
-    CheckBox checkboxPayByPoint;
+    @BindView(R.id.checkbox_pay_by_coin)
+    CheckBox checkboxPayByCoin;
     @BindView(R.id.checkbox_pay_by_bill)
     CheckBox checkboxPayByBill;
     @BindView(R.id.btn_change_address)
@@ -147,6 +151,8 @@ public class ProductFragment extends Fragment {
     RelativeLayout layoutError;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.edt_note)
+    EditText edtNote;
     private Context mContext;
     private MainService mainService;
     private boolean isLoading = false;
@@ -161,10 +167,11 @@ public class ProductFragment extends Fragment {
     private boolean isValidAddress = false;
     private int mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee, mCouponDiscount;
     private ArrayList<City> mCities;
-    private int currentShipType;
+    private int mShipType;
+    private String mPaymentType;
     private DatePickerDialog datePickerDialog;
     private Calendar calendar = Calendar.getInstance();
-    private String mCouponCode;
+    private String mCouponCode = "";
     private DecimalFormat formatVND = new DecimalFormat("###,###,###");
     private DecimalFormat formatPercent = new DecimalFormat("#.0");
     private long delaySendingActiveCode = 0;
@@ -242,7 +249,7 @@ public class ProductFragment extends Fragment {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                currentShipType = TYPE_DATE;
+                mShipType = SHIP_TYPE_DATE;
                 checkboxChooseShipDate.setText("Giao ngày " + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                 updatePrice();
             }
@@ -251,29 +258,29 @@ public class ProductFragment extends Fragment {
         calendar.add(Calendar.DAY_OF_MONTH, 30);
         datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         datePickerDialog.setOnCancelListener(dialog -> {
-            if (currentShipType == TYPE_2H) {
+            if (mShipType == SHIP_TYPE_2H) {
                 checkboxChooseShipDate.setChecked(false);
                 checkboxShipIn2Hours.setChecked(true);
-            } else if (currentShipType == TYPE_24H) {
+            } else if (mShipType == SHIP_TYPE_24H) {
                 checkboxChooseShipDate.setChecked(false);
                 checkboxShipIn24Hours.setChecked(true);
             }
         });
-        checkboxDelivery.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        checkboxDeliveryClimb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updatePrice();
         });
         checkboxShipIn2Hours.setOnClickListener(v -> {
             checkboxShipIn24Hours.setChecked(false);
             checkboxChooseShipDate.setChecked(false);
             checkboxShipIn2Hours.setChecked(true);
-            currentShipType = TYPE_2H;
+            mShipType = SHIP_TYPE_2H;
             updatePrice();
         });
         checkboxShipIn24Hours.setOnClickListener(v -> {
             checkboxShipIn2Hours.setChecked(false);
             checkboxChooseShipDate.setChecked(false);
             checkboxShipIn24Hours.setChecked(true);
-            currentShipType = TYPE_24H;
+            mShipType = SHIP_TYPE_24H;
             updatePrice();
         });
         checkboxChooseShipDate.setOnClickListener(v -> {
@@ -284,26 +291,31 @@ public class ProductFragment extends Fragment {
         });
         checkboxPayByCash.setOnClickListener(v -> {
             checkboxPayByCash.setChecked(true);
-            checkboxPayByPoint.setChecked(false);
+            checkboxPayByCoin.setChecked(false);
             checkboxPayByBill.setChecked(false);
+            mPaymentType = PAYMENT_TYPE_CASH;
         });
-        checkboxPayByPoint.setOnClickListener(v -> {
+        checkboxPayByCoin.setOnClickListener(v -> {
             checkboxPayByCash.setChecked(false);
-            checkboxPayByPoint.setChecked(true);
+            checkboxPayByCoin.setChecked(true);
             checkboxPayByBill.setChecked(false);
+            mPaymentType = PAYMENT_TYPE_COIN;
         });
         checkboxPayByBill.setOnClickListener(v -> {
             checkboxPayByCash.setChecked(false);
-            checkboxPayByPoint.setChecked(false);
+            checkboxPayByCoin.setChecked(false);
             checkboxPayByBill.setChecked(true);
+            mPaymentType = PAYMENT_TYPE_BILL;
         });
-        checkboxDelivery.setChecked(false);
+        checkboxDeliveryClimb.setChecked(false);
         checkboxShipIn2Hours.setChecked(false);
         checkboxShipIn24Hours.setChecked(true);
         checkboxChooseShipDate.setChecked(false);
-        currentShipType = TYPE_24H;
+        mShipType = SHIP_TYPE_24H;
         checkboxPayByCash.setChecked(true);
-        checkboxPayByPoint.setChecked(false);
+        checkboxPayByCoin.setChecked(false);
+        checkboxPayByBill.setChecked(false);
+        mPaymentType = PAYMENT_TYPE_CASH;
         checkboxPayByBill.setVisibility(View.GONE);
         tvChooseShipDateDiscount.setVisibility(View.GONE);
         layoutCouponDiscount.setVisibility(View.GONE);
@@ -390,7 +402,7 @@ public class ProductFragment extends Fragment {
                 tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
                 tvName.setVisibility(View.VISIBLE);
                 String phone = mAddress.getPhone();
-                tvPhone.setText(((phone != null && !phone.isEmpty()) ? phone : "Unknown phone") + ",");
+                tvPhone.setText(((phone != null && !phone.isEmpty()) ? phone : "unknown phone") + ",");
                 tvPhone.setVisibility(View.VISIBLE);
                 int count = 0;
                 String fullAddress = mAddress.getAddress();
@@ -608,7 +620,7 @@ public class ProductFragment extends Fragment {
             checkboxShipIn24Hours.setText("Giao hàng trong 24 giờ (giảm 0%)");
         }
         mTotalPrice = mTotalProductsPrice;
-        if (checkboxDelivery.isChecked()) {
+        if (checkboxDeliveryClimb.isChecked()) {
             mTotalPrice += mTotalDeliveryFee;
             tvTotalDeliveryFee.setTextColor(mContext.getResources().getColor(R.color.indigo_blue));
         } else tvTotalDeliveryFee.setTextColor(mContext.getResources().getColor(R.color.black_c));
@@ -677,9 +689,9 @@ public class ProductFragment extends Fragment {
                                     if (msg.what == Constants.Value.ACTION_SUCCESS) {
                                         mUser.setActivated(true);
                                         Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
-                                        validateOrder();
+                                        //validateOrder();
                                     } else if (msg.what == Constants.Value.ACTION_CLOSE) {
-                                        delaySendingActiveCode  = (long) msg.obj;
+                                        delaySendingActiveCode = (long) msg.obj;
                                         countDownDelaySending = new CountDownTimer(delaySendingActiveCode, 1000) {
                                             public void onTick(long millisUntilFinished) {
                                                 delaySendingActiveCode = millisUntilFinished;
@@ -712,17 +724,18 @@ public class ProductFragment extends Fragment {
                         mUser.getOtherAddress().add(address);
                         Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
                         setDataAddress();
-                        validateOrder();
+                        //validateOrder();
                     }
                 }
             });
-        } else if (checkboxPayByPoint.isChecked() && mUser.getCoin() < mTotalPrice) {
+        } else if (checkboxPayByCoin.isChecked() && mUser.getCoin() < mTotalPrice) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này. \n\nThanh toán bằng tiền mặt?")
+            builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này. \n\nThanh toán bằng t iền mặt?")
                     .setCancelable(false)
                     .setPositiveButton("Đồng ý", (dialog, id) -> {
                         checkboxPayByCash.setChecked(true);
-                        checkboxPayByPoint.setChecked(false);
+                        checkboxPayByCoin.setChecked(false);
+                        mPaymentType = PAYMENT_TYPE_CASH;
                         confirmOrder();
                     })
                     .setNegativeButton("Hủy", (dialog, id) -> dialog.cancel());
@@ -747,11 +760,53 @@ public class ProductFragment extends Fragment {
 
     private void makeOrder() {
         if (!Utils.isInternetOn(mContext)) {
-            Toast.makeText(mContext,Constants.DataNotify.NO_CONNECTION, Toast.LENGTH_SHORT).show();
-        } else if (!isLoading){
+            Toast.makeText(mContext, Constants.DataNotify.NO_CONNECTION, Toast.LENGTH_SHORT).show();
+        } else if (!isLoading) {
             isLoading = true;
             showLoading(false);
+            Order order = new Order();
+            order.setNotes(edtNote.getText().toString());
+            order.setProvince(mAddress.getCityId());
+            order.setDistrict(mAddress.getDistrictId());
+            order.setAddress(mAddress.getAddress());
+            order.setReceiverName(mAddress.getName());
+            order.setPhone(mAddress.getPhone());
+            order.setOrderBySchedule(mShipType == SHIP_TYPE_DATE ? calendar.getTimeInMillis() / 1000 : 0);
+            order.setCouponCode(mCouponCode);
+            order.setDeliveryOpts(mShipType == SHIP_TYPE_2H ? "2h" : "24h");
+            order.setDeliveryClimb(checkboxDeliveryClimb.isChecked() ? 1 : 0);
+            order.setPaymentMethod(mPaymentType);
+            ArrayList<Order.Item> items = new ArrayList<>();
+            for (Product product : mSelectedProducts) {
+                Order.Item item = new Order.Item(product.getId(), product.getCount());
+                items.add(item);
+            }
+            order.setItems(items);
+            Call<BaseResponse> createOrder = mainService.createOrder(mToken, gson.toJsonTree(order).getAsJsonObject());
+            createOrder.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    isLoading = false;
+                    showContent();
+                    BaseResponse createOrderResponse = response.body();
+                    if (createOrderResponse != null) {
+                        if (createOrderResponse.isSuccess() && createOrderResponse.getData() != null) {
+                        } else {
+                            String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
+                            if (createOrderResponse.getError() != null && createOrderResponse.getError().getMessage() != null && !createOrderResponse.getError().getMessage().isEmpty())
+                                message = createOrderResponse.getError().getMessage();
+                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                        }
+                    } else
+                        Toast.makeText(mContext, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
+                }
 
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    t.printStackTrace();
+                    showContent();
+                }
+            });
         }
     }
 
@@ -784,7 +839,6 @@ public class ProductFragment extends Fragment {
             mUser = Utils.getUser(mContext);
             mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
             setDataAddress();
-            validateOrder();
         } else Toast.makeText(mContext, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
     }
 }

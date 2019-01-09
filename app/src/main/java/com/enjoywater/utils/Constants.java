@@ -18,6 +18,13 @@ public class Constants {
         //Product
         public static final String GET_LIST_PRODUCTS = "product/list";
         public static final String GET_PRODUCT_DETAILS = "product/info";
+        //Order
+        public static final String CREATE_ORDER = "order/create-order";
+        public static final String CANCEL_ORDER = "order/cancel-order/{orderId}";
+        public static final String CONFIRM_RECEIVED = "order/confirm-received/{orderId}";
+        public static final String RATE_ORDER = "order/rate/{orderId}";
+        public static final String GET_LIST_ORDER = "order/list";
+        public static final String GET_ORDER_DETAILS = "order/info/{orderId}";
         //Promotion
         public static final String GET_COUPON_DETAILS = "promotion/coupon-info/{code}";
     }
@@ -43,10 +50,22 @@ public class Constants {
         public static final String SEARCH_KEY = "q";
         public static final String NEWS_ID = "newsId";
         public static final String PRODUCT_ID = "productId";
+        public static final String CITY = "province";
         public static final String CITY_ID = "provinceId";
+        public static final String DISTRICT = "district";
         public static final String DISTRICT_ID = "districtId";
+        public static final String WARD = "ward";
         public static final String WARD_ID = "wardId";
         public static final String IS_DEFAULT = "isDefault";
+        public static final String NOTES = "notes";
+        public static final String RECEIVER_NAME = "receiverName";
+        public static final String ORDER_BY_SCHEDULE = "orderBySchedule";
+        public static final String COUPON_CODE = "couponCode";
+        public static final String DELIVERY_OPTION = "deliveryOpts";
+        public static final String DELIVERY_CLIMB = "deliveryClimb";
+        public static final String PAYMENT_METHOD = "paymentMethod";
+        public static final String ITEMS = "items";
+
     }
 
     public static class Value {

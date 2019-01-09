@@ -2,6 +2,7 @@ package com.enjoywater.retrofit;
 
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
+import com.google.gson.JsonObject;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,11 +11,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -110,6 +113,12 @@ public interface MainService {
     Call<BaseResponse> getListProducts(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                        @Query(Constants.Key.LIMIT) int limit,
                                        @Query(Constants.Key.PAGE) int page);
+
+    //Order
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.CREATE_ORDER)
+    Call<BaseResponse> createOrder(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                   @Body JsonObject order);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_COUPON_DETAILS)
