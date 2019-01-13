@@ -42,16 +42,16 @@
                         android:id="@+id/rv_selected_products"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_10"
-                        android:layout_marginRight="@dimen/size_10"
+                        android:layout_marginLeft="@dimen/size_15"
+                        android:layout_marginRight="@dimen/size_15"
                         android:overScrollMode="never"
                         android:visibility="visible" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_10"
-                        android:layout_marginRight="@dimen/size_10"
+                        android:layout_marginLeft="@dimen/size_15"
+                        android:layout_marginRight="@dimen/size_15"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -76,9 +76,9 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_0_5"
-                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_marginLeft="@dimen/size_15"
                         android:layout_marginTop="@dimen/size_10"
-                        android:layout_marginRight="@dimen/size_10"
+                        android:layout_marginRight="@dimen/size_15"
                         android:background="@color/black_c" />
 
                     <LinearLayout
@@ -91,13 +91,13 @@
                             android:id="@+id/checkbox_delivery_climb"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:layout_marginTop="@dimen/size_5"
                             android:layout_marginBottom="@dimen/size_5"
                             android:layout_weight="1"
                             android:background="@null"
                             android:checked="false"
-                            android:text="Giao hàng leo thang bộ"
+                            android:text="@string/delivery_climb"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_12" />
 
@@ -105,7 +105,7 @@
                             android:id="@+id/tv_total_delivery_fee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/size_10"
+                            android:layout_marginRight="@dimen/size_15"
                             android:text="0 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -123,7 +123,8 @@
                         android:id="@+id/checkbox_ship_in_2_hours"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_5"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_marginRight="@dimen/size_15"
                         android:layout_marginTop="@dimen/size_5"
                         android:layout_marginBottom="@dimen/size_5"
                         android:background="@null"
@@ -150,7 +151,7 @@
                             android:id="@+id/checkbox_ship_in_24_hours"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:layout_marginTop="@dimen/size_5"
                             android:layout_marginBottom="@dimen/size_5"
                             android:layout_weight="1"
@@ -164,7 +165,7 @@
                             android:id="@+id/tv_ship_in_24_hours_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/size_10"
+                            android:layout_marginRight="@dimen/size_15"
                             android:text="-0 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -182,7 +183,7 @@
                             android:id="@+id/checkbox_choose_ship_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:layout_marginTop="@dimen/size_5"
                             android:layout_marginBottom="@dimen/size_5"
                             android:background="@null"
@@ -207,7 +208,7 @@
                             android:id="@+id/tv_choose_ship_date_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/size_10"
+                            android:layout_marginRight="@dimen/size_15"
                             android:text="-0 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -220,8 +221,8 @@
                         android:layout_marginTop="@dimen/size_10"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:paddingLeft="@dimen/size_10"
-                        android:paddingRight="@dimen/size_10">
+                        android:paddingLeft="@dimen/size_15"
+                        android:paddingRight="@dimen/size_15">
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
                             android:id="@+id/tv_coupon"
@@ -318,8 +319,8 @@
                         android:layout_marginTop="@dimen/size_10"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingLeft="@dimen/size_10"
-                        android:paddingRight="@dimen/size_10">
+                        android:paddingLeft="@dimen/size_15"
+                        android:paddingRight="@dimen/size_15">
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
                             android:layout_width="0dp"
@@ -350,7 +351,7 @@
                             android:id="@+id/checkbox_pay_by_cash"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:layout_weight="1"
                             android:background="@null"
                             android:checked="true"
@@ -399,7 +400,7 @@
                         <com.enjoywater.view.TvSegoeuiSemiBold
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_10"
+                            android:layout_marginLeft="@dimen/size_15"
                             android:layout_weight="1"
                             android:includeFontPadding="false"
                             android:text="Địa chỉ giao hàng"
@@ -410,7 +411,7 @@
                             android:id="@+id/ripple_forget_password"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/size_5"
+                            android:layout_marginRight="@dimen/size_10"
                             android:padding="@dimen/size_5"
                             app:rv_alpha="0"
                             app:rv_color="@android:color/transparent"
@@ -437,8 +438,8 @@
                             android:id="@+id/tv_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_10"
-                            android:layout_marginRight="@dimen/size_10"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
                             android:text="Tống Văn Hải,"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -447,18 +448,18 @@
                             android:id="@+id/tv_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_10"
-                            android:layout_marginRight="@dimen/size_10"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
                             android:text="0388326555,"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
 
                         <TextView
-                            android:id="@+id/tv_adress"
+                            android:id="@+id/tv_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_10"
-                            android:layout_marginRight="@dimen/size_10"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
                             android:text="Số 320 Quan Nhân, Thanh Xuân, Hà Nội."
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -467,9 +468,9 @@
                             android:id="@+id/edt_note"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/size_70"
-                            android:layout_marginLeft="@dimen/size_10"
+                            android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_5"
-                            android:layout_marginRight="@dimen/size_10"
+                            android:layout_marginRight="@dimen/size_15"
                             android:layout_marginBottom="@dimen/size_10"
                             android:background="@drawable/bg_blackf1_corner_4_stroke_black9"
                             android:gravity="top|left"
@@ -480,8 +481,6 @@
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_13" />
                     </LinearLayout>
-
-
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 

@@ -33,7 +33,8 @@
 
         <EditText
             android:id="@+id/edt_count"
-            android:layout_width="@dimen/size_25"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:includeFontPadding="false"
@@ -64,6 +65,7 @@
         android:layout_weight="3"
         android:gravity="right"
         android:text="50.000 đ"
+        android:includeFontPadding="false"
         android:textColor="@color/indigo_blue"
         android:textSize="@dimen/text_13" />
 </LinearLayout>

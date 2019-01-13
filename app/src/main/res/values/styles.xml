@@ -6,6 +6,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBar">false</item>
+        <item name="android:screenOrientation">portrait</item>
         <item name="windowNoTitle">true</item>
     </style>
 

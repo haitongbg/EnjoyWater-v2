@@ -18,6 +18,7 @@ import com.enjoywater.model.Product;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.TvSegoeuiBold;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -30,6 +31,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.CustomVi
     private RequestManager mRequestManager;
     private ProductListener mProductListener;
     private int mScreenWidth;
+    DecimalFormat formatVNĐ = new DecimalFormat("###,###,###");
 
     public ProductAdapter(Context context, ArrayList<Product> products, ProductListener productListener) {
         this.mContext = context;
@@ -65,6 +67,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.CustomVi
         ImageView ivImage;
         @BindView(R.id.tv_name)
         TvSegoeuiBold tvName;
+        @BindView(R.id.tv_price)
+        TvSegoeuiBold tvPrice;
         @BindView(R.id.iv_selected)
         ImageView ivSelected;
 
@@ -80,19 +84,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.CustomVi
             itemView.getLayoutParams().width = mScreenWidth / 3;
             //image
             String image = product.getThumbnail();
-            RequestOptions requestOptions = new RequestOptions()
-                    .centerInside()
-                    .placeholder(R.drawable.test_img_product)
-                    .error(R.drawable.test_img_product);
-            if (image != null && image.isEmpty())
-                mRequestManager.load(image).apply(requestOptions).into(ivImage);
-            else ivImage.setImageResource(R.drawable.test_img_product);
+            if (image != null && !image.isEmpty()) mRequestManager.load(image).into(ivImage);
             //name
             String name = product.getName();
             if (name != null && !name.isEmpty()) {
                 tvName.setText(name);
                 tvName.setVisibility(View.VISIBLE);
             } else tvName.setVisibility(View.INVISIBLE);
+            //price
+            tvPrice.setText(formatVNĐ.format(product.getAsk()) + " đ");
             //selected
             if (product.isSelected()) {
                 ivSelected.setImageResource(R.drawable.ic_radio_button_active);

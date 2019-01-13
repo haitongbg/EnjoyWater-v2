@@ -40,4 +40,20 @@
     <string name="tutorial_email_active_sent">Một mã xác nhận đã được gửi cho bạn qua Email. Vui lòng điền mã để kích hoạt tài khoản của bạn. Quá trình này có thể mất một vài phút.</string>
     <string name="tutorial_email_active">Ấn nút Lấy mã ở dưới để nhận được mã xác nhận qua Email:</string>
     <string name="active">Kích hoạt</string>
+    <string name="order_details">Chi tiết đơn hàng</string>
+    <string name="cancel_order">Hủy đơn hàng</string>
+    <string name="order_confirmed">Nhận đơn</string>
+    <string name="delivering">Giao hàng</string>
+    <string name="received">Đã nhận</string>
+    <string name="order_time">Thời gian đặt hàng</string>
+    <string name="delivery_time">Dự kiến giao hàng</string>
+    <string name="product">Sản phẩm</string>
+    <string name="delivery_climb">Giao hàng leo thang bộ</string>
+    <string name="total_payment">Tổng thanh toán:</string>
+    <string name="delivery_address">Giao đến</string>
+    <string name="payment_type">Hình thức thanh toán:</string>
+    <string name="cash">Tiền mặt</string>
+    <string name="coin">Điểm thưởng</string>
+    <string name="bill">Hóa đơn</string>
+    <string name="confirm_received">Đã nhận hàng</string>
 </resources>

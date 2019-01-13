@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.enjoywater.R;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MyApplication;
+import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.adapter.product.ProductAdapter;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
 import com.enjoywater.listener.ProductListener;
@@ -129,8 +130,8 @@ public class ProductFragment extends Fragment {
     TextView tvName;
     @BindView(R.id.tv_phone)
     TextView tvPhone;
-    @BindView(R.id.tv_adress)
-    TextView tvAdress;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
     @BindView(R.id.layout_address)
     LinearLayout layoutAddress;
     @BindView(R.id.layout_order)
@@ -441,20 +442,20 @@ public class ProductFragment extends Fragment {
                     }
                 }
                 isValidAddress = count >= 2;
-                tvAdress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
+                tvAddress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
                 btnChangeAddress.setVisibility(View.VISIBLE);
             } else {
                 tvName.setVisibility(View.GONE);
                 tvPhone.setVisibility(View.GONE);
                 btnChangeAddress.setVisibility(View.GONE);
-                tvAdress.setText("Chưa có địa chỉ.");
+                tvAddress.setText("Chưa có địa chỉ.");
                 isValidAddress = false;
             }
         } else {
             tvName.setVisibility(View.GONE);
             tvPhone.setVisibility(View.GONE);
             btnChangeAddress.setVisibility(View.GONE);
-            tvAdress.setText("Chưa có địa chỉ.");
+            tvAddress.setText("Chưa có địa chỉ.");
             isValidAddress = false;
         }
     }
@@ -791,6 +792,7 @@ public class ProductFragment extends Fragment {
                     BaseResponse createOrderResponse = response.body();
                     if (createOrderResponse != null) {
                         if (createOrderResponse.isSuccess() && createOrderResponse.getData() != null) {
+                            startActivity(new Intent(mContext, OrderDetailsActivity.class));
                         } else {
                             String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
                             if (createOrderResponse.getError() != null && createOrderResponse.getError().getMessage() != null && !createOrderResponse.getError().getMessage().isEmpty())

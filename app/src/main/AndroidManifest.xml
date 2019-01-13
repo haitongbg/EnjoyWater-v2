@@ -17,11 +17,6 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".activiy.MainActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activiy.LoginActivity" />
-        <activity android:name=".activiy.RegisterActivity" />
-        <activity
             android:name=".activiy.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
             <intent-filter>
@@ -30,6 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activiy.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activiy.LoginActivity" />
+        <activity android:name=".activiy.RegisterActivity" />
         <activity android:name=".activiy.OrderDetailsActivity"></activity>
     </application>
 
