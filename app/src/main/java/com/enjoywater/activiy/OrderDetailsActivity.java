@@ -210,7 +210,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         });
         rvSelectedProducts.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rvSelectedProducts.setNestedScrollingEnabled(false);
-        showLoading(true);
+        //showLoading(true);
         getOrderDetails();
     }
 
