@@ -176,7 +176,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TvSegoeuiSemiBold tvTotalPrice;
     private MainService mainService;
     private boolean isLoading = false;
-    private User mUser;
     private String mToken;
     private Gson gson = new Gson();
     private DecimalFormat formatVND = new DecimalFormat("###,###,###");
@@ -191,7 +190,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
         mainService = MyApplication.getInstance().getMainService();
-        mUser = Utils.getUser(this);
         mToken = Utils.getString(this, Constants.Key.TOKEN, "");
         Intent intent = getIntent();
         if (intent != null) {
@@ -209,7 +207,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
             public void onRefresh() {
                 if (Utils.isInternetOn(OrderDetailsActivity.this)) {
                     if (!isLoading) {
-
+                        showLoading(true);
+                        getOrderDetails();
                     } else {
                         swipeRefresh.setRefreshing(false);
                     }
@@ -219,7 +218,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-        swipeRefresh.setEnabled(false);
+        //swipeRefresh.setEnabled(false);
         progressLoading.setProgress(0.5f);
         progressLoading.setCallback(progress -> {
             if (progress == 0) {
@@ -293,6 +292,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 isLoading = false;
+                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
                 BaseResponse getOrderDetailsResponse = response.body();
                 if (getOrderDetailsResponse != null) {
                     if (getOrderDetailsResponse.isSuccess() && getOrderDetailsResponse.getData() != null && getOrderDetailsResponse.getData().isJsonObject()) {
@@ -309,6 +309,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
+                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
                 isLoading = false;
                 t.printStackTrace();
                 showError(Constants.DataNotify.DATA_ERROR);
@@ -331,9 +332,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
             tvOrderCanceled.setVisibility(View.GONE);
             groupOrderStatus.setVisibility(View.VISIBLE);
             btnCancelOrder.setVisibility(View.GONE);
-            viewStatusOrdered.setVisibility(View.GONE);
-            viewStatusConfirmed.setVisibility(View.GONE);
-            viewStatusDelivering.setVisibility(View.GONE);
+            viewStatusOrdered.setBackgroundResource(R.color.black_c);
+            viewStatusConfirmed.setBackgroundResource(R.color.black_c);
+            viewStatusDelivering.setBackgroundResource(R.color.black_c);
             viewStatusLine.setBackgroundResource(R.color.black_c);
             ivStatusOrdered.setImageResource(R.drawable.ic_unsuccess);
             ivStatusConfirmed.setImageResource(R.drawable.ic_unsuccess);
@@ -344,19 +345,19 @@ public class OrderDetailsActivity extends AppCompatActivity {
             tvStatusDelivering.setTextColor(getResources().getColor(R.color.black_c));
             tvStatusReceived.setTextColor(getResources().getColor(R.color.black_c));
             btnConfirmReceived.setVisibility(View.GONE);
-            ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_15);
+            //((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_15);
             switch (status) {
                 case Constants.Value.PENDING: {
                     btnCancelOrder.setVisibility(View.VISIBLE);
-                    viewStatusOrdered.setVisibility(View.VISIBLE);
+                    viewStatusOrdered.setBackgroundResource(R.color.colorAccent);
                     ivStatusOrdered.setImageResource(R.drawable.ic_success);
                     tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
                     break;
                 }
                 case Constants.Value.VERIFIED: {
                     btnCancelOrder.setVisibility(View.VISIBLE);
-                    viewStatusOrdered.setVisibility(View.VISIBLE);
-                    viewStatusConfirmed.setVisibility(View.VISIBLE);
+                    viewStatusOrdered.setBackgroundResource(R.color.colorAccent);
+                    viewStatusConfirmed.setBackgroundResource(R.color.colorAccent);
                     ivStatusOrdered.setImageResource(R.drawable.ic_success);
                     ivStatusConfirmed.setImageResource(R.drawable.ic_success);
                     tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -365,21 +366,24 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 }
                 case Constants.Value.DELIVERING: {
                     btnCancelOrder.setVisibility(View.GONE);
-                    viewStatusOrdered.setVisibility(View.VISIBLE);
-                    viewStatusConfirmed.setVisibility(View.VISIBLE);
-                    viewStatusDelivering.setVisibility(View.VISIBLE);
+                    viewStatusOrdered.setBackgroundResource(R.color.colorAccent);
+                    viewStatusConfirmed.setBackgroundResource(R.color.colorAccent);
+                    viewStatusDelivering.setBackgroundResource(R.color.colorAccent);
                     ivStatusOrdered.setImageResource(R.drawable.ic_success);
                     ivStatusConfirmed.setImageResource(R.drawable.ic_success);
                     ivStatusDelivering.setImageResource(R.drawable.ic_success);
                     tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusDelivering.setTextColor(getResources().getColor(R.color.colorAccent));
-                    btnConfirmReceived.setVisibility(View.VISIBLE);
-                    ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_60);
+                    //btnConfirmReceived.setVisibility(View.VISIBLE);
+                    //((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_60);
                     break;
                 }
                 case Constants.Value.DELIVERED: {
                     btnCancelOrder.setVisibility(View.GONE);
+                    viewStatusOrdered.setBackgroundResource(R.color.colorAccent);
+                    viewStatusConfirmed.setBackgroundResource(R.color.colorAccent);
+                    viewStatusDelivering.setBackgroundResource(R.color.colorAccent);
                     viewStatusLine.setBackgroundResource(R.color.colorAccent);
                     ivStatusOrdered.setImageResource(R.drawable.ic_success);
                     ivStatusConfirmed.setImageResource(R.drawable.ic_success);
@@ -398,10 +402,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
         // time
         String createdTime = mOrder.getCreatedAt();
         if (createdTime != null && !createdTime.isEmpty())
-            tvCreatedTime.setText(Utils.convertDateTimeToDateTime(createdTime, 5, 8));
+            tvCreatedTime.setText(Utils.convertDateTimeToDateTime(createdTime, "GMT", 5, 8));
         String expectedDeliveryTime = mOrder.getExpectedDelivery();
         if (expectedDeliveryTime != null && !expectedDeliveryTime.isEmpty())
-            tvExpectedDeliveryTime.setText(Utils.convertDateTimeToDateTime(expectedDeliveryTime, 5, 5));
+            tvExpectedDeliveryTime.setText(Utils.convertDateTimeToDateTime(expectedDeliveryTime, "GMT", 5, 5));
         // address
         String name = mOrder.getReceiverName();
         if (name == null || name.isEmpty()) name = "Unknown name";
@@ -424,20 +428,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
             SelectedProductAdapter mSelectedProductAdapter = new SelectedProductAdapter(this, mSelectedProducts, null);
             rvSelectedProducts.setAdapter(mSelectedProductAdapter);
             int totalProductsPrice = 0;
-            int totalProductDiscount = 0;
-            int totalDeliveryFee = 0;
             for (Product product : mSelectedProducts) {
                 totalProductsPrice += product.getVolume() * product.getAsk();
-                totalProductDiscount += product.getVolume() * product.getDiscount();
-                totalDeliveryFee += product.getVolume() * product.getDeliveryFee();
             }
             //price
             tvTotalPrice.setText(formatVND.format(totalProductsPrice) + " đ");
             // climb
-            if (mOrder.getDeliveryClimb() == 1) {
+            if (mOrder.isDeliveryClimb()) {
                 groupDeliveryClimb.setVisibility(View.VISIBLE);
-                //tvDeliveryClimbFee.setText(formatVND.format(mOrder.getDeliveryFee()) + " đ");
-                tvDeliveryClimbFee.setText(formatVND.format(totalDeliveryFee) + " đ");
+                tvDeliveryClimbFee.setText(formatVND.format(mOrder.getDeliveryFee()) + " đ");
             } else groupDeliveryClimb.setVisibility(View.GONE);
             // ship type
             switch (mOrder.getDeliveryOpts()) {
@@ -454,6 +453,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     } else {
                         shipType = "Giao hàng trong 24 giờ";
                     }
+                    int totalProductDiscount = mOrder.getDiscount();
                     if (totalProductDiscount > 0 && totalProductsPrice > 0) {
                         float discountPercent = (float) (totalProductDiscount * 100) / totalProductsPrice;
                         if (discountPercent >= 1.0f)
@@ -470,9 +470,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     break;
             }
             // coupon
-            if (mOrder.getDiscount() > 0) {
+            if (mOrder.getCouponDiscount() > 0) {
                 groupCounponDiscount.setVisibility(View.VISIBLE);
-                tvCounponDiscount.setText("-" + formatVND.format(mOrder.getDiscount()) + " đ");
+                tvCounponDiscount.setText("-" + formatVND.format(mOrder.getCouponDiscount()) + " đ");
             } else groupCounponDiscount.setVisibility(View.GONE);
             // total payment
             tvTotalPayment.setText(formatVND.format(mOrder.getTotalPayment()) + " đ");
@@ -574,17 +574,21 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
     private void showLoading(boolean goneContent) {
-        layoutLoading.setVisibility(View.VISIBLE);
-        layoutContent.setVisibility(goneContent ? View.GONE : View.VISIBLE);
+        if (goneContent) {
+            swipeRefresh.setRefreshing(true);
+            layoutContent.setVisibility(View.GONE);
+            layoutLoading.setVisibility(View.GONE);
+        } else {
+            layoutLoading.setVisibility(View.VISIBLE);
+            layoutContent.setVisibility(View.VISIBLE);
+        }
         layoutError.setVisibility(View.GONE);
-        swipeRefresh.setEnabled(false);
     }
 
     private void showContent() {
         layoutLoading.setVisibility(View.GONE);
         layoutContent.setVisibility(View.VISIBLE);
         layoutError.setVisibility(View.GONE);
-        swipeRefresh.setEnabled(false);
     }
 
     private void showError(@NonNull String error) {
@@ -592,7 +596,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         layoutContent.setVisibility(View.GONE);
         layoutError.setVisibility(View.VISIBLE);
         tvError.setText(error);
-        swipeRefresh.setEnabled(true);
     }
 
     @Override

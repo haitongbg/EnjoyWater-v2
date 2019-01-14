@@ -13,12 +13,16 @@ import java.util.ArrayList;
  * Email: haitongvan@vccorp.vn
  */
 public class Order implements Parcelable {
+    @SerializedName("couponDiscount")
+    private int couponDiscount;
+    @SerializedName("totalDiscount")
+    private int totalDiscount;
     @SerializedName("items")
     private ArrayList<Product> items = new ArrayList<>();
     @SerializedName("paymentMethod")
     private String paymentMethod;
     @SerializedName("deliveryClimb")
-    private int deliveryClimb;
+    private boolean deliveryClimb;
     @SerializedName("deliveryOpts")
     private String deliveryOpts;
     @SerializedName("couponCode")
@@ -74,9 +78,11 @@ public class Order implements Parcelable {
     }
 
     protected Order(Parcel in) {
+        couponDiscount = in.readInt();
+        totalDiscount = in.readInt();
         items = in.createTypedArrayList(Product.CREATOR);
         paymentMethod = in.readString();
-        deliveryClimb = in.readInt();
+        deliveryClimb = in.readByte() != 0;
         deliveryOpts = in.readString();
         couponCode = in.readString();
         orderBySchedule = in.readLong();
@@ -106,9 +112,11 @@ public class Order implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(couponDiscount);
+        dest.writeInt(totalDiscount);
         dest.writeTypedList(items);
         dest.writeString(paymentMethod);
-        dest.writeInt(deliveryClimb);
+        dest.writeByte((byte) (deliveryClimb ? 1 : 0));
         dest.writeString(deliveryOpts);
         dest.writeString(couponCode);
         dest.writeLong(orderBySchedule);
@@ -153,6 +161,22 @@ public class Order implements Parcelable {
         }
     };
 
+    public int getCouponDiscount() {
+        return couponDiscount;
+    }
+
+    public void setCouponDiscount(int couponDiscount) {
+        this.couponDiscount = couponDiscount;
+    }
+
+    public int getTotalDiscount() {
+        return totalDiscount;
+    }
+
+    public void setTotalDiscount(int totalDiscount) {
+        this.totalDiscount = totalDiscount;
+    }
+
     public ArrayList<Product> getItems() {
         return items;
     }
@@ -169,11 +193,11 @@ public class Order implements Parcelable {
         this.paymentMethod = paymentMethod;
     }
 
-    public int getDeliveryClimb() {
+    public boolean isDeliveryClimb() {
         return deliveryClimb;
     }
 
-    public void setDeliveryClimb(int deliveryClimb) {
+    public void setDeliveryClimb(boolean deliveryClimb) {
         this.deliveryClimb = deliveryClimb;
     }
 

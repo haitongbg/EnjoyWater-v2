@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,7 +43,7 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class Utils {
     private static Gson gson = new Gson();
 
-    public static String convertDateTimeToDateTime(String date, int old_format, int new_format) {
+    public static String convertDateTimeToDateTime(String date, String timeZone, int old_format, int new_format) {
         String dateTimeReturn = "";
         DateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         switch (old_format) {
@@ -73,6 +74,7 @@ public class Utils {
             default:
                 break;
         }
+        oldFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
         DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         switch (new_format) {
             case 1: {
@@ -110,6 +112,7 @@ public class Utils {
             default:
                 break;
         }
+        newFormat.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
             String time = newFormat.format(oldFormat.parse(date));
             dateTimeReturn = time.toString();

@@ -773,7 +773,7 @@ public class ProductFragment extends Fragment {
             order.setOrderBySchedule(mShipType == SHIP_TYPE_DATE ? calendar.getTimeInMillis() / 1000 : 0);
             order.setCouponCode(mCouponCode);
             order.setDeliveryOpts(mShipType == SHIP_TYPE_2H ? "2h" : "24h");
-            order.setDeliveryClimb(checkboxDeliveryClimb.isChecked() ? 1 : 0);
+            order.setDeliveryClimb(checkboxDeliveryClimb.isChecked());
             order.setPaymentMethod(mPaymentType);
             order.setItems(mSelectedProducts);
             Call<BaseResponse> createOrder = mainService.createOrder(mToken, gson.toJsonTree(order).getAsJsonObject());

@@ -57,4 +57,5 @@
     <string name="confirm_received">Đã nhận hàng</string>
     <string name="order_success">Đặt hàng thành công!</string>
     <string name="total_price">Tổng tiền</string>
+    <string name="coupon">Mã giảm giá</string>
 </resources>
