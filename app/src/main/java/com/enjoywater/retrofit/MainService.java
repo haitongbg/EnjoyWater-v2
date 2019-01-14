@@ -116,18 +116,29 @@ public interface MainService {
 
     //Order
     @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_ORDER_DETAILS)
+    Call<BaseResponse> getOrderDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                       @Path(Constants.Key.ORDER_ID) String orderId);
+
+    @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.CREATE_ORDER)
     Call<BaseResponse> createOrder(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                    @Body JsonObject order);
 
     @Headers(Constants.Value.SECRET_HEADER)
-    @GET(Constants.Url.GET_ORDER_DETAILS)
-    Call<BaseResponse> getOrderDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                       @Query(Constants.Key.ORDER_ID) String orderId);
+    @POST(Constants.Url.CANCEL_ORDER)
+    Call<BaseResponse> cancelOrder(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                   @Path(Constants.Key.ORDER_ID) String orderId);
 
     @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.CONFIRM_RECEIVED)
+    Call<BaseResponse> confirmReceived(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                       @Path(Constants.Key.ORDER_ID) String orderId);
+
+    //promotion
+    @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_COUPON_DETAILS)
-    Call<BaseResponse> getCouponDetails(@Path("code") String code);
+    Call<BaseResponse> getCouponDetails(@Path(Constants.Key.CODE) String code);
 
     //Factory
     class Factory {

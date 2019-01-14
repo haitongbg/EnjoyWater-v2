@@ -99,7 +99,7 @@
                             android:checked="false"
                             android:text="@string/delivery_climb"
                             android:textColor="@color/indigo_blue"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_13" />
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
                             android:id="@+id/tv_total_delivery_fee"
@@ -131,7 +131,7 @@
                         android:checked="false"
                         android:text="Giao hàng trong 2 giờ (giảm 0%)"
                         android:textColor="@color/indigo_blue"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_13" />
 
                     <View
                         android:layout_width="match_parent"
@@ -159,7 +159,7 @@
                             android:checked="true"
                             android:text="Giao hàng trong 24 giờ (giảm 0%)"
                             android:textColor="@color/indigo_blue"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_13" />
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
                             android:id="@+id/tv_ship_type_discount"
@@ -190,7 +190,7 @@
                             android:checked="false"
                             android:text="Đặt lịch giao hàng"
                             android:textColor="@color/indigo_blue"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_13" />
 
                         <ImageView
                             android:layout_width="@dimen/size_18"
@@ -357,7 +357,7 @@
                             android:checked="true"
                             android:text="Tiền mặt"
                             android:textColor="@color/indigo_blue"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_13" />
 
                         <CheckBox
                             android:id="@+id/checkbox_pay_by_coin"
@@ -368,7 +368,7 @@
                             android:background="@null"
                             android:text="Điểm thưởng"
                             android:textColor="@color/indigo_blue"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_13" />
 
                         <CheckBox
                             android:id="@+id/checkbox_pay_by_bill"
@@ -379,7 +379,7 @@
                             android:background="@null"
                             android:text="Hóa đơn"
                             android:textColor="@color/indigo_blue"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_13" />
                     </LinearLayout>
 
                     <View

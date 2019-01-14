@@ -15,7 +15,7 @@
         android:includeFontPadding="false"
         android:singleLine="true"
         android:textColor="@color/indigo_blue"
-        android:textSize="@dimen/text_12" />
+        android:textSize="@dimen/text_13" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -67,5 +67,5 @@
         android:text="50.000 đ"
         android:includeFontPadding="false"
         android:textColor="@color/indigo_blue"
-        android:textSize="@dimen/text_13" />
+        android:textSize="@dimen/text_14" />
 </LinearLayout>

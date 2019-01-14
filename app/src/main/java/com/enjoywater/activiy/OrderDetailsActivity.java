@@ -1,5 +1,6 @@
 package com.enjoywater.activiy;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.constraint.Group;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enjoywater.R;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
@@ -227,6 +230,54 @@ public class OrderDetailsActivity extends AppCompatActivity {
         });
         rvSelectedProducts.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rvSelectedProducts.setNestedScrollingEnabled(false);
+        btnCancelOrder.setOnClickListener(v -> {
+            if (Utils.isInternetOn(OrderDetailsActivity.this)) {
+                if (!isLoading) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailsActivity.this);
+                    builder.setMessage("Bạn muốn hủy đơn hàng này?")
+                            .setCancelable(false)
+                            .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    showLoading(false);
+                                    cancelOrder();
+                                }
+                            })
+                            .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            } else {
+                Toast.makeText(OrderDetailsActivity.this, Constants.DataNotify.NO_CONNECTION, Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnConfirmReceived.setOnClickListener(v -> {
+            if (Utils.isInternetOn(OrderDetailsActivity.this)) {
+                if (!isLoading) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailsActivity.this);
+                    builder.setMessage("Bạn xác nhận đã nhận được hàng?")
+                            .setCancelable(false)
+                            .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    showLoading(false);
+                                    confirmReceived();
+                                }
+                            })
+                            .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            } else {
+                Toast.makeText(OrderDetailsActivity.this, Constants.DataNotify.NO_CONNECTION, Toast.LENGTH_SHORT).show();
+            }
+        });
         if (mOrder != null) {
             setDataOrder();
         } else if (mOrderId != null && !mOrderId.isEmpty()) {
@@ -292,6 +343,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
             tvStatusConfirmed.setTextColor(getResources().getColor(R.color.black_c));
             tvStatusDelivering.setTextColor(getResources().getColor(R.color.black_c));
             tvStatusReceived.setTextColor(getResources().getColor(R.color.black_c));
+            btnConfirmReceived.setVisibility(View.GONE);
+            ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_15);
             switch (status) {
                 case Constants.Value.PENDING: {
                     btnCancelOrder.setVisibility(View.VISIBLE);
@@ -321,6 +374,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusDelivering.setTextColor(getResources().getColor(R.color.colorAccent));
+                    btnConfirmReceived.setVisibility(View.VISIBLE);
+                    ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_60);
                     break;
                 }
                 case Constants.Value.DELIVERED: {
@@ -439,6 +494,83 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    private void cancelOrder() {
+        isLoading = true;
+        Call<BaseResponse> cancelOrder = mainService.cancelOrder(mToken, mOrderId);
+        cancelOrder.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                isLoading = false;
+                BaseResponse cancelOrderResponse = response.body();
+                if (cancelOrderResponse != null) {
+                    if (cancelOrderResponse.isSuccess()) {
+                        Toast.makeText(OrderDetailsActivity.this, "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
+                        mOrder.setStatus(Constants.Value.CANCELED);
+                        setDataOrder();
+                    } else {
+                        String message = Constants.DataNotify.DATA_ERROR;
+                        if (cancelOrderResponse.getError() != null && cancelOrderResponse.getError().getMessage() != null && !cancelOrderResponse.getError().getMessage().isEmpty())
+                            message = cancelOrderResponse.getError().getMessage();
+                        Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                        showContent();
+                    }
+                } else {
+                    Toast.makeText(OrderDetailsActivity.this, Constants.DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
+                    showContent();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                isLoading = false;
+                t.printStackTrace();
+                Toast.makeText(OrderDetailsActivity.this, Constants.DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
+                showContent();
+            }
+        });
+    }
+
+    private void confirmReceived() {
+        isLoading = true;
+        Call<BaseResponse> confirmReceived = mainService.confirmReceived(mToken, mOrderId);
+        confirmReceived.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                isLoading = false;
+                BaseResponse cancelOrderResponse = response.body();
+                if (cancelOrderResponse != null) {
+                    if (cancelOrderResponse.isSuccess()) {
+                        Toast.makeText(OrderDetailsActivity.this, "Xác nhận thành công", Toast.LENGTH_SHORT).show();
+                        mOrder.setStatus(Constants.Value.DELIVERED);
+                        setDataOrder();
+                        showRatingDialog();
+                    } else {
+                        String message = Constants.DataNotify.DATA_ERROR;
+                        if (cancelOrderResponse.getError() != null && cancelOrderResponse.getError().getMessage() != null && !cancelOrderResponse.getError().getMessage().isEmpty())
+                            message = cancelOrderResponse.getError().getMessage();
+                        Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                        showContent();
+                    }
+                } else {
+                    Toast.makeText(OrderDetailsActivity.this, Constants.DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
+                    showContent();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                isLoading = false;
+                t.printStackTrace();
+                Toast.makeText(OrderDetailsActivity.this, Constants.DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
+                showContent();
+            }
+        });
+    }
+
+    private void showRatingDialog() {
+
     }
 
     private void showLoading(boolean goneContent) {
