@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.model.Location.City;
+import com.enjoywater.model.Location.District;
+import com.enjoywater.model.Location.Ward;
 import com.enjoywater.model.User;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -393,5 +395,44 @@ public class Utils {
             return null;
         }
         return null;
+    }
+
+    public static String getFullAddress(String cityId, String districtId, String wardId, String addressDetail) {
+        ArrayList<City> cities = MyApplication.getInstance().getCities();
+        String fullAddress = "";
+        fullAddress += addressDetail;
+        if (cityId != null && !cityId.isEmpty()) {
+            for (City city : cities) {
+                if (city.getId() != null && city.getId().equals(cityId) && city.getName() != null && !city.getName().isEmpty()) {
+                    ArrayList<District> districts = city.getDistricts();
+                    if (districts != null && !districts.isEmpty() && districtId != null && !districtId.isEmpty()) {
+                        for (District district : districts) {
+                            if (district.getId() != null && district.getId().equals(districtId) && district.getName() != null && !district.getName().isEmpty()) {
+                                ArrayList<Ward> wards = district.getWards();
+                                if (wards != null && !wards.isEmpty() && wardId != null && !wardId.isEmpty()) {
+                                    for (Ward ward : wards) {
+                                        if (ward.getId() != null && !ward.getId().equals(wardId) && ward.getName() != null && !ward.getName().isEmpty()) {
+                                            if (ward.getType() != null && !ward.getType().isEmpty())
+                                                fullAddress += (", " + ward.getType() + " " + ward.getName());
+                                            else fullAddress += (", " + ward.getName());
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (district.getType() != null && !district.getType().isEmpty())
+                                    fullAddress += (", " + district.getType() + " " + district.getName());
+                                else fullAddress += (", " + district.getName());
+                                break;
+                            }
+                        }
+                    }
+                    if (city.getType() != null && !city.getType().isEmpty())
+                        fullAddress += (", " + city.getType() + " " + city.getName());
+                    else fullAddress += (", " + city.getName());
+                    break;
+                }
+            }
+        }
+        return fullAddress;
     }
 }

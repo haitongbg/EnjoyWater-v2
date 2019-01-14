@@ -71,15 +71,16 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/size_50"
                     tools:background="@color/black_f1">
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/layout_order_status"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
                         android:background="@color/white"
                         android:elevation="@dimen/size_2"
+                        android:paddingBottom="@dimen/size_15"
                         android:visibility="visible"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent">
@@ -101,13 +102,28 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
                             android:includeFontPadding="false"
-                            android:text="Mã đơn hàng: #CH12345"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_15"
                             app:layout_constraintBottom_toBottomOf="@id/iv_order_code"
                             app:layout_constraintLeft_toRightOf="@id/iv_order_code"
                             app:layout_constraintTop_toTopOf="@id/iv_order_code"
-                            app:textAllCaps="true" />
+                            app:textAllCaps="true"
+                            tools:text="Mã đơn hàng: #CH12345" />
+
+                        <com.enjoywater.view.TvRobotoMedium
+                            android:id="@+id/tv_order_canceled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_15"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_order_code"
+                            app:layout_constraintLeft_toRightOf="@id/tv_order_code"
+                            app:layout_constraintTop_toTopOf="@id/iv_order_code"
+                            app:textAllCaps="true"
+                            tools:text="- Đã hủy" />
 
                         <Button
                             android:id="@+id/btn_cancel_order"
@@ -122,6 +138,7 @@
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_12"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@id/tv_order_code"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_order_code" />
@@ -289,7 +306,6 @@
                             android:layout_height="@dimen/size_15"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_5"
-                            android:layout_marginBottom="@dimen/size_15"
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_clock_blue"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -297,17 +313,17 @@
                             app:layout_constraintTop_toBottomOf="@id/text_order_time" />
 
                         <com.enjoywater.view.TvRobotoMedium
-                            android:id="@+id/tv_order_time"
+                            android:id="@+id/tv_created_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
                             android:includeFontPadding="false"
-                            android:text="17:50 14/01/2018"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="@id/iv_order_time"
                             app:layout_constraintLeft_toRightOf="@id/iv_order_time"
-                            app:layout_constraintTop_toTopOf="@id/iv_order_time" />
+                            app:layout_constraintTop_toTopOf="@id/iv_order_time"
+                            tools:text="17:50 14/01/2018" />
 
                         <TextView
                             android:id="@+id/text_delivery_time"
@@ -323,17 +339,17 @@
                             app:layout_constraintTop_toBottomOf="@id/barrier_under_order_status" />
 
                         <com.enjoywater.view.TvRobotoMedium
-                            android:id="@+id/tv_delivery_time"
+                            android:id="@+id/tv_expected_delivery_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="16/01/2018"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="@id/iv_order_time"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/iv_order_time" />
+                            app:layout_constraintTop_toTopOf="@id/iv_order_time"
+                            tools:text="16/01/2018" />
 
                         <ImageView
                             android:id="@+id/iv_delivery_time"
@@ -343,8 +359,24 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_clock_blue"
                             app:layout_constraintBottom_toBottomOf="@id/iv_order_time"
-                            app:layout_constraintRight_toLeftOf="@id/tv_delivery_time"
+                            app:layout_constraintRight_toLeftOf="@id/tv_expected_delivery_time"
                             app:layout_constraintTop_toTopOf="@id/iv_order_time" />
+
+                        <android.support.constraint.Group
+                            android:id="@+id/group_order_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="visible"
+                            app:constraint_referenced_ids="view_status_line,
+                            iv_status_ordered,tv_status_ordered,view_status_ordered,
+                            iv_status_confirmed,tv_status_confirmed,view_status_confirmed,
+                            iv_status_delivering,tv_status_delivering,view_status_delivering,
+                            iv_status_received,tv_status_received,
+                            barrier_under_order_status,
+                            text_order_time,iv_order_time,tv_created_time,
+                            text_delivery_time,iv_delivery_time,tv_expected_delivery_time" />
+
+
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
@@ -354,6 +386,7 @@
                         android:layout_marginTop="@dimen/size_15"
                         android:background="@color/white"
                         android:elevation="@dimen/size_2"
+                        android:paddingBottom="@dimen/size_15"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/layout_order_status">
@@ -391,12 +424,12 @@
                             android:layout_marginTop="@dimen/size_10"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="Tống Văn Hải - 0388326555"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_15"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/iv_address" />
+                            app:layout_constraintTop_toBottomOf="@id/iv_address"
+                            tools:text="Tống Văn Hải - 0388326555" />
 
                         <TextView
                             android:id="@+id/tv_address"
@@ -405,13 +438,13 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_3"
                             android:layout_marginRight="@dimen/size_15"
-                            android:text="Số 320 Quan Nhân, Thanh Xuân, Hà Nội."
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14"
                             android:visibility="visible"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_name_and_phone" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_name_and_phone"
+                            tools:text="Số 320 Quan Nhân, Thanh Xuân, Hà Nội." />
 
                         <TextView
                             android:id="@+id/text_note"
@@ -432,15 +465,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_3"
                             android:layout_marginRight="@dimen/size_15"
-                            android:layout_marginBottom="@dimen/size_15"
-                            android:text="giao hàng giờ hành chính"
                             android:textColor="@color/black_9"
                             android:textSize="@dimen/text_13"
                             android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toRightOf="@id/text_note"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_note" />
+                            app:layout_constraintTop_toTopOf="@id/text_note"
+                            tools:text="giao hàng giờ hành chính" />
 
                         <android.support.constraint.Group
                             android:id="@+id/group_note"
@@ -454,9 +486,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_15"
-                        android:layout_marginBottom="@dimen/size_15"
+                        android:layout_marginBottom="@dimen/size_60"
                         android:background="@color/white"
                         android:elevation="@dimen/size_2"
+                        android:paddingBottom="@dimen/size_15"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -502,16 +535,43 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_selected_products" />
 
+                        <com.enjoywater.view.TvSegoeuiSemiBold
+                            android:id="@+id/text_total_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/total_price"
+                            android:textColor="@color/indigo_blue"
+                            android:textSize="@dimen/text_15"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rv_selected_products" />
+
+                        <com.enjoywater.view.TvSegoeuiSemiBold
+                            android:id="@+id/tv_total_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_15"
+                            app:layout_constraintBottom_toBottomOf="@id/text_total_price"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/text_total_price"
+                            tools:text="132.000 đ" />
+
                         <View
                             android:id="@+id/line_under_selected_products"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_0_5"
                             android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_10"
                             android:layout_marginRight="@dimen/size_15"
                             android:background="@color/black_c"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/rv_selected_products" />
+                            app:layout_constraintTop_toBottomOf="@id/text_total_price" />
 
                         <TextView
                             android:id="@+id/tv_delivery_climb"
@@ -534,12 +594,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="50.000 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_13"
                             app:layout_constraintBottom_toBottomOf="@id/tv_delivery_climb"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tv_delivery_climb" />
+                            app:layout_constraintTop_toTopOf="@id/tv_delivery_climb"
+                            tools:text="50.000 đ" />
 
                         <android.support.constraint.Group
                             android:id="@+id/group_delivery_climb"
@@ -549,7 +609,7 @@
                             app:constraint_referenced_ids="tv_delivery_climb,tv_delivery_climb_fee" />
 
                         <TextView
-                            android:id="@+id/tv_ship_in_24_hours"
+                            android:id="@+id/tv_ship_type"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/size_30"
                             android:layout_marginLeft="@dimen/size_15"
@@ -564,24 +624,17 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_delivery_climb" />
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
-                            android:id="@+id/tv_ship_in_24_hours_discount"
+                            android:id="@+id/tv_ship_type_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="-28.000 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_13"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_ship_in_24_hours"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_ship_type"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tv_ship_in_24_hours" />
-
-                        <android.support.constraint.Group
-                            android:id="@+id/group_ship_in_24_hours"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="visible"
-                            app:constraint_referenced_ids="tv_ship_in_24_hours,tv_ship_in_24_hours_discount" />
+                            app:layout_constraintTop_toTopOf="@id/tv_ship_type"
+                            tools:text="-28.000 đ" />
 
                         <TextView
                             android:id="@+id/tv_counpon"
@@ -596,7 +649,7 @@
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_12"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_ship_in_24_hours" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_ship_type" />
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
                             android:id="@+id/tv_counpon_discount"
@@ -604,12 +657,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="-20.000 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_13"
                             app:layout_constraintBottom_toBottomOf="@id/tv_counpon"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tv_counpon" />
+                            app:layout_constraintTop_toTopOf="@id/tv_counpon"
+                            tools:text="-20.000 đ" />
 
                         <android.support.constraint.Group
                             android:id="@+id/group_counpon_discount"
@@ -650,12 +703,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="132.000 đ"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_16"
                             app:layout_constraintBottom_toBottomOf="@id/text_total_payment"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_total_payment" />
+                            app:layout_constraintTop_toTopOf="@id/text_total_payment"
+                            tools:text="132.000 đ" />
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
                             android:id="@+id/text_payment_type"
@@ -663,7 +716,6 @@
                             android:layout_height="@dimen/size_30"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_10"
-                            android:layout_marginBottom="@dimen/size_15"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
                             android:text="@string/payment_type"
@@ -679,12 +731,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="@string/cash"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_15"
                             app:layout_constraintBottom_toBottomOf="@id/text_payment_type"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_payment_type" />
+                            app:layout_constraintTop_toTopOf="@id/text_payment_type"
+                            tools:text="@string/cash" />
                     </android.support.constraint.ConstraintLayout>
                 </android.support.constraint.ConstraintLayout>
             </android.support.v4.widget.NestedScrollView>

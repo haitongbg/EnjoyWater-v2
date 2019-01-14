@@ -65,13 +65,21 @@ public class Constants {
         public static final String DELIVERY_CLIMB = "deliveryClimb";
         public static final String PAYMENT_METHOD = "paymentMethod";
         public static final String ITEMS = "items";
-
+        public static final String ORDER_ID = "orderId";
     }
 
     public static class Value {
         public static final String SECRET_HEADER = "X-API-TOKEN: abcxyz";
         public static final int ACTION_CLOSE = 0;
         public static final int ACTION_SUCCESS = 1;
+        public static final String PENDING = "pending";
+        public static final String VERIFIED = "verified";
+        public static final String DELIVERING = "delivering";
+        public static final String DELIVERED = "delivered";
+        public static final String CANCELED = "canceled";
+        public static final String CASH = "cash";
+        public static final String COIN = "coin";
+        public static final String BILL = "bill";
     }
 
     public static class DataNotify {

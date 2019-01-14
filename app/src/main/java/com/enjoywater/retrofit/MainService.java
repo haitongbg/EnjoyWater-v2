@@ -121,6 +121,11 @@ public interface MainService {
                                    @Body JsonObject order);
 
     @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_ORDER_DETAILS)
+    Call<BaseResponse> getOrderDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                       @Query(Constants.Key.ORDER_ID) String orderId);
+
+    @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_COUPON_DETAILS)
     Call<BaseResponse> getCouponDetails(@Path("code") String code);
 

@@ -1,5 +1,6 @@
 package com.enjoywater.activiy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.Barrier;
@@ -19,10 +20,11 @@ import android.widget.TextView;
 
 import com.enjoywater.R;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
-import com.enjoywater.model.Address;
+import com.enjoywater.model.Order;
 import com.enjoywater.model.Product;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
+import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
@@ -32,9 +34,13 @@ import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.btn_back)
@@ -47,6 +53,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     ImageView ivOrderCode;
     @BindView(R.id.tv_order_code)
     TvRobotoMedium tvOrderCode;
+    @BindView(R.id.tv_order_canceled)
+    TvRobotoMedium tvOrderCanceled;
     @BindView(R.id.btn_cancel_order)
     Button btnCancelOrder;
     @BindView(R.id.view_status_line)
@@ -79,14 +87,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView textOrderTime;
     @BindView(R.id.iv_order_time)
     ImageView ivOrderTime;
-    @BindView(R.id.tv_order_time)
-    TvRobotoMedium tvOrderTime;
+    @BindView(R.id.tv_created_time)
+    TvRobotoMedium tvCreatedTime;
     @BindView(R.id.text_delivery_time)
     TextView textDeliveryTime;
-    @BindView(R.id.tv_delivery_time)
-    TvRobotoMedium tvDeliveryTime;
+    @BindView(R.id.tv_expected_delivery_time)
+    TvRobotoMedium tvExpectedDeliveryTime;
     @BindView(R.id.iv_delivery_time)
     ImageView ivDeliveryTime;
+    @BindView(R.id.group_order_status)
+    Group groupOrderStatus;
     @BindView(R.id.layout_order_status)
     ConstraintLayout layoutOrderStatus;
     @BindView(R.id.iv_address)
@@ -119,12 +129,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TvSegoeuiSemiBold tvDeliveryClimbFee;
     @BindView(R.id.group_delivery_climb)
     Group groupDeliveryClimb;
-    @BindView(R.id.tv_ship_in_24_hours)
-    TextView tvShipIn24Hours;
-    @BindView(R.id.tv_ship_in_24_hours_discount)
-    TvSegoeuiSemiBold tvShipIn24HoursDiscount;
-    @BindView(R.id.group_ship_in_24_hours)
-    Group groupShipIn24Hours;
+    @BindView(R.id.tv_ship_type)
+    TextView tvShipType;
+    @BindView(R.id.tv_ship_type_discount)
+    TvSegoeuiSemiBold tvShipTypeDiscount;
     @BindView(R.id.tv_counpon)
     TextView tvCounpon;
     @BindView(R.id.tv_counpon_discount)
@@ -159,17 +167,20 @@ public class OrderDetailsActivity extends AppCompatActivity {
     RelativeLayout layoutError;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.text_total_price)
+    TvSegoeuiSemiBold textTotalPrice;
+    @BindView(R.id.tv_total_price)
+    TvSegoeuiSemiBold tvTotalPrice;
     private MainService mainService;
     private boolean isLoading = false;
     private User mUser;
     private String mToken;
     private Gson gson = new Gson();
-    private ArrayList<Product> mSelectedProducts = new ArrayList<>();
-    private SelectedProductAdapter mSelectedProductAdapter;
-    private Address mAddress;
-    private int mTotalPayment, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee, mCouponDiscount;
     private DecimalFormat formatVND = new DecimalFormat("###,###,###");
     private DecimalFormat formatPercent = new DecimalFormat("#.0");
+    private Calendar calendar = Calendar.getInstance();
+    private Order mOrder;
+    private String mOrderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,10 +190,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
         mainService = MyApplication.getInstance().getMainService();
         mUser = Utils.getUser(this);
         mToken = Utils.getString(this, Constants.Key.TOKEN, "");
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra("order")) mOrder = intent.getParcelableExtra("order");
+            if (intent.hasExtra("order_id")) mOrderId = intent.getStringExtra("order_id");
+        }
         initUI();
     }
 
     private void initUI() {
+        btnBack.setOnClickListener(v -> onBackPressed());
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -210,12 +227,218 @@ public class OrderDetailsActivity extends AppCompatActivity {
         });
         rvSelectedProducts.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rvSelectedProducts.setNestedScrollingEnabled(false);
-        //showLoading(true);
-        getOrderDetails();
+        if (mOrder != null) {
+            setDataOrder();
+        } else if (mOrderId != null && !mOrderId.isEmpty()) {
+            showLoading(true);
+            getOrderDetails();
+        }
     }
 
     private void getOrderDetails() {
+        isLoading = true;
+        Call<BaseResponse> getOrderDetails = mainService.getOrderDetails(mToken, mOrderId);
+        getOrderDetails.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                isLoading = false;
+                BaseResponse getOrderDetailsResponse = response.body();
+                if (getOrderDetailsResponse != null) {
+                    if (getOrderDetailsResponse.isSuccess() && getOrderDetailsResponse.getData() != null && getOrderDetailsResponse.getData().isJsonObject()) {
+                        mOrder = gson.fromJson(getOrderDetailsResponse.getData(), Order.class);
+                        setDataOrder();
+                    } else {
+                        String message = Constants.DataNotify.DATA_ERROR;
+                        if (getOrderDetailsResponse.getError() != null && getOrderDetailsResponse.getError().getMessage() != null && !getOrderDetailsResponse.getError().getMessage().isEmpty())
+                            message = getOrderDetailsResponse.getError().getMessage();
+                        showError(message);
+                    }
+                } else showError(Constants.DataNotify.DATA_ERROR);
+            }
 
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                isLoading = false;
+                t.printStackTrace();
+                showError(Constants.DataNotify.DATA_ERROR);
+            }
+        });
+    }
+
+    private void setDataOrder() {
+        showContent();
+        mOrderId = mOrder.getId();
+        // code
+        tvOrderCode.setText("Mã đơn hàng: #" + mOrder.getId());
+        // status
+        String status = mOrder.getStatus();
+        if (status.equals(Constants.Value.CANCELED)) {
+            btnCancelOrder.setVisibility(View.GONE);
+            groupOrderStatus.setVisibility(View.GONE);
+            tvOrderCanceled.setVisibility(View.VISIBLE);
+        } else {
+            tvOrderCanceled.setVisibility(View.GONE);
+            groupOrderStatus.setVisibility(View.VISIBLE);
+            btnCancelOrder.setVisibility(View.GONE);
+            viewStatusOrdered.setVisibility(View.GONE);
+            viewStatusConfirmed.setVisibility(View.GONE);
+            viewStatusDelivering.setVisibility(View.GONE);
+            viewStatusLine.setBackgroundResource(R.color.black_c);
+            ivStatusOrdered.setImageResource(R.drawable.ic_unsuccess);
+            ivStatusConfirmed.setImageResource(R.drawable.ic_unsuccess);
+            ivStatusDelivering.setImageResource(R.drawable.ic_unsuccess);
+            ivStatusReceived.setImageResource(R.drawable.ic_unsuccess);
+            tvStatusOrdered.setTextColor(getResources().getColor(R.color.black_c));
+            tvStatusConfirmed.setTextColor(getResources().getColor(R.color.black_c));
+            tvStatusDelivering.setTextColor(getResources().getColor(R.color.black_c));
+            tvStatusReceived.setTextColor(getResources().getColor(R.color.black_c));
+            switch (status) {
+                case Constants.Value.PENDING: {
+                    btnCancelOrder.setVisibility(View.VISIBLE);
+                    viewStatusOrdered.setVisibility(View.VISIBLE);
+                    ivStatusOrdered.setImageResource(R.drawable.ic_success);
+                    tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
+                    break;
+                }
+                case Constants.Value.VERIFIED: {
+                    btnCancelOrder.setVisibility(View.VISIBLE);
+                    viewStatusOrdered.setVisibility(View.VISIBLE);
+                    viewStatusConfirmed.setVisibility(View.VISIBLE);
+                    ivStatusOrdered.setImageResource(R.drawable.ic_success);
+                    ivStatusConfirmed.setImageResource(R.drawable.ic_success);
+                    tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
+                    tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
+                    break;
+                }
+                case Constants.Value.DELIVERING: {
+                    btnCancelOrder.setVisibility(View.GONE);
+                    viewStatusOrdered.setVisibility(View.VISIBLE);
+                    viewStatusConfirmed.setVisibility(View.VISIBLE);
+                    viewStatusDelivering.setVisibility(View.VISIBLE);
+                    ivStatusOrdered.setImageResource(R.drawable.ic_success);
+                    ivStatusConfirmed.setImageResource(R.drawable.ic_success);
+                    ivStatusDelivering.setImageResource(R.drawable.ic_success);
+                    tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
+                    tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
+                    tvStatusDelivering.setTextColor(getResources().getColor(R.color.colorAccent));
+                    break;
+                }
+                case Constants.Value.DELIVERED: {
+                    btnCancelOrder.setVisibility(View.GONE);
+                    viewStatusLine.setBackgroundResource(R.color.colorAccent);
+                    ivStatusOrdered.setImageResource(R.drawable.ic_success);
+                    ivStatusConfirmed.setImageResource(R.drawable.ic_success);
+                    ivStatusDelivering.setImageResource(R.drawable.ic_success);
+                    ivStatusReceived.setImageResource(R.drawable.ic_success);
+                    tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
+                    tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
+                    tvStatusDelivering.setTextColor(getResources().getColor(R.color.colorAccent));
+                    tvStatusReceived.setTextColor(getResources().getColor(R.color.colorAccent));
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        // time
+        String createdTime = mOrder.getCreatedAt();
+        if (createdTime != null && !createdTime.isEmpty())
+            tvCreatedTime.setText(Utils.convertDateTimeToDateTime(createdTime, 5, 8));
+        String expectedDeliveryTime = mOrder.getExpectedDelivery();
+        if (expectedDeliveryTime != null && !expectedDeliveryTime.isEmpty())
+            tvExpectedDeliveryTime.setText(Utils.convertDateTimeToDateTime(expectedDeliveryTime, 5, 5));
+        // address
+        String name = mOrder.getReceiverName();
+        if (name == null || name.isEmpty()) name = "Unknown name";
+        String phone = mOrder.getPhone();
+        if (phone == null || phone.isEmpty()) phone = "Unknown phone";
+        tvNameAndPhone.setText(name + " - " + phone);
+        String fullAddress = Utils.getFullAddress(mOrder.getProvince(), mOrder.getDistrict(), "", mOrder.getAddress());
+        if (!fullAddress.isEmpty()) {
+            tvAddress.setText(fullAddress);
+            tvAddress.setVisibility(View.VISIBLE);
+        } else tvAddress.setVisibility(View.GONE);
+        String note = mOrder.getNotes();
+        if (note != null && !note.isEmpty()) {
+            groupNote.setVisibility(View.VISIBLE);
+            tvNote.setText(note);
+        } else groupNote.setVisibility(View.GONE);
+        // products
+        ArrayList<Product> mSelectedProducts = mOrder.getItems();
+        if (mSelectedProducts != null && !mSelectedProducts.isEmpty()) {
+            SelectedProductAdapter mSelectedProductAdapter = new SelectedProductAdapter(this, mSelectedProducts, null);
+            rvSelectedProducts.setAdapter(mSelectedProductAdapter);
+            int totalProductsPrice = 0;
+            int totalProductDiscount = 0;
+            int totalDeliveryFee = 0;
+            for (Product product : mSelectedProducts) {
+                totalProductsPrice += product.getVolume() * product.getAsk();
+                totalProductDiscount += product.getVolume() * product.getDiscount();
+                totalDeliveryFee += product.getVolume() * product.getDeliveryFee();
+            }
+            //price
+            tvTotalPrice.setText(formatVND.format(totalProductsPrice) + " đ");
+            // climb
+            if (mOrder.getDeliveryClimb() == 1) {
+                groupDeliveryClimb.setVisibility(View.VISIBLE);
+                //tvDeliveryClimbFee.setText(formatVND.format(mOrder.getDeliveryFee()) + " đ");
+                tvDeliveryClimbFee.setText(formatVND.format(totalDeliveryFee) + " đ");
+            } else groupDeliveryClimb.setVisibility(View.GONE);
+            // ship type
+            switch (mOrder.getDeliveryOpts()) {
+                case "2h": {
+                    tvShipType.setText("Giao hàng trong 2 giờ");
+                    tvShipTypeDiscount.setVisibility(View.GONE);
+                    break;
+                }
+                case "24h": {
+                    String shipType;
+                    if (mOrder.getOrderBySchedule() > 0) {
+                        calendar.setTimeInMillis(mOrder.getOrderBySchedule() * 1000);
+                        shipType = "Giao ngày " + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR);
+                    } else {
+                        shipType = "Giao hàng trong 24 giờ";
+                    }
+                    if (totalProductDiscount > 0 && totalProductsPrice > 0) {
+                        float discountPercent = (float) (totalProductDiscount * 100) / totalProductsPrice;
+                        if (discountPercent >= 1.0f)
+                            shipType = shipType + " (giảm " + formatPercent.format(discountPercent) + "%)";
+                        else
+                            shipType = shipType + " (giảm 0" + formatPercent.format(discountPercent) + "%)";
+                    } else shipType = shipType + " (giảm 0%)";
+                    tvShipType.setText(shipType);
+                    tvShipTypeDiscount.setText("-" + formatVND.format(totalProductDiscount) + " đ");
+                    tvShipTypeDiscount.setVisibility(View.VISIBLE);
+                    break;
+                }
+                default:
+                    break;
+            }
+            // coupon
+            if (mOrder.getDiscount() > 0) {
+                groupCounponDiscount.setVisibility(View.VISIBLE);
+                tvCounponDiscount.setText("-" + formatVND.format(mOrder.getDiscount()) + " đ");
+            } else groupCounponDiscount.setVisibility(View.GONE);
+            // total payment
+            tvTotalPayment.setText(formatVND.format(mOrder.getTotalPayment()) + " đ");
+            // payment type
+            switch (mOrder.getPaymentMethod()) {
+                case Constants.Value.CASH: {
+                    tvPaymentType.setText(R.string.cash);
+                    break;
+                }
+                case Constants.Value.COIN: {
+                    tvPaymentType.setText(R.string.coin);
+                    break;
+                }
+                case Constants.Value.BILL: {
+                    tvPaymentType.setText(R.string.bill);
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
     }
 
     private void showLoading(boolean goneContent) {
@@ -238,5 +461,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         layoutError.setVisibility(View.VISIBLE);
         tvError.setText(error);
         swipeRefresh.setEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_left_to_right_in, R.anim.slide_left_to_right_out);
     }
 }

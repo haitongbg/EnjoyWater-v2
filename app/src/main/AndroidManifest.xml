@@ -30,7 +30,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activiy.LoginActivity" />
         <activity android:name=".activiy.RegisterActivity" />
-        <activity android:name=".activiy.OrderDetailsActivity"></activity>
+        <activity
+            android:name=".activiy.OrderDetailsActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
     </application>
 
 </manifest>

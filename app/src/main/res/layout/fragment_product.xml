@@ -162,7 +162,7 @@
                             android:textSize="@dimen/text_12" />
 
                         <com.enjoywater.view.TvSegoeuiSemiBold
-                            android:id="@+id/tv_ship_in_24_hours_discount"
+                            android:id="@+id/tv_ship_type_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"

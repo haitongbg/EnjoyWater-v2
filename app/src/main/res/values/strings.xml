@@ -28,7 +28,6 @@
     <string name="guest">Guest</string>
     <string name="login_by_google">Đăng nhập với Google</string>
     <string name="login_by_facebook">Đăng nhập với facebook</string>
-    <string name="title_activity_splash">SplashActivity</string>
     <string name="order">Đặt hàng</string>
     <string name="name">Tên</string>
     <string name="city">Tỉnh/Thành phố</string>
@@ -56,4 +55,6 @@
     <string name="coin">Điểm thưởng</string>
     <string name="bill">Hóa đơn</string>
     <string name="confirm_received">Đã nhận hàng</string>
+    <string name="order_success">Đặt hàng thành công!</string>
+    <string name="total_price">Tổng tiền</string>
 </resources>

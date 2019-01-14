@@ -19,8 +19,6 @@ public class Product implements Parcelable {
     private String status;
     @SerializedName("catId")
     private String catId;
-    @SerializedName("images")
-    private ArrayList<Image> images;
     @SerializedName("thumbnail")
     private String thumbnail;
     @SerializedName("desctiption")
@@ -37,8 +35,11 @@ public class Product implements Parcelable {
     private int ask;
     @SerializedName("bid")
     private int bid;
+    @SerializedName("productId")
+    private String productId;
+    @SerializedName("volume")
+    private int volume;
     private boolean isSelected = false;
-    private int count = 1;
 
     public Product() {
     }
@@ -49,7 +50,6 @@ public class Product implements Parcelable {
         createdBy = in.readString();
         status = in.readString();
         catId = in.readString();
-        images = in.createTypedArrayList(Image.CREATOR);
         thumbnail = in.readString();
         desctiption = in.readString();
         name = in.readString();
@@ -58,8 +58,9 @@ public class Product implements Parcelable {
         discount = in.readInt();
         ask = in.readInt();
         bid = in.readInt();
+        productId = in.readString();
+        volume = in.readInt();
         isSelected = in.readByte() != 0;
-        count = in.readInt();
     }
 
     @Override
@@ -69,7 +70,6 @@ public class Product implements Parcelable {
         dest.writeString(createdBy);
         dest.writeString(status);
         dest.writeString(catId);
-        dest.writeTypedList(images);
         dest.writeString(thumbnail);
         dest.writeString(desctiption);
         dest.writeString(name);
@@ -78,8 +78,9 @@ public class Product implements Parcelable {
         dest.writeInt(discount);
         dest.writeInt(ask);
         dest.writeInt(bid);
+        dest.writeString(productId);
+        dest.writeInt(volume);
         dest.writeByte((byte) (isSelected ? 1 : 0));
-        dest.writeInt(count);
     }
 
     @Override
@@ -98,6 +99,20 @@ public class Product implements Parcelable {
             return new Product[size];
         }
     };
+
+    public String getId() {
+        if (id == null || id.isEmpty()) id = productId;
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getProductId() {
+        if (productId == null || productId.isEmpty()) productId = id;
+        return productId;
+    }
 
     public String getUpdatedAt() {
         return updatedAt;
@@ -139,14 +154,6 @@ public class Product implements Parcelable {
         this.catId = catId;
     }
 
-    public ArrayList<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(ArrayList<Image> images) {
-        this.images = images;
-    }
-
     public String getThumbnail() {
         return thumbnail;
     }
@@ -169,14 +176,6 @@ public class Product implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public int getDeliveryFee() {
@@ -211,23 +210,23 @@ public class Product implements Parcelable {
         this.bid = bid;
     }
 
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
     public boolean isSelected() {
         return isSelected;
     }
 
     public void setSelected(boolean selected) {
         isSelected = selected;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public static Creator<Product> getCREATOR() {
-        return CREATOR;
     }
 }

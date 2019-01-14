@@ -73,9 +73,6 @@ public class ProductFragment extends Fragment {
     public static final int SHIP_TYPE_2H = 1;
     public static final int SHIP_TYPE_24H = 2;
     public static final int SHIP_TYPE_DATE = 3;
-    public static final String PAYMENT_TYPE_CASH = "cash";
-    public static final String PAYMENT_TYPE_COIN = "coin";
-    public static final String PAYMENT_TYPE_BILL = "bill";
     @BindView(R.id.rv_products)
     RecyclerView rvProducts;
     @BindView(R.id.rv_selected_products)
@@ -90,7 +87,7 @@ public class ProductFragment extends Fragment {
     CheckBox checkboxShipIn2Hours;
     @BindView(R.id.checkbox_ship_in_24_hours)
     CheckBox checkboxShipIn24Hours;
-    @BindView(R.id.tv_ship_in_24_hours_discount)
+    @BindView(R.id.tv_ship_type_discount)
     TvSegoeuiSemiBold tvShipIn24HoursDiscount;
     @BindView(R.id.checkbox_choose_ship_date)
     CheckBox checkboxChooseShipDate;
@@ -251,7 +248,6 @@ public class ProductFragment extends Fragment {
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 mShipType = SHIP_TYPE_DATE;
-                checkboxChooseShipDate.setText("Giao ngày " + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                 updatePrice();
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -294,19 +290,19 @@ public class ProductFragment extends Fragment {
             checkboxPayByCash.setChecked(true);
             checkboxPayByCoin.setChecked(false);
             checkboxPayByBill.setChecked(false);
-            mPaymentType = PAYMENT_TYPE_CASH;
+            mPaymentType = Constants.Value.CASH;
         });
         checkboxPayByCoin.setOnClickListener(v -> {
             checkboxPayByCash.setChecked(false);
             checkboxPayByCoin.setChecked(true);
             checkboxPayByBill.setChecked(false);
-            mPaymentType = PAYMENT_TYPE_COIN;
+            mPaymentType = Constants.Value.COIN;
         });
         checkboxPayByBill.setOnClickListener(v -> {
             checkboxPayByCash.setChecked(false);
             checkboxPayByCoin.setChecked(false);
             checkboxPayByBill.setChecked(true);
-            mPaymentType = PAYMENT_TYPE_BILL;
+            mPaymentType = Constants.Value.BILL;
         });
         checkboxDeliveryClimb.setChecked(false);
         checkboxShipIn2Hours.setChecked(false);
@@ -316,7 +312,7 @@ public class ProductFragment extends Fragment {
         checkboxPayByCash.setChecked(true);
         checkboxPayByCoin.setChecked(false);
         checkboxPayByBill.setChecked(false);
-        mPaymentType = PAYMENT_TYPE_CASH;
+        mPaymentType = Constants.Value.CASH;
         checkboxPayByBill.setVisibility(View.GONE);
         tvChooseShipDateDiscount.setVisibility(View.GONE);
         layoutCouponDiscount.setVisibility(View.GONE);
@@ -363,7 +359,7 @@ public class ProductFragment extends Fragment {
                         String message = Constants.DataNotify.DATA_ERROR;
                         if (getProductsResponse.getError() != null && getProductsResponse.getError().getMessage() != null && !getProductsResponse.getError().getMessage().isEmpty())
                             message = getProductsResponse.getError().getMessage();
-                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                        showError(message);
                     }
                 } else showError(Constants.DataNotify.DATA_ERROR);
             }
@@ -438,6 +434,7 @@ public class ProductFragment extends Fragment {
                                 fullAddress += (", " + city.getType() + " " + city.getName());
                             else fullAddress += (", " + city.getName());
                             count++;
+                            break;
                         }
                     }
                 }
@@ -478,7 +475,8 @@ public class ProductFragment extends Fragment {
                     }
                 }
                 if (!existed) {
-                    product.setCount(1);
+                    product.setVolume(1);
+                    product.setProductId(product.getId());
                     mSelectedProducts.add(product);
                 }
             } else if (!mSelectedProducts.isEmpty()) {
@@ -531,7 +529,7 @@ public class ProductFragment extends Fragment {
                     if (getCounponDetailsResponse != null) {
                         if (getCounponDetailsResponse.isSuccess() && getCounponDetailsResponse.getData() != null) {
                             if (getCounponDetailsResponse.getData().isJsonObject()) {
-                                Coupon coupon = gson.fromJson(getCounponDetailsResponse.getData().getAsJsonObject(), Coupon.class);
+                                Coupon coupon = gson.fromJson(getCounponDetailsResponse.getData(), Coupon.class);
                                 if (coupon != null && coupon.isEnabled() && (coupon.getEnded() * 1000 + 300000) > System.currentTimeMillis()) {
                                     mCouponCode = code;
                                     layoutCouponDiscount.setVisibility(View.VISIBLE);
@@ -600,9 +598,9 @@ public class ProductFragment extends Fragment {
         mTotalDeliveryFee = 0;
         if (mSelectedProducts != null && !mSelectedProducts.isEmpty()) {
             for (Product product : mSelectedProducts) {
-                mTotalProductsPrice += product.getCount() * product.getAsk();
-                mTotalProductDiscount += product.getCount() * product.getDiscount();
-                mTotalDeliveryFee += product.getCount() * product.getDeliveryFee();
+                mTotalProductsPrice += product.getVolume() * product.getAsk();
+                mTotalProductDiscount += product.getVolume() * product.getDiscount();
+                mTotalDeliveryFee += product.getVolume() * product.getDeliveryFee();
             }
             tvTotalProductPrice.setText(formatVND.format(mTotalProductsPrice) + " đ");
             tvTotalDeliveryFee.setText(formatVND.format(mTotalDeliveryFee) + " đ");
@@ -634,7 +632,7 @@ public class ProductFragment extends Fragment {
             mTotalPrice -= mTotalProductDiscount;
             tvChooseShipDateDiscount.setVisibility(View.VISIBLE);
             tvChooseShipDateDiscount.setTextColor(mContext.getResources().getColor(R.color.indigo_blue));
-            String text = checkboxChooseShipDate.getText().toString();
+            String text = "Giao ngày " + calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR);
             if (mTotalProductDiscount > 0 && mTotalProductsPrice > 0) {
                 tvChooseShipDateDiscount.setText("-" + formatVND.format(mTotalProductDiscount) + " đ");
                 float discountPercent = (float) (mTotalProductDiscount * 100) / mTotalProductsPrice;
@@ -736,7 +734,7 @@ public class ProductFragment extends Fragment {
                     .setPositiveButton("Đồng ý", (dialog, id) -> {
                         checkboxPayByCash.setChecked(true);
                         checkboxPayByCoin.setChecked(false);
-                        mPaymentType = PAYMENT_TYPE_CASH;
+                        mPaymentType = Constants.Value.CASH;
                         confirmOrder();
                     })
                     .setNegativeButton("Hủy", (dialog, id) -> dialog.cancel());
@@ -777,12 +775,7 @@ public class ProductFragment extends Fragment {
             order.setDeliveryOpts(mShipType == SHIP_TYPE_2H ? "2h" : "24h");
             order.setDeliveryClimb(checkboxDeliveryClimb.isChecked() ? 1 : 0);
             order.setPaymentMethod(mPaymentType);
-            ArrayList<Order.Item> items = new ArrayList<>();
-            for (Product product : mSelectedProducts) {
-                Order.Item item = new Order.Item(product.getId(), product.getCount());
-                items.add(item);
-            }
-            order.setItems(items);
+            order.setItems(mSelectedProducts);
             Call<BaseResponse> createOrder = mainService.createOrder(mToken, gson.toJsonTree(order).getAsJsonObject());
             createOrder.enqueue(new Callback<BaseResponse>() {
                 @Override
@@ -791,8 +784,13 @@ public class ProductFragment extends Fragment {
                     showContent();
                     BaseResponse createOrderResponse = response.body();
                     if (createOrderResponse != null) {
-                        if (createOrderResponse.isSuccess() && createOrderResponse.getData() != null) {
-                            startActivity(new Intent(mContext, OrderDetailsActivity.class));
+                        if (createOrderResponse.isSuccess() && createOrderResponse.getData() != null && createOrderResponse.getData().isJsonObject()) {
+                            Toast.makeText(mContext, R.string.order_success, Toast.LENGTH_SHORT).show();
+                            Order orderCreated = gson.fromJson(createOrderResponse.getData(), Order.class);
+                            Intent intent = new Intent(mContext, OrderDetailsActivity.class);
+                            intent.putExtra("order", orderCreated);
+                            startActivity(intent);
+                            (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                         } else {
                             String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
                             if (createOrderResponse.getError() != null && createOrderResponse.getError().getMessage() != null && !createOrderResponse.getError().getMessage().isEmpty())

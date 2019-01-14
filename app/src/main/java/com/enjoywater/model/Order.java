@@ -1,5 +1,8 @@
 package com.enjoywater.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -9,9 +12,9 @@ import java.util.ArrayList;
  * Phone: +84388326555
  * Email: haitongvan@vccorp.vn
  */
-public class Order {
+public class Order implements Parcelable {
     @SerializedName("items")
-    private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Product> items = new ArrayList<>();
     @SerializedName("paymentMethod")
     private String paymentMethod;
     @SerializedName("deliveryClimb")
@@ -39,9 +42,9 @@ public class Order {
     @SerializedName("updatedAt")
     private String updatedAt;
     @SerializedName("userId")
-    private int userId;
+    private String userId;
     @SerializedName("id")
-    private int id;
+    private String id;
     @SerializedName("comment")
     private String comment;
     @SerializedName("rate")
@@ -55,9 +58,9 @@ public class Order {
     @SerializedName("expectedDelivery")
     private String expectedDelivery;
     @SerializedName("createdBy")
-    private int createdBy;
+    private String createdBy;
     @SerializedName("delivererId")
-    private int delivererId;
+    private String delivererId;
     @SerializedName("prepayment")
     private int prepayment;
     @SerializedName("payment")
@@ -67,42 +70,94 @@ public class Order {
     @SerializedName("deliveryFee")
     private int deliveryFee;
 
-    public static class Item {
-        @SerializedName("productId")
-        private String productId;
-        @SerializedName("volume")
-        private int volume;
-
-        public Item(String productId, int volume) {
-            this.productId = productId;
-            this.volume = volume;
-        }
-
-        public int getVolume() {
-            return volume;
-        }
-
-        public void setVolume(int volume) {
-            this.volume = volume;
-        }
-
-        public String getProductId() {
-            return productId;
-        }
-
-        public void setProductId(String productId) {
-            this.productId = productId;
-        }
-    }
-
     public Order() {
     }
 
-    public ArrayList<Item> getItems() {
+    protected Order(Parcel in) {
+        items = in.createTypedArrayList(Product.CREATOR);
+        paymentMethod = in.readString();
+        deliveryClimb = in.readInt();
+        deliveryOpts = in.readString();
+        couponCode = in.readString();
+        orderBySchedule = in.readLong();
+        phone = in.readString();
+        receiverName = in.readString();
+        address = in.readString();
+        district = in.readString();
+        province = in.readString();
+        notes = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        userId = in.readString();
+        id = in.readString();
+        comment = in.readString();
+        rate = in.readInt();
+        received = in.readByte() != 0;
+        status = in.readString();
+        totalPayment = in.readInt();
+        expectedDelivery = in.readString();
+        createdBy = in.readString();
+        delivererId = in.readString();
+        prepayment = in.readInt();
+        payment = in.readInt();
+        discount = in.readInt();
+        deliveryFee = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(items);
+        dest.writeString(paymentMethod);
+        dest.writeInt(deliveryClimb);
+        dest.writeString(deliveryOpts);
+        dest.writeString(couponCode);
+        dest.writeLong(orderBySchedule);
+        dest.writeString(phone);
+        dest.writeString(receiverName);
+        dest.writeString(address);
+        dest.writeString(district);
+        dest.writeString(province);
+        dest.writeString(notes);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(userId);
+        dest.writeString(id);
+        dest.writeString(comment);
+        dest.writeInt(rate);
+        dest.writeByte((byte) (received ? 1 : 0));
+        dest.writeString(status);
+        dest.writeInt(totalPayment);
+        dest.writeString(expectedDelivery);
+        dest.writeString(createdBy);
+        dest.writeString(delivererId);
+        dest.writeInt(prepayment);
+        dest.writeInt(payment);
+        dest.writeInt(discount);
+        dest.writeInt(deliveryFee);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
+
+    public ArrayList<Product> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<Item> items) {
+    public void setItems(ArrayList<Product> items) {
         this.items = items;
     }
 
@@ -210,19 +265,19 @@ public class Order {
         this.updatedAt = updatedAt;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -274,19 +329,19 @@ public class Order {
         this.expectedDelivery = expectedDelivery;
     }
 
-    public int getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    public int getDelivererId() {
+    public String getDelivererId() {
         return delivererId;
     }
 
-    public void setDelivererId(int delivererId) {
+    public void setDelivererId(String delivererId) {
         this.delivererId = delivererId;
     }
 
