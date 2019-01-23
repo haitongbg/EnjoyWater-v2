@@ -25,7 +25,6 @@ import com.enjoywater.R;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
 import com.enjoywater.model.Order;
 import com.enjoywater.model.Product;
-import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
@@ -90,11 +89,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
     TextView textOrderTime;
     @BindView(R.id.iv_order_time)
     ImageView ivOrderTime;
-    @BindView(R.id.tv_created_time)
+    @BindView(R.id.tv_order_time)
     TvRobotoMedium tvCreatedTime;
     @BindView(R.id.text_delivery_time)
     TextView textDeliveryTime;
-    @BindView(R.id.tv_expected_delivery_time)
+    @BindView(R.id.tv_delivery_time)
     TvRobotoMedium tvExpectedDeliveryTime;
     @BindView(R.id.iv_delivery_time)
     ImageView ivDeliveryTime;

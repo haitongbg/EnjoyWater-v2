@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_ripple_grey"
+    android:elevation="@dimen/size_1"
+    android:paddingBottom="@dimen/size_15"
+    android:layout_marginTop="@dimen/size_15"
+    android:visibility="visible"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent">
+
+    <ImageView
+        android:id="@+id/iv_order_code"
+        android:layout_width="@dimen/size_20"
+        android:layout_height="@dimen/size_20"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_15"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_bill"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.enjoywater.view.TvRobotoMedium
+        android:id="@+id/tv_order_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintBottom_toBottomOf="@id/iv_order_code"
+        app:layout_constraintLeft_toRightOf="@id/iv_order_code"
+        app:layout_constraintTop_toTopOf="@id/iv_order_code"
+        app:textAllCaps="true"
+        tools:text="Mã đơn hàng: #CH12345" />
+
+    <com.enjoywater.view.TvRobotoMedium
+        android:id="@+id/tv_order_canceled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:includeFontPadding="false"
+        android:text="- Đã hủy"
+        android:textColor="@color/black_3"
+        android:textSize="@dimen/text_15"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iv_order_code"
+        app:layout_constraintLeft_toRightOf="@id/tv_order_code"
+        app:layout_constraintTop_toTopOf="@id/iv_order_code"
+        app:textAllCaps="true" />
+
+    <View
+        android:id="@+id/view_status_line"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_1"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_40"
+        android:layout_marginRight="@dimen/size_15"
+        android:background="@color/black_c"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_order_code" />
+
+    <ImageView
+        android:id="@+id/iv_status_ordered"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
+        android:layout_marginLeft="@dimen/size_30"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_success"
+        app:layout_constraintBottom_toBottomOf="@id/view_status_line"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toLeftOf="@id/view_status_line"
+        app:layout_constraintRight_toLeftOf="@id/iv_status_confirmed"
+        app:layout_constraintTop_toTopOf="@id/view_status_line" />
+
+    <TextView
+        android:id="@+id/tv_status_ordered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5"
+        android:text="@string/order"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintLeft_toLeftOf="@id/iv_status_ordered"
+        app:layout_constraintRight_toRightOf="@id/iv_status_ordered"
+        app:layout_constraintTop_toBottomOf="@id/iv_status_ordered" />
+
+    <View
+        android:id="@+id/view_status_ordered"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_1"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@id/view_status_line"
+        app:layout_constraintLeft_toLeftOf="@id/view_status_line"
+        app:layout_constraintRight_toLeftOf="@id/iv_status_ordered"
+        app:layout_constraintTop_toTopOf="@id/view_status_line" />
+
+    <ImageView
+        android:id="@+id/iv_status_confirmed"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_unsuccess"
+        app:layout_constraintBottom_toBottomOf="@id/view_status_line"
+        app:layout_constraintLeft_toRightOf="@id/iv_status_ordered"
+        app:layout_constraintRight_toLeftOf="@id/iv_status_delivering"
+        app:layout_constraintTop_toTopOf="@id/view_status_line" />
+
+    <TextView
+        android:id="@+id/tv_status_confirmed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5"
+        android:text="@string/order_confirmed"
+        android:textColor="@color/black_c"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintLeft_toLeftOf="@id/iv_status_confirmed"
+        app:layout_constraintRight_toRightOf="@id/iv_status_confirmed"
+        app:layout_constraintTop_toBottomOf="@id/iv_status_confirmed" />
+
+    <View
+        android:id="@+id/view_status_confirmed"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_1"
+        android:background="@color/black_c"
+        app:layout_constraintBottom_toBottomOf="@id/view_status_line"
+        app:layout_constraintLeft_toRightOf="@id/iv_status_ordered"
+        app:layout_constraintRight_toLeftOf="@id/iv_status_confirmed"
+        app:layout_constraintTop_toTopOf="@id/view_status_line" />
+
+    <ImageView
+        android:id="@+id/iv_status_delivering"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_unsuccess"
+        app:layout_constraintBottom_toBottomOf="@id/view_status_line"
+        app:layout_constraintLeft_toRightOf="@id/iv_status_confirmed"
+        app:layout_constraintRight_toLeftOf="@id/iv_status_received"
+        app:layout_constraintTop_toTopOf="@id/view_status_line" />
+
+    <TextView
+        android:id="@+id/tv_status_delivering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5"
+        android:text="@string/delivering"
+        android:textColor="@color/black_c"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintLeft_toLeftOf="@id/iv_status_delivering"
+        app:layout_constraintRight_toRightOf="@id/iv_status_delivering"
+        app:layout_constraintTop_toBottomOf="@id/iv_status_delivering" />
+
+    <View
+        android:id="@+id/view_status_delivering"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_1"
+        android:background="@color/black_c"
+        app:layout_constraintBottom_toBottomOf="@id/view_status_line"
+        app:layout_constraintLeft_toRightOf="@id/iv_status_confirmed"
+        app:layout_constraintRight_toLeftOf="@id/iv_status_delivering"
+        app:layout_constraintTop_toTopOf="@id/view_status_line" />
+
+    <ImageView
+        android:id="@+id/iv_status_received"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_30"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_unsuccess"
+        app:layout_constraintBottom_toBottomOf="@id/view_status_line"
+        app:layout_constraintLeft_toRightOf="@id/iv_status_delivering"
+        app:layout_constraintRight_toRightOf="@id/view_status_line"
+        app:layout_constraintTop_toTopOf="@id/view_status_line" />
+
+    <TextView
+        android:id="@+id/tv_status_received"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5"
+        android:text="@string/received"
+        android:textColor="@color/black_c"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintLeft_toLeftOf="@id/iv_status_received"
+        app:layout_constraintRight_toRightOf="@id/iv_status_received"
+        app:layout_constraintTop_toBottomOf="@id/iv_status_received" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_under_order_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tv_status_ordered,tv_status_confirmed,tv_status_delivering,tv_status_received" />
+
+    <TextView
+        android:id="@+id/text_order_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_15"
+        android:includeFontPadding="false"
+        android:text="@string/order_time"
+        android:textColor="@color/black_9"
+        android:textSize="@dimen/text_13"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_under_order_status" />
+
+    <ImageView
+        android:id="@+id/iv_order_time"
+        android:layout_width="@dimen/size_15"
+        android:layout_height="@dimen/size_15"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_5"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_clock_blue"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_order_time" />
+
+    <com.enjoywater.view.TvRobotoMedium
+        android:id="@+id/tv_order_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintBottom_toBottomOf="@id/iv_order_time"
+        app:layout_constraintLeft_toRightOf="@id/iv_order_time"
+        app:layout_constraintTop_toTopOf="@id/iv_order_time"
+        tools:text="17:50 14/01/2018" />
+
+    <TextView
+        android:id="@+id/text_delivery_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_15"
+        android:layout_marginRight="@dimen/size_15"
+        android:includeFontPadding="false"
+        android:text="@string/expected_delivery_time"
+        android:textColor="@color/black_9"
+        android:textSize="@dimen/text_13"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_under_order_status" />
+
+    <com.enjoywater.view.TvRobotoMedium
+        android:id="@+id/tv_delivery_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/size_15"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintBottom_toBottomOf="@id/iv_order_time"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_order_time"
+        tools:text="16/01/2018" />
+
+    <ImageView
+        android:id="@+id/iv_delivery_time"
+        android:layout_width="@dimen/size_15"
+        android:layout_height="@dimen/size_15"
+        android:layout_marginRight="@dimen/size_5"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_clock_blue"
+        app:layout_constraintBottom_toBottomOf="@id/iv_order_time"
+        app:layout_constraintRight_toLeftOf="@id/tv_delivery_time"
+        app:layout_constraintTop_toTopOf="@id/iv_order_time" />
+
+    <com.enjoywater.view.TvSegoeuiSemiBold
+        android:id="@+id/text_total_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_10"
+        android:includeFontPadding="false"
+        android:text="@string/total_payment"
+        android:textColor="@color/black_3"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_order_time"
+        app:textAllCaps="false" />
+
+    <com.enjoywater.view.TvSegoeuiSemiBold
+        android:id="@+id/tv_total_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/size_15"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="@dimen/text_17"
+        app:layout_constraintBottom_toBottomOf="@id/text_total_payment"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_total_payment"
+        tools:text="132.000 đ" />
+
+    <Button
+        android:id="@+id/btn_cancel_order"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_25"
+        android:layout_marginRight="@dimen/size_15"
+        android:background="@drawable/bg_btn_login_by_google"
+        android:includeFontPadding="false"
+        android:paddingLeft="@dimen/size_10"
+        android:paddingRight="@dimen/size_10"
+        android:text="@string/cancel_order"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_11"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/iv_order_code"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_order_code" />
+
+    <Button
+        android:id="@+id/btn_go_order_details"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_25"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_15"
+        android:background="@drawable/bg_btn_blue_corner_4"
+        android:includeFontPadding="false"
+        android:paddingLeft="@dimen/size_10"
+        android:paddingRight="@dimen/size_10"
+        android:text="@string/view_details"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_12"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_total_payment" />
+
+    <android.support.constraint.Group
+        android:id="@+id/group_order_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="view_status_line,
+                            iv_status_ordered,tv_status_ordered,view_status_ordered,
+                            iv_status_confirmed,tv_status_confirmed,view_status_confirmed,
+                            iv_status_delivering,tv_status_delivering,view_status_delivering,
+                            iv_status_received,tv_status_received,
+                            barrier_under_order_status,
+                            text_order_time,iv_order_time,tv_order_time,
+                            text_delivery_time,iv_delivery_time,tv_delivery_time,
+                            text_total_payment, tv_total_payment" />
+
+    <android.support.constraint.Group
+        android:id="@+id/group_order_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="view_status_line,
+                            iv_status_ordered,tv_status_ordered,view_status_ordered,
+                            iv_status_confirmed,tv_status_confirmed,view_status_confirmed,
+                            iv_status_delivering,tv_status_delivering,view_status_delivering,
+                            iv_status_received,tv_status_received,
+                            barrier_under_order_status" />
+
+</android.support.constraint.ConstraintLayout>

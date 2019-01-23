@@ -45,7 +45,8 @@
     <string name="delivering">Giao hàng</string>
     <string name="received">Đã nhận</string>
     <string name="order_time">Thời gian đặt hàng</string>
-    <string name="delivery_time">Dự kiến giao hàng</string>
+    <string name="expected_delivery_time">Dự kiến giao hàng</string>
+    <string name="delivered_time">Hoàn thành giao hàng</string>
     <string name="product">Sản phẩm</string>
     <string name="delivery_climb">Giao hàng leo thang bộ</string>
     <string name="total_payment">Tổng thanh toán:</string>
@@ -58,4 +59,7 @@
     <string name="order_success">Đặt hàng thành công!</string>
     <string name="total_price">Tổng tiền</string>
     <string name="coupon">Mã giảm giá</string>
+    <string name="order_history">Lịch sử đơn hàng</string>
+    <string name="loadmore">Đang tải thêm...</string>
+    <string name="view_details">Xem chi tiết</string>
 </resources>

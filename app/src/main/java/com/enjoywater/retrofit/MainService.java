@@ -116,6 +116,12 @@ public interface MainService {
 
     //Order
     @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_LIST_ORDER)
+    Call<BaseResponse> getOrderHistory(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                       @Query(Constants.Key.LIMIT) int limit,
+                                       @Query(Constants.Key.PAGE) int page);
+
+    @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_ORDER_DETAILS)
     Call<BaseResponse> getOrderDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                        @Path(Constants.Key.ORDER_ID) String orderId);

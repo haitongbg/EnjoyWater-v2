@@ -312,7 +312,7 @@
                             app:layout_constraintTop_toBottomOf="@id/text_order_time" />
 
                         <com.enjoywater.view.TvRobotoMedium
-                            android:id="@+id/tv_created_time"
+                            android:id="@+id/tv_order_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
@@ -331,14 +331,14 @@
                             android:layout_marginTop="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
                             android:includeFontPadding="false"
-                            android:text="@string/delivery_time"
+                            android:text="@string/expected_delivery_time"
                             android:textColor="@color/black_9"
                             android:textSize="@dimen/text_13"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/barrier_under_order_status" />
 
                         <com.enjoywater.view.TvRobotoMedium
-                            android:id="@+id/tv_expected_delivery_time"
+                            android:id="@+id/tv_delivery_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
@@ -358,7 +358,7 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_clock_blue"
                             app:layout_constraintBottom_toBottomOf="@id/iv_order_time"
-                            app:layout_constraintRight_toLeftOf="@id/tv_expected_delivery_time"
+                            app:layout_constraintRight_toLeftOf="@id/tv_delivery_time"
                             app:layout_constraintTop_toTopOf="@id/iv_order_time" />
 
                         <android.support.constraint.Group
@@ -372,8 +372,8 @@
                             iv_status_delivering,tv_status_delivering,view_status_delivering,
                             iv_status_received,tv_status_received,
                             barrier_under_order_status,
-                            text_order_time,iv_order_time,tv_created_time,
-                            text_delivery_time,iv_delivery_time,tv_expected_delivery_time" />
+                            text_order_time,iv_order_time,tv_order_time,
+                            text_delivery_time,iv_delivery_time,tv_delivery_time" />
 
 
                     </android.support.constraint.ConstraintLayout>

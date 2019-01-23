@@ -15,9 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -27,8 +28,8 @@ import com.enjoywater.adapter.home.HomeAdapter;
 import com.enjoywater.model.User;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
+import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.TvSegoeuiBold;
-import com.enjoywater.view.TvSegoeuiRegular;
 import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 
@@ -42,6 +43,8 @@ public class HomeFragment extends Fragment {
     ImageView ivAvatar;
     @BindView(R.id.v_center)
     View vCenter;
+    @BindView(R.id.tv_wellcome)
+    TvSegoeuiSemiBold tvWellcome;
     @BindView(R.id.tv_name)
     TvSegoeuiSemiBold tvName;
     @BindView(R.id.tv_promote_point)
@@ -52,8 +55,16 @@ public class HomeFragment extends Fragment {
     AppBarLayout appbar;
     @BindView(R.id.rvHome)
     RecyclerView rvHome;
-    @BindView(R.id.tv_wellcome)
-    TvSegoeuiSemiBold tvWellcome;
+    @BindView(R.id.progress_loading)
+    ProgressWheel progressLoading;
+    @BindView(R.id.layout_loading)
+    RelativeLayout layoutLoading;
+    @BindView(R.id.tv_error)
+    TextView tvError;
+    @BindView(R.id.layout_error)
+    RelativeLayout layoutError;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
     private Context mContext;
     private User mUser;
     private String mToken;
@@ -94,18 +105,19 @@ public class HomeFragment extends Fragment {
             if (name != null && !name.isEmpty()) tvName.setText(name);
             else tvName.setText(R.string.guest);
             String avatar = mUser.getAvatar();
-            if (avatar != null && !avatar.isEmpty()) Glide.with(mContext).load(avatar).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    ivAvatar.setImageResource(R.drawable.ic_logo);
-                    return false;
-                }
+            if (avatar != null && !avatar.isEmpty())
+                Glide.with(mContext).load(avatar).listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        ivAvatar.setImageResource(R.drawable.ic_logo);
+                        return false;
+                    }
 
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    return false;
-                }
-            }).into(ivAvatar);
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                }).into(ivAvatar);
         } else {
             tvWellcome.setVisibility(View.VISIBLE);
             tvName.setVisibility(View.GONE);

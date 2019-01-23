@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/size_8">
+
+    <com.enjoywater.view.ProgressWheel
+        android:id="@+id/progress_loadmore"
+        android:layout_width="@dimen/size_20"
+        android:layout_height="@dimen/size_20"
+        app:matProg_barColor="@color/black_6"
+        app:matProg_barWidth="2dp" />
+
+    <com.enjoywater.view.TvSegoeuiSemiBold
+        android:id="@+id/tv_loadmore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:includeFontPadding="false"
+        android:text="@string/loadmore"
+        android:textColor="@color/black_6"
+        android:textSize="@dimen/text_14" />
+</LinearLayout>

@@ -73,8 +73,13 @@ public class Order implements Parcelable {
     private int discount;
     @SerializedName("deliveryFee")
     private int deliveryFee;
+    private boolean isLoadmore = false;
 
     public Order() {
+    }
+
+    public Order(boolean isLoadmore) {
+        this.isLoadmore = isLoadmore;
     }
 
     protected Order(Parcel in) {
@@ -399,5 +404,13 @@ public class Order implements Parcelable {
 
     public void setDeliveryFee(int deliveryFee) {
         this.deliveryFee = deliveryFee;
+    }
+
+    public boolean isLoadmore() {
+        return isLoadmore;
+    }
+
+    public void setLoadmore(boolean loadmore) {
+        isLoadmore = loadmore;
     }
 }
