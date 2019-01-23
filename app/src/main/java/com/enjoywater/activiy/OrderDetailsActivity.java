@@ -344,6 +344,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             tvStatusDelivering.setTextColor(getResources().getColor(R.color.black_c));
             tvStatusReceived.setTextColor(getResources().getColor(R.color.black_c));
             btnConfirmReceived.setVisibility(View.GONE);
+            textDeliveryTime.setText(R.string.expected_delivery_time);
             //((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_15);
             switch (status) {
                 case Constants.Value.PENDING: {
@@ -392,6 +393,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusDelivering.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusReceived.setTextColor(getResources().getColor(R.color.colorAccent));
+                    textDeliveryTime.setText(R.string.delivered_time);
                     break;
                 }
                 default:
@@ -513,12 +515,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
                         if (cancelOrderResponse.getError() != null && cancelOrderResponse.getError().getMessage() != null && !cancelOrderResponse.getError().getMessage().isEmpty())
                             message = cancelOrderResponse.getError().getMessage();
                         Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                        showContent();
                     }
                 } else {
                     Toast.makeText(OrderDetailsActivity.this, Constants.DataNotify.DATA_ERROR, Toast.LENGTH_SHORT).show();
-                    showContent();
                 }
+                showContent();
             }
 
             @Override
