@@ -16,16 +16,14 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_avatar"
-                android:layout_width="@dimen/size_65"
-                android:layout_height="@dimen/size_65"
+                android:layout_width="@dimen/size_60"
+                android:layout_height="@dimen/size_60"
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/size_15"
-                android:background="@drawable/bg_white_circle"
                 android:clickable="true"
-                android:padding="@dimen/size_5"
-                android:src="@drawable/ic_logo" />
+                android:src="@drawable/avatar_default" />
 
             <View
                 android:id="@+id/v_center"

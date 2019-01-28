@@ -146,6 +146,25 @@ public interface MainService {
     @GET(Constants.Url.GET_COUPON_DETAILS)
     Call<BaseResponse> getCouponDetails(@Path(Constants.Key.CODE) String code);
 
+    // notification
+    @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_LIST_NOTIF)
+    Call<BaseResponse> getListNotify(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                     @Query(Constants.Key.LIMIT) int limit,
+                                     @Query(Constants.Key.PAGE) int page);
+
+    @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_NOTIF_DETAILS)
+    Call<BaseResponse> getNotifyDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                        @Path(Constants.Key.NOTIFY_ID) String notifyId);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.UPDATE_STATUS_NOTIF)
+    Call<BaseResponse> updateNotifyStatus(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                          @Path(Constants.Key.NOTIFY_ID) String notifyId,
+                                          @Field(Constants.Key.STATUS) String status);
+
     //Factory
     class Factory {
         public static MainService create() {

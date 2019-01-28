@@ -77,8 +77,8 @@ public class OrdersFragment extends Fragment {
     private boolean isLoading = false;
 
     public static OrdersFragment newInstance() {
-        OrdersFragment homeFragment = new OrdersFragment();
-        return homeFragment;
+        OrdersFragment ordersFragment = new OrdersFragment();
+        return ordersFragment;
     }
 
     @Override

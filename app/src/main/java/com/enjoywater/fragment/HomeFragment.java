@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,10 +36,11 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
     @BindView(R.id.iv_avatar)
-    ImageView ivAvatar;
+    CircleImageView ivAvatar;
     @BindView(R.id.v_center)
     View vCenter;
     @BindView(R.id.tv_wellcome)
@@ -69,6 +69,12 @@ public class HomeFragment extends Fragment {
     private User mUser;
     private String mToken;
     private Gson gson = new Gson();
+    /*private ArrayList<Order> mOrders = new ArrayList<>();
+    private HistoryOrdersAdapter mOrdersAdapter;
+    private Order itemLoadmore = new Order(true);*/
+    private int mPageIndex = 1;
+    private LinearLayoutManager mLayoutManager;
+    private boolean isLoading = false;
 
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();

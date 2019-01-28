@@ -22,7 +22,7 @@
                 android:layout_width="@dimen/size_45"
                 android:layout_height="@dimen/size_45"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_ripple_click_primary_color"
+                android:background="@drawable/bg_ripple_primary_color"
                 android:clickable="true"
                 android:padding="@dimen/size_15"
                 android:scaleType="centerInside"

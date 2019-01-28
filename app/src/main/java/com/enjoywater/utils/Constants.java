@@ -27,6 +27,10 @@ public class Constants {
         public static final String GET_ORDER_DETAILS = "order/info/{orderId}";
         //Promotion
         public static final String GET_COUPON_DETAILS = "promotion/coupon-info/{code}";
+        //Notify
+        public static final String GET_LIST_NOTIF = "notification/list";
+        public static final String GET_NOTIF_DETAILS = "notification/info/{notifyId}";
+        public static final String UPDATE_STATUS_NOTIF = "notification/update-status/{notifyId}";
     }
 
     public static class Key {
@@ -66,6 +70,8 @@ public class Constants {
         public static final String PAYMENT_METHOD = "paymentMethod";
         public static final String ITEMS = "items";
         public static final String ORDER_ID = "orderId";
+        public static final String NOTIFY_ID = "notifyId";
+        public static final String STATUS = "status";
     }
 
     public static class Value {
@@ -80,6 +86,9 @@ public class Constants {
         public static final String CASH = "cash";
         public static final String COIN = "coin";
         public static final String BILL = "bill";
+        public static final String READ = "read";
+        public static final String UNREAD = "unread";
+        public static final String ORDER = "order";
     }
 
     public static class DataNotify {
