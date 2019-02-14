@@ -1,4 +1,5 @@
 <resources>
+    <string name="server_client_id">269078269723-7lqj6of20rs7603239f0jupneslk91fd.apps.googleusercontent.com</string>
     <string name="app_name">Gọi nước</string>
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>

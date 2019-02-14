@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        /*release {
+        release {
             keyAlias 'haitong'
             keyPassword '1qazxsw2!@#'
             storeFile file('D:/Projects/haitongkeystore.jks')
             storePassword '1qazxsw2!@#'
-        }*/
+        }
     }
     compileSdkVersion 27
     defaultConfig {
@@ -31,6 +31,11 @@ android {
     }
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -63,4 +68,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
 }
+apply plugin: 'com.google.gms.google-services'

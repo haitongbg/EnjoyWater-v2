@@ -2,9 +2,11 @@ package com.enjoywater.utils;
 
 public class Constants {
     public static class Url {
-        public static final String DOMAIN = "http://35.240.146.185:8080/api/app/";
+        public static final String DOMAIN = "http://157.230.38.81:8081/api/app/";
         //User
         public static final String LOGIN = "user/login";
+        public static final String LOGIN_BY_TOKEN = "user/login-by-token";
+        public static final String LOGIN_BY_SOCIAL_ACCESS_TOKEN = "user/login-with-social";
         public static final String REGISTER = "user/register";
         public static final String GET_USER_INFO = "user/profile";
         public static final String UPDATE_USER_INFO = "user/update-info";
@@ -72,6 +74,8 @@ public class Constants {
         public static final String ORDER_ID = "orderId";
         public static final String NOTIFY_ID = "notifyId";
         public static final String STATUS = "status";
+        public static final String SOCIAL_TYPE = "socialType";
+        public static final String ACCESS_TOKEN = "accessToken";
     }
 
     public static class Value {
@@ -89,6 +93,8 @@ public class Constants {
         public static final String READ = "read";
         public static final String UNREAD = "unread";
         public static final String ORDER = "order";
+        public static final String FACEBOOK = "facebook";
+        public static final String GOOGLE = "google";
     }
 
     public static class DataNotify {

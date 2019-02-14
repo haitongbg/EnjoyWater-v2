@@ -17,7 +17,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -35,6 +34,17 @@ public interface MainService {
     @POST(Constants.Url.LOGIN)
     Call<BaseResponse> login(@Field(Constants.Key.EMAIL) String email,
                              @Field(Constants.Key.PASSWORD) String password);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.LOGIN_BY_TOKEN)
+    Call<BaseResponse> loginByToken(@Header(Constants.Key.TOKEN_LOGIN) String token);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.LOGIN_BY_SOCIAL_ACCESS_TOKEN)
+    Call<BaseResponse> loginBySocialAccessToken(@Field(Constants.Key.SOCIAL_TYPE) String socialType,
+                                                @Field(Constants.Key.ACCESS_TOKEN) String accessToken);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
