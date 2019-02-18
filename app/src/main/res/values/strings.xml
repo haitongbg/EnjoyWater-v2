@@ -1,9 +1,12 @@
 <resources>
     <string name="server_client_id">269078269723-7lqj6of20rs7603239f0jupneslk91fd.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">307827609771860</string>
+    <string name="fb_login_protocol_scheme">fb307827609771860</string>
     <string name="app_name">Gọi nước</string>
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="retrieve_password">Lấy lại mật khẩu</string>
+    <string name="retrieve_password_tutorial">Chúng tôi sẽ gửi mật khẩu mới vào email đăng ký tài khoản của bạn. Nếu bạn không nhận được email trong hộp thư đến, hãy thử tìm kiếm ở mục Spam.</string>
     <string name="forget_password">Quên?</string>
     <string name="login">Đăng nhập</string>
     <string name="register">Đăng ký</string>
@@ -24,8 +27,10 @@
     <string name="login_success">Đăng nhập thành công!</string>
     <string name="user_invalid">Tài khoản không tồn tại</string>
     <string name="email_invalid">Email không hợp lệ</string>
+    <string name="phone_invalid">Số điện thoại không hợp lệ</string>
+    <string name="password_invalid">Mật khẩu không hợp lệ</string>
     <string name="data_error">Lỗi dữ liệu, xin thử lại</string>
-    <string name="password_invalid">Mật khẩu không đúng</string>
+    <string name="password_wrong">Mật khẩu không đúng</string>
     <string name="guest">Guest</string>
     <string name="login_by_google">Đăng nhập với Google</string>
     <string name="login_by_facebook">Đăng nhập với facebook</string>
@@ -38,7 +43,7 @@
     <string name="yes">Đồng ý</string>
     <string name="confirm">Xác nhận</string>
     <string name="tutorial_email_active_sent">Một mã xác nhận đã được gửi cho bạn qua Email. Vui lòng điền mã để kích hoạt tài khoản của bạn. Quá trình này có thể mất một vài phút.</string>
-    <string name="tutorial_email_active">Ấn nút Lấy mã ở dưới để nhận được mã xác nhận qua Email:</string>
+    <string name="tutorial_email_active">Tài khoản của bạn cần được kích hoạt để thực hiện giao dịch. Ấn nút Lấy mã để nhận mã kích hoạt qua Email:</string>
     <string name="active">Kích hoạt</string>
     <string name="order_details">Chi tiết đơn hàng</string>
     <string name="cancel_order">Hủy đơn hàng</string>
@@ -63,4 +68,11 @@
     <string name="order_history">Lịch sử đơn hàng</string>
     <string name="loadmore">Đang tải thêm...</string>
     <string name="view_details">Xem chi tiết</string>
+    <string name="tutorial_register">Đăng ký tài khoản để theo dõi đơn hàng và nhận  nhiều ưu đãi hấp dẫn.</string>
+    <string name="register_account">Đăng ký tài khoản</string>
+    <string name="ref_code_tutorial">* Nhập mã giới thiệu từ bạn bè, người thân để nhận chiết khấu hấp dẫn khi đặt hàng</string>
+    <string name="empty_name">Vui lòng nhập họ và tên của bạn.</string>
+    <string name="password_tutorial">* Mật khẩu chứa ít nhất 6 ký tự, bao gồm chữ số, chữ thường và chữ in hoa.</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="not_login_yet">Vui lòng đăng nhập để sử dụng chức năng này.</string>
 </resources>

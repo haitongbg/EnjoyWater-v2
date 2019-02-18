@@ -28,14 +28,13 @@ import retrofit2.http.Query;
  */
 
 public interface MainService {
-    //User
+    //UserInfo
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.LOGIN)
     Call<BaseResponse> login(@Field(Constants.Key.EMAIL) String email,
                              @Field(Constants.Key.PASSWORD) String password);
 
-    @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.LOGIN_BY_TOKEN)
     Call<BaseResponse> loginByToken(@Header(Constants.Key.TOKEN_LOGIN) String token);

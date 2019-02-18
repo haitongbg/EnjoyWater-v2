@@ -3,7 +3,7 @@ package com.enjoywater.utils;
 public class Constants {
     public static class Url {
         public static final String DOMAIN = "http://157.230.38.81:8081/api/app/";
-        //User
+        //UserInfo
         public static final String LOGIN = "user/login";
         public static final String LOGIN_BY_TOKEN = "user/login-by-token";
         public static final String LOGIN_BY_SOCIAL_ACCESS_TOKEN = "user/login-with-social";

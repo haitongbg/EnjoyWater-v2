@@ -261,11 +261,20 @@ public class Utils {
         String stringUser = Utils.getString(context, Constants.Key.USER, "");
         if (!stringUser.isEmpty()) {
             User user = (new Gson()).fromJson(stringUser, User.class);
-            if (user != null && user.getId() != null) {
+            if (user != null && user.getToken() != null && !user.getToken().isEmpty() && user.getUserInfo() != null) {
                 return user;
             }
         }
         return null;
+    }
+
+    public static String getToken(Context context) {
+        String stringUser = Utils.getString(context, Constants.Key.USER, "");
+        if (!stringUser.isEmpty()) {
+            User user = (new Gson()).fromJson(stringUser, User.class);
+            if (user != null && user.getToken() != null) return ("Bearer " + user.getToken());
+        }
+        return "";
     }
 
     public static void removeString(Context context, String key) {

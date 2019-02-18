@@ -189,7 +189,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_details);
         ButterKnife.bind(this);
         mainService = MyApplication.getInstance().getMainService();
-        mToken = Utils.getString(this, Constants.Key.TOKEN, "");
+        mToken = Utils.getToken(this);
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("order")) mOrder = intent.getParcelableExtra("order");

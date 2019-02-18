@@ -7,104 +7,24 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class User implements Parcelable {
-    @SerializedName("updatedAt")
-    private String updatedAt;
-    @SerializedName("createdAt")
-    private String createdAt;
-    @SerializedName("enablePaymentBill")
-    private boolean enablePaymentBill;
-    @SerializedName("status")
-    private String status;
-    @SerializedName("activated")
-    private boolean activated;
-    @SerializedName("gender")
-    private String gender;
-    @SerializedName("group")
-    private String group;
-    @SerializedName("phone")
-    private String phone;
-    @SerializedName("emailVerified")
-    private boolean emailVerified;
-    @SerializedName("id")
-    private String id;
-    @SerializedName("coin")
-    private int coin;
-    @SerializedName("refId")
-    private String refId;
-    @SerializedName("myCode")
-    private String myCode;
-    @SerializedName("birthday")
-    private String birthday;
-    @SerializedName("address")
-    private String address;
-    @SerializedName("otherAddress")
-    private ArrayList<Address> otherAddress = new ArrayList<>();
-    @SerializedName("avatar")
-    private String avatar;
-    @SerializedName("passport")
-    private String passport;
-    @SerializedName("levelInfo")
-    private LevelInfo levelInfo;
-    @SerializedName("email")
-    private String email;
-    @SerializedName("username")
-    private String username;
-    @SerializedName("name")
-    private String name;
+public class User implements Parcelable{
+    @SerializedName("userInfo")
+    private UserInfo userInfo;
+    @SerializedName("token")
+    private String token;
 
     public User() {
     }
 
     protected User(Parcel in) {
-        updatedAt = in.readString();
-        createdAt = in.readString();
-        enablePaymentBill = in.readByte() != 0;
-        status = in.readString();
-        activated = in.readByte() != 0;
-        gender = in.readString();
-        group = in.readString();
-        phone = in.readString();
-        emailVerified = in.readByte() != 0;
-        id = in.readString();
-        coin = in.readInt();
-        refId = in.readString();
-        myCode = in.readString();
-        birthday = in.readString();
-        address = in.readString();
-        otherAddress = in.createTypedArrayList(Address.CREATOR);
-        avatar = in.readString();
-        passport = in.readString();
-        levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
-        email = in.readString();
-        username = in.readString();
-        name = in.readString();
+        userInfo = in.readParcelable(UserInfo.class.getClassLoader());
+        token = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(updatedAt);
-        dest.writeString(createdAt);
-        dest.writeByte((byte) (enablePaymentBill ? 1 : 0));
-        dest.writeString(status);
-        dest.writeByte((byte) (activated ? 1 : 0));
-        dest.writeString(gender);
-        dest.writeString(group);
-        dest.writeString(phone);
-        dest.writeByte((byte) (emailVerified ? 1 : 0));
-        dest.writeString(id);
-        dest.writeInt(coin);
-        dest.writeString(refId);
-        dest.writeString(myCode);
-        dest.writeString(birthday);
-        dest.writeString(address);
-        dest.writeTypedList(otherAddress);
-        dest.writeString(avatar);
-        dest.writeString(passport);
-        dest.writeParcelable(levelInfo, flags);
-        dest.writeString(email);
-        dest.writeString(username);
-        dest.writeString(name);
+        dest.writeParcelable(userInfo, flags);
+        dest.writeString(token);
     }
 
     @Override
@@ -124,179 +44,313 @@ public class User implements Parcelable {
         }
     };
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getToken() {
+        return token;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public boolean isEnablePaymentBill() {
-        return enablePaymentBill;
-    }
+    public static class UserInfo implements Parcelable {
+        @SerializedName("updatedAt")
+        private String updatedAt;
+        @SerializedName("createdAt")
+        private String createdAt;
+        @SerializedName("enablePaymentBill")
+        private boolean enablePaymentBill;
+        @SerializedName("status")
+        private String status;
+        @SerializedName("activated")
+        private boolean activated;
+        @SerializedName("gender")
+        private String gender;
+        @SerializedName("group")
+        private String group;
+        @SerializedName("phone")
+        private String phone;
+        @SerializedName("emailVerified")
+        private boolean emailVerified;
+        @SerializedName("id")
+        private String id;
+        @SerializedName("coin")
+        private int coin;
+        @SerializedName("refId")
+        private String refId;
+        @SerializedName("myCode")
+        private String myCode;
+        @SerializedName("birthday")
+        private String birthday;
+        @SerializedName("address")
+        private String address;
+        @SerializedName("otherAddress")
+        private ArrayList<Address> otherAddress = new ArrayList<>();
+        @SerializedName("avatar")
+        private String avatar;
+        @SerializedName("passport")
+        private String passport;
+        @SerializedName("levelInfo")
+        private LevelInfo levelInfo;
+        @SerializedName("email")
+        private String email;
+        @SerializedName("username")
+        private String username;
+        @SerializedName("name")
+        private String name;
 
-    public void setEnablePaymentBill(boolean enablePaymentBill) {
-        this.enablePaymentBill = enablePaymentBill;
-    }
+        public UserInfo() {
+        }
 
-    public String getStatus() {
-        return status;
-    }
+        protected UserInfo(Parcel in) {
+            updatedAt = in.readString();
+            createdAt = in.readString();
+            enablePaymentBill = in.readByte() != 0;
+            status = in.readString();
+            activated = in.readByte() != 0;
+            gender = in.readString();
+            group = in.readString();
+            phone = in.readString();
+            emailVerified = in.readByte() != 0;
+            id = in.readString();
+            coin = in.readInt();
+            refId = in.readString();
+            myCode = in.readString();
+            birthday = in.readString();
+            address = in.readString();
+            otherAddress = in.createTypedArrayList(Address.CREATOR);
+            avatar = in.readString();
+            passport = in.readString();
+            levelInfo = in.readParcelable(LevelInfo.class.getClassLoader());
+            email = in.readString();
+            username = in.readString();
+            name = in.readString();
+        }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(updatedAt);
+            dest.writeString(createdAt);
+            dest.writeByte((byte) (enablePaymentBill ? 1 : 0));
+            dest.writeString(status);
+            dest.writeByte((byte) (activated ? 1 : 0));
+            dest.writeString(gender);
+            dest.writeString(group);
+            dest.writeString(phone);
+            dest.writeByte((byte) (emailVerified ? 1 : 0));
+            dest.writeString(id);
+            dest.writeInt(coin);
+            dest.writeString(refId);
+            dest.writeString(myCode);
+            dest.writeString(birthday);
+            dest.writeString(address);
+            dest.writeTypedList(otherAddress);
+            dest.writeString(avatar);
+            dest.writeString(passport);
+            dest.writeParcelable(levelInfo, flags);
+            dest.writeString(email);
+            dest.writeString(username);
+            dest.writeString(name);
+        }
 
-    public boolean isActivated() {
-        return activated;
-    }
+        @Override
+        public int describeContents() {
+            return 0;
+        }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
+        public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
+            @Override
+            public UserInfo createFromParcel(Parcel in) {
+                return new UserInfo(in);
+            }
 
-    public String getGender() {
-        return gender;
-    }
+            @Override
+            public UserInfo[] newArray(int size) {
+                return new UserInfo[size];
+            }
+        };
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+        public String getUpdatedAt() {
+            return updatedAt;
+        }
 
-    public String getGroup() {
-        return group;
-    }
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
+        }
 
-    public void setGroup(String group) {
-        this.group = group;
-    }
+        public String getCreatedAt() {
+            return createdAt;
+        }
 
-    public String getPhone() {
-        return phone;
-    }
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
+        }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+        public boolean isEnablePaymentBill() {
+            return enablePaymentBill;
+        }
 
-    public boolean isEmailVerified() {
-        return emailVerified;
-    }
+        public void setEnablePaymentBill(boolean enablePaymentBill) {
+            this.enablePaymentBill = enablePaymentBill;
+        }
 
-    public void setEmailVerified(boolean emailVerified) {
-        this.emailVerified = emailVerified;
-    }
+        public String getStatus() {
+            return status;
+        }
 
-    public String getId() {
-        return id;
-    }
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+        public boolean isActivated() {
+            return activated;
+        }
 
-    public int getCoin() {
-        return coin;
-    }
+        public void setActivated(boolean activated) {
+            this.activated = activated;
+        }
 
-    public void setCoin(int coin) {
-        this.coin = coin;
-    }
+        public String getGender() {
+            return gender;
+        }
 
-    public String getRefId() {
-        return refId;
-    }
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
 
-    public void setRefId(String refId) {
-        this.refId = refId;
-    }
+        public String getGroup() {
+            return group;
+        }
 
-    public String getMyCode() {
-        return myCode;
-    }
+        public void setGroup(String group) {
+            this.group = group;
+        }
 
-    public void setMyCode(String myCode) {
-        this.myCode = myCode;
-    }
+        public String getPhone() {
+            return phone;
+        }
 
-    public String getBirthday() {
-        return birthday;
-    }
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
+        public boolean isEmailVerified() {
+            return emailVerified;
+        }
 
-    public String getAddress() {
-        return address;
-    }
+        public void setEmailVerified(boolean emailVerified) {
+            this.emailVerified = emailVerified;
+        }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+        public String getId() {
+            return id;
+        }
 
-    public ArrayList<Address> getOtherAddress() {
-        return otherAddress;
-    }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-    public void setOtherAddress(ArrayList<Address> otherAddress) {
-        this.otherAddress = otherAddress;
-    }
+        public int getCoin() {
+            return coin;
+        }
 
-    public String getAvatar() {
-        return avatar;
-    }
+        public void setCoin(int coin) {
+            this.coin = coin;
+        }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+        public String getRefId() {
+            return refId;
+        }
 
-    public String getPassport() {
-        return passport;
-    }
+        public void setRefId(String refId) {
+            this.refId = refId;
+        }
 
-    public void setPassport(String passport) {
-        this.passport = passport;
-    }
+        public String getMyCode() {
+            return myCode;
+        }
 
-    public LevelInfo getLevelInfo() {
-        return levelInfo;
-    }
+        public void setMyCode(String myCode) {
+            this.myCode = myCode;
+        }
 
-    public void setLevelInfo(LevelInfo levelInfo) {
-        this.levelInfo = levelInfo;
-    }
+        public String getBirthday() {
+            return birthday;
+        }
 
-    public String getEmail() {
-        return email;
-    }
+        public void setBirthday(String birthday) {
+            this.birthday = birthday;
+        }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        public String getAddress() {
+            return address;
+        }
 
-    public String getUsername() {
-        return username;
-    }
+        public void setAddress(String address) {
+            this.address = address;
+        }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+        public ArrayList<Address> getOtherAddress() {
+            return otherAddress;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public void setOtherAddress(ArrayList<Address> otherAddress) {
+            this.otherAddress = otherAddress;
+        }
 
-    public void setName(String name) {
-        this.name = name;
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        public String getPassport() {
+            return passport;
+        }
+
+        public void setPassport(String passport) {
+            this.passport = passport;
+        }
+
+        public LevelInfo getLevelInfo() {
+            return levelInfo;
+        }
+
+        public void setLevelInfo(LevelInfo levelInfo) {
+            this.levelInfo = levelInfo;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.enjoywater.view;
+package com.enjoywater.view.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -26,6 +26,7 @@ import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
+import com.enjoywater.view.ProgressWheel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,23 +35,27 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DialogActiveAccount {
-    @BindView(R.id.layout_content)
-    RelativeLayout layoutContent;
-    @BindView(R.id.progress_loading)
-    ProgressWheel progressLoading;
+public class DialogRetrivePassword {
     @BindView(R.id.btn_close)
     ImageView btnClose;
     @BindView(R.id.tv_tutorial)
     TextView tvTutorial;
-    @BindView(R.id.tv_email)
-    TvSegoeuiSemiBold tvEmail;
     @BindView(R.id.edt_active_code)
     EditText edtActiveCode;
-    @BindView(R.id.btn_get_active_code)
-    Button btnGetActiveCode;
-    @BindView(R.id.btn_active)
-    Button btnActive;
+    @BindView(R.id.btn_get_password)
+    Button btnGetPassword;
+    @BindView(R.id.edt_password)
+    EditText edtPassword;
+    @BindView(R.id.edt_new_password)
+    EditText edtNewPassword;
+    @BindView(R.id.edt_new_password_confirm)
+    EditText edtNewPasswordConfirm;
+    @BindView(R.id.btn_change_password)
+    Button btnChangePassword;
+    @BindView(R.id.layout_content)
+    RelativeLayout layoutContent;
+    @BindView(R.id.progress_loading)
+    ProgressWheel progressLoading;
     private Context mContext;
     private MainService mainService;
     private Dialog mDialog;
@@ -60,13 +65,13 @@ public class DialogActiveAccount {
     private boolean isLoading, isDelaying;
     private long mDelaySending;
 
-    public DialogActiveAccount(Context context, Handler callbackHandler, long delaySending) {
+    public DialogRetrivePassword(Context context, Handler callbackHandler, long delaySending) {
         mContext = context;
         mainService = MyApplication.getInstance().getMainService();
         mCallBackHandler = callbackHandler;
         mDelaySending = delaySending;
         mUser = Utils.getUser(mContext);
-        mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+        mToken = Utils.getToken(mContext);
         initUI();
     }
 
@@ -76,8 +81,8 @@ public class DialogActiveAccount {
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setCancelable(false);
-        mDialog.setContentView(R.layout.dialog_active_account);
-        ButterKnife.bind(DialogActiveAccount.this, mDialog);
+        mDialog.setContentView(R.layout.dialog_retrive_password);
+        ButterKnife.bind(DialogRetrivePassword.this, mDialog);
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_up_over_screen);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -125,35 +130,32 @@ public class DialogActiveAccount {
             });
             layoutContent.startAnimation(endAnimation);
         });
-        btnGetActiveCode.setOnClickListener(v -> {
-            getActiveCode();
+        btnGetPassword.setOnClickListener(v -> {
+            getPassword();
         });
-        btnActive.setOnClickListener(v -> {
+        btnChangePassword.setOnClickListener(v -> {
             String code = edtActiveCode.getText().toString();
             if (code.isEmpty()) {
                 Toast.makeText(mContext, "Vui lòng nhập mã kích hoạt", Toast.LENGTH_SHORT).show();
             } else {
-                active(code);
+                changePassword(code);
             }
         });
-
-        tvEmail.setText(mUser.getEmail().substring(0, 3) + "*****@gmail.com");
         if (mDelaySending < 1000) {
             isDelaying = false;
             mDelaySending = 0;
-            tvTutorial.setText(R.string.tutorial_email_active);
-            btnGetActiveCode.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_green_corner_4));
-            btnGetActiveCode.setTextColor(mContext.getResources().getColor(R.color.white));
-            btnGetActiveCode.setText("Lấy mã");
+            btnGetPassword.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_green_corner_4));
+            btnGetPassword.setTextColor(mContext.getResources().getColor(R.color.white));
+            btnGetPassword.setText("Lấy mật khẩu");
         } else delaySending(mDelaySending);
         mDialog.show();
     }
 
-    private void getActiveCode() {
+    private void getPassword() {
         if (!isLoading && !isDelaying) {
             isLoading = true;
             progressLoading.setVisibility(View.VISIBLE);
-            Call<BaseResponse> getActiveCode = mainService.getActiveCode(mUser.getEmail());
+            Call<BaseResponse> getActiveCode = mainService.getActiveCode(mUser.getUserInfo().getEmail());
             getActiveCode.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -186,27 +188,26 @@ public class DialogActiveAccount {
 
     private void delaySending(long delayCount) {
         isDelaying = true;
-        tvTutorial.setText(R.string.tutorial_email_active_sent);
-        btnGetActiveCode.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_grey_corner_4));
-        btnGetActiveCode.setTextColor(mContext.getResources().getColor(R.color.black_9));
-        btnGetActiveCode.setText("Chờ " + delayCount / 1000 + "s");
+        btnGetPassword.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_grey_corner_4));
+        btnGetPassword.setTextColor(mContext.getResources().getColor(R.color.black_9));
+        btnGetPassword.setText("Chờ " + delayCount / 1000 + "s");
         new CountDownTimer(delayCount, 1000) {
             public void onTick(long millisUntilFinished) {
-                btnGetActiveCode.setText("Chờ " + millisUntilFinished / 1000 + "s");
+                btnGetPassword.setText("Chờ " + millisUntilFinished / 1000 + "s");
                 mDelaySending = millisUntilFinished;
             }
 
             public void onFinish() {
                 isDelaying = false;
                 mDelaySending = 0;
-                btnGetActiveCode.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_green_corner_4));
-                btnGetActiveCode.setTextColor(mContext.getResources().getColor(R.color.white));
-                btnGetActiveCode.setText("Lấy mã");
+                btnGetPassword.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_green_corner_4));
+                btnGetPassword.setTextColor(mContext.getResources().getColor(R.color.white));
+                btnGetPassword.setText("Lấy mật khẩu");
             }
         }.start();
     }
 
-    private void active(String code) {
+    private void changePassword(String code) {
         isLoading = true;
         progressLoading.setVisibility(View.VISIBLE);
         layoutContent.setVisibility(View.GONE);

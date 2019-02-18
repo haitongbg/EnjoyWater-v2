@@ -14,17 +14,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enjoywater.R;
+import com.enjoywater.activiy.LoginActivity;
+import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.adapter.notify.NotifyAdapter;
 import com.enjoywater.listener.NotifyListener;
 import com.enjoywater.model.Notify;
-import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
@@ -59,9 +61,10 @@ public class NotifyFragment extends Fragment {
     RelativeLayout layoutError;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.btn_login)
+    Button btnLogin;
     private Context mContext;
     private MainService mainService;
-    private User mUser;
     private String mToken;
     private Gson gson = new Gson();
     private ArrayList<Notify> mNotifies = new ArrayList<>();
@@ -81,8 +84,7 @@ public class NotifyFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = getContext();
         mainService = MyApplication.getInstance().getMainService();
-        mUser = Utils.getUser(mContext);
-        mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+        mToken = Utils.getToken(mContext);
     }
 
     @Override
@@ -144,8 +146,18 @@ public class NotifyFragment extends Fragment {
                 }
             }
         });
-        showLoading(true);
-        getNotificationHistory();
+        btnLogin.setOnClickListener(v -> {
+            if (!isLoading) {
+                startActivityForResult(new Intent(mContext, LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
+                (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
+            }
+        });
+        if (mToken.isEmpty()) {
+            showError(getString(R.string.not_login_yet));
+        } else {
+            showLoading(true);
+            getNotificationHistory();
+        }
     }
 
     private void getNotificationHistory() {
@@ -257,6 +269,9 @@ public class NotifyFragment extends Fragment {
             rvNotif.setVisibility(View.GONE);
             layoutError.setVisibility(View.VISIBLE);
             tvError.setText(error);
+            if (error.equals(getString(R.string.not_login_yet)))
+                btnLogin.setVisibility(View.VISIBLE);
+            else btnLogin.setVisibility(View.GONE);
         }
     }
 
@@ -272,7 +287,8 @@ public class NotifyFragment extends Fragment {
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                     }
-                    default:break;
+                    default:
+                        break;
                 }
                 notify.setStatus(Constants.Value.READ);
                 updateNotifyStatus(notify);
@@ -321,6 +337,16 @@ public class NotifyFragment extends Fragment {
                 if (mNotifyAdapter != null) mNotifyAdapter.notifyItemChanged(i);
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
+            mToken = Utils.getToken(mContext);
+            showLoading(true);
+            getNotificationHistory();
         }
     }
 }

@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.enjoywater.R;
 import com.enjoywater.activiy.LoginActivity;
+import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.adapter.product.ProductAdapter;
@@ -49,8 +50,8 @@ import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
-import com.enjoywater.view.DialogActiveAccount;
-import com.enjoywater.view.DialogOrderAddress;
+import com.enjoywater.view.dialog.DialogActiveAccount;
+import com.enjoywater.view.dialog.DialogOrderAddress;
 import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
 import com.enjoywater.view.TvSegoeuiSemiBold;
@@ -68,7 +69,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductFragment extends Fragment {
-    public static final int REQUEST_CODE_LOGIN_FROM_PRODUCT = 111;
     public static final int REQUEST_CODE_ADDRESS = 112;
     public static final int SHIP_TYPE_2H = 1;
     public static final int SHIP_TYPE_24H = 2;
@@ -172,7 +172,6 @@ public class ProductFragment extends Fragment {
     private String mCouponCode = "";
     private DecimalFormat formatVND = new DecimalFormat("###,###,###");
     private DecimalFormat formatPercent = new DecimalFormat("#.0");
-    private long delaySendingActiveCode = 0;
 
     public static ProductFragment newInstance() {
         ProductFragment productFragment = new ProductFragment();
@@ -185,7 +184,7 @@ public class ProductFragment extends Fragment {
         mContext = getContext();
         mainService = MyApplication.getInstance().getMainService();
         mUser = Utils.getUser(mContext);
-        mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+        mToken = Utils.getToken(mContext);
         mCities = MyApplication.getInstance().getCities();
     }
 
@@ -392,8 +391,8 @@ public class ProductFragment extends Fragment {
     }
 
     private void setDataAddress() {
-        if (mUser != null && mUser.getOtherAddress() != null && !mUser.getOtherAddress().isEmpty()) {
-            mAddress = mUser.getOtherAddress().get(0);
+        if (mUser != null && mUser.getUserInfo().getOtherAddress() != null && !mUser.getUserInfo().getOtherAddress().isEmpty()) {
+            mAddress = mUser.getUserInfo().getOtherAddress().get(0);
             if (mAddress != null) {
                 String name = mAddress.getName();
                 tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
@@ -651,6 +650,7 @@ public class ProductFragment extends Fragment {
     }
 
     private CountDownTimer countDownDelaySending;
+    private long delaySendingActiveCode = 0;
 
     @SuppressLint("HandlerLeak")
     private void validateOrder() {
@@ -658,13 +658,13 @@ public class ProductFragment extends Fragment {
             Toast.makeText(mContext, "Vui lòng chọn sản phẩm", Toast.LENGTH_SHORT).show();
         } else if (mTotalProductsPrice <= 0) {
             Toast.makeText(mContext, "Vui lòng đặt số lượng sản phẩm", Toast.LENGTH_SHORT).show();
-        } else if (mUser == null || mToken == null || mToken.isEmpty()) {
+        } else if (mUser == null || mToken.isEmpty()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage("Vui lòng đăng nhập để tiến hành đặt hàng.")
                     .setCancelable(false)
                     .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            startActivityForResult(new Intent(mContext, LoginActivity.class), REQUEST_CODE_LOGIN_FROM_PRODUCT);
+                            startActivityForResult(new Intent(mContext, LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
                             (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
                         }
                     })
@@ -675,7 +675,7 @@ public class ProductFragment extends Fragment {
                     });
             AlertDialog alert = builder.create();
             alert.show();
-        } else if (!mUser.isActivated()) {
+        } else if (!mUser.getUserInfo().isActivated()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage("Vui lòng kích hoạt tài khoản của bạn để tiến hành đặt hàng.")
                     .setCancelable(false)
@@ -686,7 +686,7 @@ public class ProductFragment extends Fragment {
                                 public void handleMessage(Message msg) {
                                     super.handleMessage(msg);
                                     if (msg.what == Constants.Value.ACTION_SUCCESS) {
-                                        mUser.setActivated(true);
+                                        mUser.getUserInfo().setActivated(true);
                                         Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
                                         //validateOrder();
                                     } else if (msg.what == Constants.Value.ACTION_CLOSE) {
@@ -720,14 +720,14 @@ public class ProductFragment extends Fragment {
                     super.handleMessage(msg);
                     if (msg.what == Constants.Value.ACTION_SUCCESS) {
                         Address address = (Address) msg.obj;
-                        mUser.getOtherAddress().add(address);
+                        mUser.getUserInfo().getOtherAddress().add(address);
                         Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
                         setDataAddress();
                         //validateOrder();
                     }
                 }
             });
-        } else if (checkboxPayByCoin.isChecked() && mUser.getCoin() < mTotalPrice) {
+        } else if (checkboxPayByCoin.isChecked() && mUser.getUserInfo().getCoin() < mTotalPrice) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage("Điểm thưởng của bạn không đủ để thanh toán đơn hàng này. \n\nThanh toán bằng t iền mặt?")
                     .setCancelable(false)
@@ -835,10 +835,11 @@ public class ProductFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_LOGIN_FROM_PRODUCT && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
+        if (requestCode == MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
+            //Toast.makeText(mContext, "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
             mUser = Utils.getUser(mContext);
-            mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+            mToken = Utils.getToken(mContext);
             setDataAddress();
-        } else Toast.makeText(mContext, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+        } //else Toast.makeText(mContext, "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
     }
 }

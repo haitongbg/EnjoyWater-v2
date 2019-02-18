@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_trans_50">
+
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_20"
+        android:layout_marginBottom="@dimen/size_30"
+        android:background="@drawable/bg_blackf1_corner_4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_save"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/bg_white_corner_4"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_45"
+                android:background="@drawable/bg_blue_corner_4_top"
+                android:elevation="@dimen/size_2"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.enjoywater.view.TvSegoeuiSemiBold
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:text="@string/register_account"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_17" />
+
+                <ImageView
+                    android:id="@+id/btn_close"
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
+                    android:clickable="true"
+                    android:padding="@dimen/size_15"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_close_white" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_tutorial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:layout_marginRight="@dimen/size_10"
+                android:text="@string/tutorial_register"
+                android:textColor="@color/black_6"
+                android:textSize="@dimen/text_15" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_15"
+                android:layout_marginTop="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_15">
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_30"
+                    android:background="@null"
+                    android:hint="@string/fullname"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/black_9"
+                    android:textCursorDrawable="@drawable/cursor_blue_1dp"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_below="@id/edt_name"
+                    android:layout_marginTop="@dimen/size_3"
+                    android:background="@color/black_c" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_15"
+                android:layout_marginTop="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_15">
+
+                <EditText
+                    android:id="@+id/edt_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_30"
+                    android:background="@null"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/black_9"
+                    android:textCursorDrawable="@drawable/cursor_blue_1dp"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_below="@id/edt_email"
+                    android:layout_marginTop="@dimen/size_3"
+                    android:background="@color/black_c" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_15"
+                android:layout_marginTop="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_15">
+
+                <EditText
+                    android:id="@+id/edt_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_30"
+                    android:background="@null"
+                    android:hint="@string/phone"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/black_9"
+                    android:textCursorDrawable="@drawable/cursor_blue_1dp"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_below="@id/edt_phone"
+                    android:layout_marginTop="@dimen/size_3"
+                    android:background="@color/black_c" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_15"
+                android:layout_marginTop="@dimen/size_10"
+                android:layout_marginRight="@dimen/size_15">
+
+                <EditText
+                    android:id="@+id/edt_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_30"
+                    android:background="@null"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/black_9"
+                    android:textCursorDrawable="@drawable/cursor_blue_1dp"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_0_5"
+                    android:layout_below="@id/edt_password"
+                    android:layout_marginTop="@dimen/size_3"
+                    android:background="@color/black_c" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_password_tutorial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:layout_marginRight="@dimen/size_10"
+                android:text="@string/password_tutorial"
+                android:textColor="@color/black_6"
+                android:textSize="@dimen/text_13" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_45"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_btn_green_corner_4_bottom"
+            android:elevation="@dimen/size_2"
+            android:text="@string/register"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <com.enjoywater.view.ProgressWheel
+        android:id="@+id/progress_loading"
+        android:layout_width="@dimen/size_45"
+        android:layout_height="@dimen/size_45"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:matProg_barColor="@color/colorAccent"
+        app:matProg_barWidth="@dimen/size_2_5" />
+</RelativeLayout>

@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int REQUEST_CODE_LOGIN_FROM_MAIN = 111;
     int[] tabDrawableOn = {R.drawable.ic_tab_home_active, R.drawable.ic_tab_product_active, R.drawable.ic_tab_orders_active, R.drawable.ic_tab_notif_active, R.drawable.ic_tab_personal_active};
     int[] tabDrawableOff = {R.drawable.ic_tab_home, R.drawable.ic_tab_product, R.drawable.ic_tab_orders, R.drawable.ic_tab_notif, R.drawable.ic_tab_personal};
     HomeFragment homeFragment;

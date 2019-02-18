@@ -67,14 +67,6 @@ public class HomeFragment extends Fragment {
     SwipeRefreshLayout swipeRefresh;
     private Context mContext;
     private User mUser;
-    private String mToken;
-    private Gson gson = new Gson();
-    /*private ArrayList<Order> mOrders = new ArrayList<>();
-    private HistoryOrdersAdapter mOrdersAdapter;
-    private Order itemLoadmore = new Order(true);*/
-    private int mPageIndex = 1;
-    private LinearLayoutManager mLayoutManager;
-    private boolean isLoading = false;
 
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();
@@ -86,7 +78,6 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = getContext();
         mUser = Utils.getUser(mContext);
-        mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
     }
 
     @Override
@@ -103,14 +94,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void initUI() {
-        if (mUser != null && mUser.getId() != null && !mUser.getId().isEmpty() && mToken != null && !mToken.isEmpty()) {
+        if (mUser != null) {
             tvWellcome.setVisibility(View.GONE);
             tvName.setVisibility(View.VISIBLE);
             layoutPromotePoint.setVisibility(View.VISIBLE);
-            String name = mUser.getName();
+            String name = mUser.getUserInfo().getName();
             if (name != null && !name.isEmpty()) tvName.setText(name);
             else tvName.setText(R.string.guest);
-            String avatar = mUser.getAvatar();
+            String avatar = mUser.getUserInfo().getAvatar();
             if (avatar != null && !avatar.isEmpty())
                 Glide.with(mContext).load(avatar).listener(new RequestListener<Drawable>() {
                     @Override

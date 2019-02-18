@@ -1,9 +1,8 @@
-package com.enjoywater.view;
+package com.enjoywater.view.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -37,6 +36,7 @@ import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
+import com.enjoywater.view.ProgressWheel;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,6 @@ import retrofit2.Response;
 
 
 public class DialogOrderAddress {
-
     @BindView(R.id.btn_close)
     ImageView btnClose;
     @BindView(R.id.edt_name)
@@ -100,7 +99,7 @@ public class DialogOrderAddress {
         mainService = MyApplication.getInstance().getMainService();
         mCallBackHandler = callbackHandler;
         mUser = Utils.getUser(mContext);
-        mToken = Utils.getString(mContext, Constants.Key.TOKEN, "");
+        mToken = Utils.getToken(mContext);
         mCities = MyApplication.getInstance().getCities();
         initUI();
     }
@@ -150,10 +149,10 @@ public class DialogOrderAddress {
         rvDistrict.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false));
         rvWard.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false));
         if (mUser != null) {
-            if (mUser.getName() != null && !mUser.getName().isEmpty())
-                edtName.setText(mUser.getName());
-            if (mUser.getPhone() != null && !mUser.getPhone().isEmpty())
-                edtPhone.setText(mUser.getPhone());
+            if (mUser.getUserInfo().getName() != null && !mUser.getUserInfo().getName().isEmpty())
+                edtName.setText(mUser.getUserInfo().getName());
+            if (mUser.getUserInfo().getPhone() != null && !mUser.getUserInfo().getPhone().isEmpty())
+                edtPhone.setText(mUser.getUserInfo().getPhone());
         }
         btnSelectCity.setOnClickListener(v -> {
             showListCity();
