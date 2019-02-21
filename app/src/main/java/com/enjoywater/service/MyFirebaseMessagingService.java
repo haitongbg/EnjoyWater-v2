@@ -7,6 +7,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.enjoywater.R;
+import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.activiy.SplashActivity;
 import com.enjoywater.model.MyNotification;
 import com.enjoywater.utils.Constants;
@@ -20,9 +21,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.e(TAG, "onMessageReceived" + remoteMessage.getFrom());
+        Log.e(TAG, "onMessageReceived " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "onMessageReceived" + remoteMessage.getData().get("data"));
+            Log.e(TAG, "onMessageReceived " + remoteMessage.getData().get("data"));
             String data = remoteMessage.getData().get(Constants.Key.DATA);
             if (data != null && !data.isEmpty()) {
                 MyNotification notification = gson.fromJson(data, MyNotification.class);
@@ -32,9 +33,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void createNotification(MyNotification notification) {
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Intent intent;
+        switch (notification.getType()) {
+            case Constants.Value.ORDER: {
+                intent = new Intent(this, OrderDetailsActivity.class);
+                intent.putExtra("order_id", notification.getContent());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
+            }
+            default: {
+                intent = new Intent(this, SplashActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            }
+        }
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getResources().getString(R.string.my_notif_channel_id))
@@ -45,7 +56,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
-
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(notification.getId(), builder.build());
     }

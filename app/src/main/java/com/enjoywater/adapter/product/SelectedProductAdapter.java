@@ -77,7 +77,6 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
         @SuppressLint("ClickableViewAccessibility")
         public void setData(int position) {
             Product product = mProducts.get(position);
-            Log.e("selectedProduct", (new Gson()).toJson(product));
             //name
             String name = product.getName();
             if (name != null && !name.isEmpty()) {
