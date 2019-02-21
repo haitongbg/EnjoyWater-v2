@@ -1,5 +1,6 @@
 package com.enjoywater.activiy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -257,5 +258,15 @@ public class MainActivity extends AppCompatActivity {
             underlineTabNotif.setVisibility(View.GONE);
             underlineTabPersonal.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        homeFragment.onActivityResult(requestCode, resultCode, data);
+        productFragment.onActivityResult(requestCode, resultCode, data);
+        ordersFragment.onActivityResult(requestCode, resultCode, data);
+        notifyFragment.onActivityResult(requestCode, resultCode, data);
+        personalFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

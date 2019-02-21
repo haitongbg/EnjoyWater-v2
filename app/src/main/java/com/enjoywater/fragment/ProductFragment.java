@@ -17,6 +17,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductFragment extends Fragment {
+    private static final String TAG = "ProductFragment";
     public static final int REQUEST_CODE_ADDRESS = 112;
     public static final int SHIP_TYPE_2H = 1;
     public static final int SHIP_TYPE_24H = 2;
@@ -664,7 +666,7 @@ public class ProductFragment extends Fragment {
                     .setCancelable(false)
                     .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            startActivityForResult(new Intent(mContext, LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
+                            getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
                             (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
                         }
                     })
@@ -687,7 +689,7 @@ public class ProductFragment extends Fragment {
                                     super.handleMessage(msg);
                                     if (msg.what == Constants.Value.ACTION_SUCCESS) {
                                         mUser.getUserInfo().setActivated(true);
-                                        Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
+                                        Utils.saveUser(mContext, mUser);
                                         //validateOrder();
                                     } else if (msg.what == Constants.Value.ACTION_CLOSE) {
                                         delaySendingActiveCode = (long) msg.obj;
@@ -721,7 +723,7 @@ public class ProductFragment extends Fragment {
                     if (msg.what == Constants.Value.ACTION_SUCCESS) {
                         Address address = (Address) msg.obj;
                         mUser.getUserInfo().getOtherAddress().add(address);
-                        Utils.saveString(mContext, Constants.Key.USER, gson.toJson(mUser));
+                        Utils.saveUser(mContext, mUser);
                         setDataAddress();
                         //validateOrder();
                     }

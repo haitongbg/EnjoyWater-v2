@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NotifyFragment extends Fragment {
+    private static final String TAG = "NotifyFragment";
     @BindView(R.id.tv_title)
     TvSegoeuiSemiBold tvTitle;
     @BindView(R.id.appbar)
@@ -148,7 +150,7 @@ public class NotifyFragment extends Fragment {
         });
         btnLogin.setOnClickListener(v -> {
             if (!isLoading) {
-                startActivityForResult(new Intent(mContext, LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
+                getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
                 (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
             }
         });

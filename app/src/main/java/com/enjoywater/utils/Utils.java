@@ -1,5 +1,6 @@
 package com.enjoywater.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -7,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +20,8 @@ import com.enjoywater.model.Location.City;
 import com.enjoywater.model.Location.District;
 import com.enjoywater.model.Location.Ward;
 import com.enjoywater.model.User;
+import com.facebook.login.LoginManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -25,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -257,10 +264,15 @@ public class Utils {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultValue);
     }
 
+    //Login
+    public static void saveUser(Context context, User user) {
+        saveString(context, Constants.Key.USER, gson.toJson(user));
+    }
+
     public static User getUser(Context context) {
-        String stringUser = Utils.getString(context, Constants.Key.USER, "");
+        String stringUser = getString(context, Constants.Key.USER, "");
         if (!stringUser.isEmpty()) {
-            User user = (new Gson()).fromJson(stringUser, User.class);
+            User user = gson.fromJson(stringUser, User.class);
             if (user != null && user.getToken() != null && !user.getToken().isEmpty() && user.getUserInfo() != null) {
                 return user;
             }
@@ -269,13 +281,29 @@ public class Utils {
     }
 
     public static String getToken(Context context) {
-        String stringUser = Utils.getString(context, Constants.Key.USER, "");
+        String stringUser = getString(context, Constants.Key.USER, "");
         if (!stringUser.isEmpty()) {
-            User user = (new Gson()).fromJson(stringUser, User.class);
+            User user = gson.fromJson(stringUser, User.class);
             if (user != null && user.getToken() != null) return ("Bearer " + user.getToken());
         }
         return "";
     }
+
+    public static String getRefreshToken(Context context) {
+        return getString(context, Constants.Key.REFRESH_TOKEN, "");
+    }
+
+    public static void saveRefreshToken(Context context, String token) {
+        saveString(context, Constants.Key.REFRESH_TOKEN, token);
+    }
+
+    public static void clearUser(Context context) {
+        removeString(context, Constants.Key.USER);
+        removeString(context, Constants.Key.REFRESH_TOKEN);
+        MyApplication.getInstance().getGoogleSignInClient().signOut();
+        LoginManager.getInstance().logOut();
+    }
+    //
 
     public static void removeString(Context context, String key) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).commit();
@@ -446,5 +474,42 @@ public class Utils {
             }
         }
         return fullAddress;
+    }
+
+    public static String getDeviceUuid(Context context) {
+        String id = Utils.getString(context, Constants.Key.DEVICE_ID, "");
+        if (id.isEmpty()) {
+            UUID uuid;
+            @SuppressLint("HardwareIds") String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            // Use the Android ID unless it's broken, in which case
+            // fallback on deviceId,
+            // unless it's not available, then fallback on a random
+            // number which we store to a prefs file
+            try {
+                if (!"9774d56d682e549c".equals(androidId)) {
+                    uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
+                } else {
+                    @SuppressLint({"MissingPermission", "HardwareIds"}) String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                    uuid = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")) : UUID.randomUUID();
+                }
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+            // Write the value out to the prefs file
+            Utils.saveString(context, Constants.Key.DEVICE_ID, uuid.toString());
+            return uuid.toString();
+        } else {
+            return id;
+        }
+    }
+
+    public static String getDeviceToken(Context context) {
+        String deviceToken = Utils.getString(context, Constants.Key.DEVICE_TOKEN, "");
+        if (deviceToken.isEmpty()) {
+            deviceToken = FirebaseInstanceId.getInstance().getToken();
+            Utils.saveString(context, Constants.Key.DEVICE_TOKEN, deviceToken);
+            return deviceToken;
+        }
+        return deviceToken;
     }
 }

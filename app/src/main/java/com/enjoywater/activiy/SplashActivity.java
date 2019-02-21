@@ -1,15 +1,12 @@
 package com.enjoywater.activiy;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,9 +16,6 @@ import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
-import com.enjoywater.view.dialog.DialogActiveAccount;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -46,12 +40,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         mainService = MyApplication.getInstance().getMainService();
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        //Log.e("AppLog", "key:" + FacebookSdk.getApplicationSignature(this));
-        AppEventsLogger.activateApp(this);
         mHandler.postDelayed(goMainRunnable, 2000);
-        mToken = Utils.getToken(this) + "111";
+        mToken = Utils.getToken(this);
         if (!mToken.isEmpty()) loginByToken(mToken);
+        else registeDevice("");
     }
 
     private Runnable goMainRunnable = this::goMain;
@@ -74,8 +66,8 @@ public class SplashActivity extends AppCompatActivity {
                         if (loginResponse.getData().isJsonObject()) {
                             mUser = gson.fromJson(loginResponse.getData().getAsJsonObject(), User.class);
                             if (mUser != null && mUser.getToken() != null && !mUser.getToken().isEmpty() && mUser.getUserInfo() != null) {
-                                Utils.saveString(SplashActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                                mHandler.postDelayed(goMainRunnable, 1500);
+                                Utils.saveUser(SplashActivity.this, mUser);
+                                registeDevice(mUser.getUserInfo().getId());
                             } else showErrorLogin();
                         } else showErrorLogin();
                     } else showErrorLogin();
@@ -90,6 +82,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void showErrorLogin() {
+        Utils.clearUser(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Phiên đăng nhập của bạn đã hết hạn, bạn có muốn đăng nhập lại không?")
                 .setCancelable(false)
@@ -107,6 +100,25 @@ public class SplashActivity extends AppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void registeDevice(String userId) {
+        mHandler.removeCallbacks(goMainRunnable);
+        String deviceId = Utils.getDeviceUuid(this);
+        String devicetoken = Utils.getDeviceToken(this);
+        Call<BaseResponse> registerDevice = mainService.registerDevice(userId, deviceId, devicetoken, Constants.Value.ANDROID, true);
+        registerDevice.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                mHandler.postDelayed(goMainRunnable, 1000);
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                t.printStackTrace();
+                mHandler.postDelayed(goMainRunnable, 1000);
+            }
+        });
     }
 
     @Override

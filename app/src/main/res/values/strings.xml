@@ -1,5 +1,6 @@
 <resources>
-    <string name="server_client_id">269078269723-7lqj6of20rs7603239f0jupneslk91fd.apps.googleusercontent.com</string>
+    <string name="google_client_id">269078269723-7lqj6of20rs7603239f0jupneslk91fd.apps.googleusercontent.com</string>
+    <string name="google_client_secret">tCTdJTgvsz9HWjE_rVnQT2yy</string>
     <string name="facebook_app_id">307827609771860</string>
     <string name="fb_login_protocol_scheme">fb307827609771860</string>
     <string name="app_name">Gọi nước</string>
@@ -54,7 +55,7 @@
     <string name="expected_delivery_time">Dự kiến giao hàng</string>
     <string name="delivered_time">Hoàn thành giao hàng</string>
     <string name="product">Sản phẩm</string>
-    <string name="delivery_climb">Giao hàng leo thang bộ</string>
+    <string name="delivery_climb">Giao hàng thang bộ (4000đ/bình)</string>
     <string name="total_payment">Tổng thanh toán:</string>
     <string name="delivery_address">Giao đến</string>
     <string name="payment_type">Hình thức thanh toán:</string>

@@ -19,6 +19,7 @@ import com.enjoywater.R;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
+import com.enjoywater.retrofit.response.GoogleOAuthResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
@@ -35,7 +36,6 @@ import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
@@ -78,7 +78,9 @@ public class LoginActivity extends AppCompatActivity {
     private Gson gson = new Gson();
     private GoogleSignInClient mGoogleSignInClient;
     private boolean isLoading;
-    private CallbackManager callbackManager;
+    private CallbackManager mFaceBookCallbackManager;
+    private CountDownTimer countDownDelaySending;
+    private long delaySendingActiveCode = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,17 +89,10 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mainService = MyApplication.getInstance().getMainService();
         // Google
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestScopes(new Scope(Scopes.DRIVE_APPFOLDER))
-                //.requestServerAuthCode("269078269723-7lqj6of20rs7603239f0jupneslk91fd.apps.googleusercontent.com")
-                .requestIdToken(getString(R.string.server_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = MyApplication.getInstance().getGoogleSignInClient();
         // Facebook
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
+        mFaceBookCallbackManager = MyApplication.getInstance().getFaceBookCallbackManager();
+        LoginManager.getInstance().registerCallback(mFaceBookCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         AccessToken accessToken = loginResult.getAccessToken();
@@ -118,10 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
         initUI();
-        String jsonUser = Utils.getString(this, Constants.Key.USER, "");
-        if (!jsonUser.isEmpty()) {
-            mUser = gson.fromJson(jsonUser, User.class);
-        }
+        mUser = Utils.getUser(this);
     }
 
     private void initUI() {
@@ -146,10 +138,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         btnLoginByGoogle.setOnClickListener(view -> {
-            if (!isLoading) loginByGoogle();
+            if (!isLoading) loginGoogle();
         });
         btnLoginByFacebook.setOnClickListener(view -> {
-            if (!isLoading) loginByFacebook();
+            if (!isLoading) loginFacebook();
         });
         rippleRegister.setOnRippleCompleteListener(rippleView -> {
             if (!isLoading) register();
@@ -174,12 +166,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (loginResponse.getData().isJsonObject()) {
                             mUser = gson.fromJson(loginResponse.getData().getAsJsonObject(), User.class);
                             if (mUser != null && mUser.getToken() != null && !mUser.getToken().isEmpty() && mUser.getUserInfo() != null) {
-                                Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                                if (mUser.getUserInfo().isActivated()) {
-                                    finishLogin(RESULT_CODE_LOGIN_SUCCESS);
-                                } else {
-                                    activeAccount();
-                                }
+                                Utils.saveUser(LoginActivity.this, mUser);
+                                registeDevice(mUser.getUserInfo().getId());
                             } else
                                 Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
                         } else
@@ -212,6 +200,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginBySocialAccessToken(String type, String token) {
+        Log.e("AccessToken", token);
         isLoading = true;
         layoutLoading.setVisibility(View.VISIBLE);
         Call<BaseResponse> loginWithSocialAccessToken = mainService.loginBySocialAccessToken(type, token);
@@ -226,12 +215,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (loginResponse.getData().isJsonObject()) {
                             mUser = gson.fromJson(loginResponse.getData().getAsJsonObject(), User.class);
                             if (mUser != null && mUser.getToken() != null && !mUser.getToken().isEmpty() && mUser.getUserInfo() != null) {
-                                Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                                if (mUser.getUserInfo().isActivated()) {
-                                    finishLogin(RESULT_CODE_LOGIN_SUCCESS);
-                                } else {
-                                    activeAccount();
-                                }
+                                Utils.saveUser(LoginActivity.this, mUser);
+                                registeDevice(mUser.getUserInfo().getId());
                             } else
                                 Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
                         } else
@@ -257,21 +242,74 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void loginByGoogle() {
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+    //Google
+    private void loginGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN_BY_GOOGLE);
+        /*GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account == null) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN_BY_GOOGLE);
-        } else loginBySocialAccessToken(Constants.Value.GOOGLE, account.getIdToken());
+        } else loginBySocialAccessToken(Constants.Value.GOOGLE, account.getServerAuthCode());*/
     }
 
-    private void loginByFacebook() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+    private void handleGoogleLoginResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            getGoogleAccessToken(account.getServerAuthCode());
+        } catch (ApiException e) {
+            Log.e("Goole loginByAccount", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(LoginActivity.this, "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getGoogleAccessToken(String authCode) {
+        isLoading = true;
+        layoutLoading.setVisibility(View.VISIBLE);
+        String clientId = getString(R.string.google_client_id);
+        String clientSecret = getString(R.string.google_client_secret);
+        String grant_type = Constants.Value.AUTHORIZATION_CODE;
+        String refreshToken = Utils.getRefreshToken(this);
+        if (!refreshToken.isEmpty()) {
+            grant_type = Constants.Value.REFRESH_TOKEN;
+            authCode = "";
+        }
+        Call<GoogleOAuthResponse> getAccessToken = mainService.getAccessToken(clientId, clientSecret, grant_type, authCode, refreshToken);
+        getAccessToken.enqueue(new Callback<GoogleOAuthResponse>() {
+            @Override
+            public void onResponse(Call<GoogleOAuthResponse> call, Response<GoogleOAuthResponse> response) {
+                GoogleOAuthResponse googleOAuthResponse = response.body();
+                if (googleOAuthResponse != null) {
+                    String refreshToken = googleOAuthResponse.getRefresh_token();
+                    if (refreshToken != null && !refreshToken.isEmpty()) Utils.saveRefreshToken(LoginActivity.this, refreshToken);
+                    String accessToken = googleOAuthResponse.getAccess_token();
+                    loginBySocialAccessToken(Constants.Value.GOOGLE, accessToken);
+                } else {
+                    isLoading = false;
+                    layoutLoading.setVisibility(View.GONE);
+                    Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GoogleOAuthResponse> call, Throwable t) {
+                isLoading = false;
+                t.printStackTrace();
+                Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                layoutLoading.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    //Facebook
+    private void loginFacebook() {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile email"));
+        /*AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null && !accessToken.isExpired()) {
             loginBySocialAccessToken(Constants.Value.FACEBOOK, accessToken.getToken());
         } else {
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-        }
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile email"));
+        }*/
     }
 
     @SuppressLint("HandlerLeak")
@@ -282,12 +320,8 @@ public class LoginActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 if (msg.what == Constants.Value.ACTION_SUCCESS) {
                     mUser = (User) msg.obj;
-                    Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                    if (mUser.getUserInfo().isActivated()) {
-                        finishLogin(RESULT_CODE_LOGIN_SUCCESS);
-                    } else {
-                        activeAccount();
-                    }
+                    Utils.saveUser(LoginActivity.this, mUser);
+                    registeDevice(mUser.getUserInfo().getId());
                 }
             }
         });
@@ -301,15 +335,12 @@ public class LoginActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 if (msg.what == Constants.Value.ACTION_SUCCESS) {
                     mUser.getUserInfo().setActivated(true);
-                    Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
+                    Utils.saveUser(LoginActivity.this, mUser);
                 }
                 finishLogin(RESULT_CODE_LOGIN_SUCCESS);
             }
         }, 0);
     }
-
-    private CountDownTimer countDownDelaySending;
-    private long delaySendingActiveCode = 0;
 
     @SuppressLint("HandlerLeak")
     private void retrivePassword() {
@@ -319,12 +350,8 @@ public class LoginActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 if (msg.what == Constants.Value.ACTION_SUCCESS) {
                     mUser = (User) msg.obj;
-                    Utils.saveString(LoginActivity.this, Constants.Key.USER, gson.toJson(mUser));
-                    if (mUser.getUserInfo().isActivated()) {
-                        finishLogin(RESULT_CODE_LOGIN_SUCCESS);
-                    } else {
-                        activeAccount();
-                    }
+                    Utils.saveUser(LoginActivity.this, mUser);
+                    registeDevice(mUser.getUserInfo().getId());
                 } else if (msg.what == Constants.Value.ACTION_CLOSE) {
                     delaySendingActiveCode = (long) msg.obj;
                     countDownDelaySending = new CountDownTimer(delaySendingActiveCode, 1000) {
@@ -342,14 +369,30 @@ public class LoginActivity extends AppCompatActivity {
         }, delaySendingActiveCode);
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            loginBySocialAccessToken(Constants.Value.GOOGLE, account.getIdToken());
-        } catch (ApiException e) {
-            Log.e("Goole loginByAccount", "signInResult:failed code=" + e.getStatusCode());
-            Toast.makeText(LoginActivity.this, "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
-        }
+    private void registeDevice(String userId) {
+        String deviceId = Utils.getDeviceUuid(this);
+        String devicetoken = Utils.getDeviceToken(this);
+        Call<BaseResponse> registerDevice = mainService.registerDevice(userId, deviceId, devicetoken , Constants.Value.ANDROID, true);
+        registerDevice.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (mUser.getUserInfo().isActivated()) {
+                    finishLogin(RESULT_CODE_LOGIN_SUCCESS);
+                } else {
+                    activeAccount();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                t.printStackTrace();
+                if (mUser.getUserInfo().isActivated()) {
+                    finishLogin(RESULT_CODE_LOGIN_SUCCESS);
+                } else {
+                    activeAccount();
+                }
+            }
+        });
     }
 
     @Override
@@ -357,9 +400,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_SIGN_IN_BY_GOOGLE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+            handleGoogleLoginResult(task);
         } else {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
+            mFaceBookCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 

@@ -2,12 +2,16 @@ package com.enjoywater.utils;
 
 public class Constants {
     public static class Url {
+        //Google
+        public static final String GOOGLE_OAUTH2_TOKEN = "https://www.googleapis.com/oauth2/v4/token";
+        // DOMAIN
         public static final String DOMAIN = "http://157.230.38.81:8081/api/app/";
         //UserInfo
         public static final String LOGIN = "user/login";
         public static final String LOGIN_BY_TOKEN = "user/login-by-token";
         public static final String LOGIN_BY_SOCIAL_ACCESS_TOKEN = "user/login-with-social";
         public static final String REGISTER = "user/register";
+        public static final String REGISTER_DEVICE = "device/register";
         public static final String GET_USER_INFO = "user/profile";
         public static final String UPDATE_USER_INFO = "user/update-info";
         public static final String GET_ACTIVE_CODE = "user/resend-mail-activate";
@@ -76,6 +80,15 @@ public class Constants {
         public static final String STATUS = "status";
         public static final String SOCIAL_TYPE = "socialType";
         public static final String ACCESS_TOKEN = "accessToken";
+        public static final String CLIENT_ID = "client_id";
+        public static final String CLIENT_SECRET = "client_secret";
+        public static final String GRANT_TYPE = "grant_type";
+        public static final String REFRESH_TOKEN = "refresh_token";
+        public static final String PLATFORM = "platform";
+        public static final String DEVICE_ID = "deviceId";
+        public static final String ENABLE_NOTIFICATION = "enableNotification";
+        public static final String USER_ID = "userId";
+        public static final String DEVICE_TOKEN = "deviceToken";
     }
 
     public static class Value {
@@ -95,6 +108,9 @@ public class Constants {
         public static final String ORDER = "order";
         public static final String FACEBOOK = "facebook";
         public static final String GOOGLE = "google";
+        public static final String AUTHORIZATION_CODE = "authorization_code";
+        public static final String REFRESH_TOKEN = "refresh_token";
+        public static final String ANDROID = "android";
     }
 
     public static class DataNotify {

@@ -1,6 +1,7 @@
 package com.enjoywater.retrofit;
 
 import com.enjoywater.retrofit.response.BaseResponse;
+import com.enjoywater.retrofit.response.GoogleOAuthResponse;
 import com.enjoywater.utils.Constants;
 import com.google.gson.JsonObject;
 
@@ -28,7 +29,7 @@ import retrofit2.http.Query;
  */
 
 public interface MainService {
-    //UserInfo
+    //User
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.LOGIN)
@@ -52,6 +53,15 @@ public interface MainService {
                                 @Field(Constants.Key.EMAIL) String email,
                                 @Field(Constants.Key.PHONE) String phone,
                                 @Field(Constants.Key.PASSWORD) String password);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.REGISTER_DEVICE)
+    Call<BaseResponse> registerDevice(@Field(Constants.Key.USER_ID) String userId,
+                                      @Field(Constants.Key.DEVICE_ID) String deviceId,
+                                      @Field(Constants.Key.TOKEN) String deviceToken,
+                                      @Field(Constants.Key.PLATFORM) String platform,
+                                      @Field(Constants.Key.ENABLE_NOTIFICATION) boolean enableNotification);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
@@ -155,7 +165,7 @@ public interface MainService {
     @GET(Constants.Url.GET_COUPON_DETAILS)
     Call<BaseResponse> getCouponDetails(@Path(Constants.Key.CODE) String code);
 
-    // notification
+    //notification
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_LIST_NOTIF)
     Call<BaseResponse> getListNotify(@Header(Constants.Key.TOKEN_LOGIN) String token,
@@ -173,6 +183,15 @@ public interface MainService {
     Call<BaseResponse> updateNotifyStatus(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                           @Path(Constants.Key.NOTIFY_ID) String notifyId,
                                           @Field(Constants.Key.STATUS) String status);
+
+    //Google
+    @FormUrlEncoded
+    @POST(Constants.Url.GOOGLE_OAUTH2_TOKEN)
+    Call<GoogleOAuthResponse> getAccessToken(@Field(Constants.Key.CLIENT_ID) String clientId,
+                                             @Field(Constants.Key.CLIENT_SECRET) String clientSecret,
+                                             @Field(Constants.Key.GRANT_TYPE) String grant_type,
+                                             @Field(Constants.Key.CODE) String code,
+                                             @Field(Constants.Key.REFRESH_TOKEN) String refreshToken);
 
     //Factory
     class Factory {

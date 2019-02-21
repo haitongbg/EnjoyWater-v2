@@ -23,8 +23,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.enjoywater.R;
+import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.adapter.home.HomeAdapter;
 import com.enjoywater.model.User;
+import com.enjoywater.retrofit.MainService;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
@@ -39,6 +41,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
+    private static final String TAG = "HomeFragment";
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.v_center)
@@ -66,7 +69,13 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     private Context mContext;
+    private MainService mainService;
     private User mUser;
+    private String mToken;
+    private Gson gson = new Gson();
+    private int mPageIndex = 1;
+    private LinearLayoutManager mLayoutManager;
+    private boolean isLoading = false;
 
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();
@@ -77,7 +86,9 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
+        mainService = MyApplication.getInstance().getMainService();
         mUser = Utils.getUser(mContext);
+        mToken = Utils.getToken(mContext);
     }
 
     @Override
