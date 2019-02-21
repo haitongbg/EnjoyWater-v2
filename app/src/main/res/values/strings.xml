@@ -76,4 +76,7 @@
     <string name="password_tutorial">* Mật khẩu chứa ít nhất 6 ký tự, bao gồm chữ số, chữ thường và chữ in hoa.</string>
     <string name="change_password">Đổi mật khẩu</string>
     <string name="not_login_yet">Vui lòng đăng nhập để sử dụng chức năng này.</string>
+    <string name="my_notif_channel_id">enjoy_water_channel</string>
+    <string name="my_notif_channel_name">enjoy_water</string>
+    <string name="my_notif_channel_description">enjoy_water</string>
 </resources>

@@ -89,6 +89,7 @@ public class Constants {
         public static final String ENABLE_NOTIFICATION = "enableNotification";
         public static final String USER_ID = "userId";
         public static final String DEVICE_TOKEN = "deviceToken";
+        public static final String DATA = "data";
     }
 
     public static class Value {
