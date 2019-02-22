@@ -22,8 +22,13 @@ public class News implements Parcelable {
     private String title;
     @SerializedName("id")
     private String id;
+    private boolean isLoadmore = false;
 
     public News() {
+    }
+
+    public News(boolean isLoadmore) {
+        this.isLoadmore = isLoadmore;
     }
 
     protected News(Parcel in) {
@@ -35,6 +40,7 @@ public class News implements Parcelable {
         desctiption = in.readString();
         title = in.readString();
         id = in.readString();
+        isLoadmore = in.readByte() != 0;
     }
 
     @Override
@@ -47,6 +53,7 @@ public class News implements Parcelable {
         dest.writeString(desctiption);
         dest.writeString(title);
         dest.writeString(id);
+        dest.writeByte((byte) (isLoadmore ? 1 : 0));
     }
 
     @Override
@@ -128,5 +135,13 @@ public class News implements Parcelable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isLoadmore() {
+        return isLoadmore;
+    }
+
+    public void setLoadmore(boolean loadmore) {
+        isLoadmore = loadmore;
     }
 }

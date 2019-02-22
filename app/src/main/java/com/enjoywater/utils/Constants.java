@@ -90,6 +90,7 @@ public class Constants {
         public static final String USER_ID = "userId";
         public static final String DEVICE_TOKEN = "deviceToken";
         public static final String DATA = "data";
+        public static final String TYPE = "type";
     }
 
     public static class Value {
@@ -112,6 +113,7 @@ public class Constants {
         public static final String AUTHORIZATION_CODE = "authorization_code";
         public static final String REFRESH_TOKEN = "refresh_token";
         public static final String ANDROID = "android";
+        public static final String SALE = "sale";
     }
 
     public static class DataNotify {

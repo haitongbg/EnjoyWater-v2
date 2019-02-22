@@ -57,4 +57,5 @@
     <dimen name="size_22">22dp</dimen>
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_12_5">12.5dp</dimen>
+    <dimen name="size_13">13dp</dimen>
 </resources>

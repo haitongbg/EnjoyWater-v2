@@ -119,7 +119,8 @@ public interface MainService {
     @GET(Constants.Url.GET_LIST_NEWS)
     Call<BaseResponse> getListNews(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                    @Query(Constants.Key.LIMIT) int limit,
-                                   @Query(Constants.Key.PAGE) int page);
+                                   @Query(Constants.Key.PAGE) int page,
+                                   @Query(Constants.Key.TYPE) String type);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_NEWS_DETAILS)
