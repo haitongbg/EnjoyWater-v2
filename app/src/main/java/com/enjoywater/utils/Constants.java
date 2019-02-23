@@ -91,6 +91,7 @@ public class Constants {
         public static final String DEVICE_TOKEN = "deviceToken";
         public static final String DATA = "data";
         public static final String TYPE = "type";
+        public static final String NEWS = "news";
     }
 
     public static class Value {

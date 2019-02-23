@@ -40,24 +40,6 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
 
-
-        <activity
-            android:name=".activiy.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activiy.MainActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activiy.LoginActivity" />
-        <activity
-            android:name=".activiy.OrderDetailsActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-
         <!--facebook sdk-->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -78,6 +60,33 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <!--app-->
+        <activity
+            android:name=".activiy.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activiy.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activiy.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activiy.OrderDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".activiy.WebViewActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

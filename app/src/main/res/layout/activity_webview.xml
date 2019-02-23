@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_45"
+        android:background="@color/colorPrimary"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/size_45"
+                android:layout_height="@dimen/size_45"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_ripple_primary_color"
+                android:clickable="true"
+                android:padding="@dimen/size_15"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back_white" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/size_15"
+                android:layout_toLeftOf="@id/progress_loading"
+                android:layout_toRightOf="@id/btn_back"
+                android:fontFamily="@font/opensans_semibold"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_16" />
+
+            <com.enjoywater.view.ProgressWheel
+                android:id="@+id/progress_loading"
+                android:layout_width="@dimen/size_25"
+                android:layout_height="@dimen/size_25"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/size_15"
+                android:visibility="visible"
+                app:matProg_barColor="@color/white"
+                app:matProg_barWidth="@dimen/size_2" />
+        </RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
+</LinearLayout>

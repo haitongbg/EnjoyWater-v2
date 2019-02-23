@@ -25,6 +25,7 @@ import com.enjoywater.R;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
+import com.enjoywater.activiy.WebViewActivity;
 import com.enjoywater.adapter.home.HomeAdapter;
 import com.enjoywater.listener.HomeListener;
 import com.enjoywater.model.News;
@@ -306,12 +307,18 @@ public class HomeFragment extends Fragment {
     private HomeListener mHomeListener = new HomeListener() {
         @Override
         public void goHomeNewsDetail(News news) {
-
+            Intent intent = new Intent(mContext, WebViewActivity.class);
+            intent.putExtra(Constants.Key.NEWS, news);
+            startActivity(intent);
+            (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         }
 
         @Override
         public void goSaleNewsDetail(News news) {
-
+            Intent intent = new Intent(mContext, WebViewActivity.class);
+            intent.putExtra(Constants.Key.NEWS, news);
+            startActivity(intent);
+            (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         }
     };
 
