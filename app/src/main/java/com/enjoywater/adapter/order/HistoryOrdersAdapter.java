@@ -18,8 +18,6 @@ import com.enjoywater.model.Order;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.LoadmoreViewHolder;
-import com.enjoywater.view.TvRobotoMedium;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -74,9 +72,9 @@ public class HistoryOrdersAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.iv_order_code)
         ImageView ivOrderCode;
         @BindView(R.id.tv_order_code)
-        TvRobotoMedium tvOrderCode;
+        TextView tvOrderCode;
         @BindView(R.id.tv_order_canceled)
-        TvRobotoMedium tvOrderCanceled;
+        TextView tvOrderCanceled;
         @BindView(R.id.view_status_line)
         View viewStatusLine;
         @BindView(R.id.iv_status_ordered)
@@ -108,17 +106,17 @@ public class HistoryOrdersAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.iv_order_time)
         ImageView ivOrderTime;
         @BindView(R.id.tv_order_time)
-        TvRobotoMedium tvOrderTime;
+        TextView tvOrderTime;
         @BindView(R.id.text_delivery_time)
         TextView textDeliveryTime;
         @BindView(R.id.tv_delivery_time)
-        TvRobotoMedium tvDeliveryTime;
+        TextView tvDeliveryTime;
         @BindView(R.id.iv_delivery_time)
         ImageView ivDeliveryTime;
         @BindView(R.id.text_total_payment)
-        TvSegoeuiSemiBold textTotalPayment;
+        TextView textTotalPayment;
         @BindView(R.id.tv_total_payment)
-        TvSegoeuiSemiBold tvTotalPayment;
+        TextView tvTotalPayment;
         @BindView(R.id.btn_cancel_order)
         Button btnCancelOrder;
         @BindView(R.id.btn_go_order_details)

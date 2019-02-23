@@ -58,4 +58,11 @@
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_12_5">12.5dp</dimen>
     <dimen name="size_13">13dp</dimen>
+    <dimen name="size_250">250dp</dimen>
+    <dimen name="size_265">265dp</dimen>
+    <dimen name="size_160">160dp</dimen>
+    <dimen name="size_220">220dp</dimen>
+    <dimen name="size_140">140dp</dimen>
+    <dimen name="size_7_5">7.5dp</dimen>
+    <dimen name="size_6">6dp</dimen>
 </resources>

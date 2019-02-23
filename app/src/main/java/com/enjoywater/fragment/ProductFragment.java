@@ -55,7 +55,6 @@ import com.enjoywater.view.dialog.DialogActiveAccount;
 import com.enjoywater.view.dialog.DialogOrderAddress;
 import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -80,41 +79,41 @@ public class ProductFragment extends Fragment {
     @BindView(R.id.rv_selected_products)
     RecyclerView rvSelectedProducts;
     @BindView(R.id.tv_total_product_price)
-    TvSegoeuiSemiBold tvTotalProductPrice;
+    TextView tvTotalProductPrice;
     @BindView(R.id.checkbox_delivery_climb)
     CheckBox checkboxDeliveryClimb;
     @BindView(R.id.tv_total_delivery_fee)
-    TvSegoeuiSemiBold tvTotalDeliveryFee;
+    TextView tvTotalDeliveryFee;
     @BindView(R.id.checkbox_ship_in_2_hours)
     CheckBox checkboxShipIn2Hours;
     @BindView(R.id.checkbox_ship_in_24_hours)
     CheckBox checkboxShipIn24Hours;
     @BindView(R.id.tv_ship_type_discount)
-    TvSegoeuiSemiBold tvShipIn24HoursDiscount;
+    TextView tvShipIn24HoursDiscount;
     @BindView(R.id.checkbox_choose_ship_date)
     CheckBox checkboxChooseShipDate;
     @BindView(R.id.tv_choose_ship_date_discount)
-    TvSegoeuiSemiBold tvChooseShipDateDiscount;
+    TextView tvChooseShipDateDiscount;
     @BindView(R.id.layout_choose_ship_date)
     LinearLayout layoutChooseShipDate;
     @BindView(R.id.tv_coupon)
-    TvSegoeuiSemiBold tvCoupon;
+    TextView tvCoupon;
     @BindView(R.id.edt_coupon)
     EditText edtCoupon;
     @BindView(R.id.btn_apply_coupon)
     Button btnApplyCoupon;
     @BindView(R.id.tv_coupon_code)
-    TvSegoeuiSemiBold tvCouponCode;
+    TextView tvCouponCode;
     @BindView(R.id.btn_cancel_coupon)
     ImageView btnCancelCoupon;
     @BindView(R.id.tv_counpon_discount)
-    TvSegoeuiSemiBold tvCounponDiscount;
+    TextView tvCounponDiscount;
     @BindView(R.id.layout_coupon_discount)
     LinearLayout layoutCouponDiscount;
     @BindView(R.id.layout_coupon)
     LinearLayout layoutCoupon;
     @BindView(R.id.tv_total_price)
-    TvSegoeuiSemiBold tvTotalPrice;
+    TextView tvTotalPrice;
     @BindView(R.id.checkbox_pay_by_cash)
     CheckBox checkboxPayByCash;
     @BindView(R.id.checkbox_pay_by_coin)
@@ -122,7 +121,7 @@ public class ProductFragment extends Fragment {
     @BindView(R.id.checkbox_pay_by_bill)
     CheckBox checkboxPayByBill;
     @BindView(R.id.btn_change_address)
-    TvSegoeuiSemiBold btnChangeAddress;
+    TextView btnChangeAddress;
     @BindView(R.id.ripple_forget_password)
     RippleView rippleForgetPassword;
     @BindView(R.id.tv_name)

@@ -25,7 +25,6 @@ import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -40,19 +39,19 @@ public class PersonalFragment extends Fragment {
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.tv_name)
-    TvSegoeuiSemiBold tvName;
+    TextView tvName;
     @BindView(R.id.tv_user_type)
     TextView tvUserType;
     @BindView(R.id.iv_coin)
     ImageView ivCoin;
     @BindView(R.id.tv_coin)
-    TvSegoeuiSemiBold tvCoin;
+    TextView tvCoin;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.text_user_code)
     TextView textUserCode;
     @BindView(R.id.tv_user_code)
-    TvSegoeuiSemiBold tvUserCode;
+    TextView tvUserCode;
     @BindView(R.id.btn_user_code)
     ConstraintLayout btnUserCode;
     @BindView(R.id.text_send_code)

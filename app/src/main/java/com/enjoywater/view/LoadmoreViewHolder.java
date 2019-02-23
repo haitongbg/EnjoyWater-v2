@@ -2,6 +2,7 @@ package com.enjoywater.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.enjoywater.R;
 
@@ -12,7 +13,7 @@ public class LoadmoreViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.progress_loadmore)
     ProgressWheel progressLoadmore;
     @BindView(R.id.tv_loadmore)
-    TvSegoeuiSemiBold tvLoadmore;
+    TextView tvLoadmore;
 
     public LoadmoreViewHolder(View itemView) {
         super(itemView);

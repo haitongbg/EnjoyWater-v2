@@ -33,11 +33,12 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.enjoywater.view.TvSegoeuiSemiBold
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_10"
                     android:layout_weight="1"
+                    android:fontFamily="@font/opensans_semibold"
                     android:includeFontPadding="false"
                     android:text="Nhập địa chỉ giao hàng"
                     android:textColor="@color/white"
@@ -262,7 +263,6 @@
                 android:background="@color/black_e6" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_select_ward"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_45"
@@ -270,7 +270,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/size_10"
-                android:paddingRight="@dimen/size_10">
+                android:paddingRight="@dimen/size_10"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

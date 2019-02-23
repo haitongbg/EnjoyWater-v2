@@ -1,8 +1,8 @@
 package com.enjoywater.fragment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -19,14 +19,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.enjoywater.R;
 import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.adapter.home.HomeAdapter;
+import com.enjoywater.listener.HomeListener;
 import com.enjoywater.model.News;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
@@ -34,8 +31,6 @@ import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
-import com.enjoywater.view.TvSegoeuiBold;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -53,19 +48,19 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.tv_wellcome)
-    TvSegoeuiSemiBold tvWellcome;
+    TextView tvWellcome;
     @BindView(R.id.btn_event)
     ImageView btnEvent;
     @BindView(R.id.tv_user_name)
-    TvSegoeuiSemiBold tvUserName;
+    TextView tvUserName;
     @BindView(R.id.tv_user_type)
-    TvSegoeuiSemiBold tvUserType;
+    TextView tvUserType;
     @BindView(R.id.v_separate_dot)
     View vSeparateDot;
     @BindView(R.id.iv_coin)
     ImageView ivCoin;
     @BindView(R.id.tv_coin)
-    TvSegoeuiBold tvCoin;
+    TextView tvCoin;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.rvHome)
@@ -91,8 +86,11 @@ public class HomeFragment extends Fragment {
     private int mPageIndex = 1;
     private LinearLayoutManager mLayoutManager;
     private boolean isLoading = false;
-    private ArrayList<Object> mHomes = new ArrayList<>();
+    private ArrayList<News> mHomes = new ArrayList<>();
+    private ArrayList<News> mSaleNewsList = new ArrayList<>();
     private HomeAdapter mHomeAdapter;
+    private News itemLoadmore = new News(true, false);
+    private News itemSaleNewsList = new News(false, true);
 
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();
@@ -156,8 +154,7 @@ public class HomeFragment extends Fragment {
                         && mHomeAdapter != null
                         && mLayoutManager.findLastCompletelyVisibleItemPosition() != -1
                         && mLayoutManager.findLastCompletelyVisibleItemPosition() == (mHomeAdapter.getItemCount() - 1)
-                        && mHomes.get(mHomeAdapter.getItemCount() - 1) instanceof News
-                        && ((News) mHomes.get(mHomeAdapter.getItemCount() - 1)).isLoadmore()
+                        && mHomes.get(mHomeAdapter.getItemCount() - 1).isLoadmore()
                         && mPageIndex != -1
                         && !isLoading) {
                     mPageIndex++;
@@ -188,7 +185,7 @@ public class HomeFragment extends Fragment {
             tvWellcome.setVisibility(View.VISIBLE);
             tvUserName.setVisibility(View.GONE);
             tvCoin.setVisibility(View.GONE);
-            ivAvatar.setImageResource(R.drawable.ic_logo);
+            ivAvatar.setImageResource(R.drawable.avatar_default);
         }
     }
 
@@ -200,16 +197,17 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 BaseResponse baseResponse = response.body();
                 if (baseResponse != null && baseResponse.isSuccess() && baseResponse.getData() != null && baseResponse.getData().isJsonArray()) {
-                    ArrayList<News> saleNewsList = new ArrayList<>();
+                    mSaleNewsList = new ArrayList<>();
                     JsonArray jsonArray = baseResponse.getData().getAsJsonArray();
                     if (jsonArray.size() > 0) {
                         for (int i = 0, z = jsonArray.size(); i < z; i++) {
                             if (jsonArray.get(i).isJsonObject()) {
                                 News saleNews = gson.fromJson(jsonArray.get(i).getAsJsonObject().toString(), News.class);
-                                if (saleNews != null) saleNewsList.add(saleNews);
+                                if (saleNews != null) mSaleNewsList.add(saleNews);
                             }
                         }
                     }
+                    if (!mSaleNewsList.isEmpty()) mHomes.add(0, itemSaleNewsList);
                 }
                 getDataNews();
             }
@@ -224,12 +222,88 @@ public class HomeFragment extends Fragment {
 
     private void getDataNews() {
         isLoading = true;
+        Call<BaseResponse> getDataNews = mainService.getListNews(mToken, 20, mPageIndex, Constants.Value.HOME);
+        getDataNews.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                isLoading = false;
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null) {
+                    if (baseResponse.isSuccess() && baseResponse.getData() != null && baseResponse.getData().isJsonArray()) {
+                        ArrayList<News> homeNewsList = new ArrayList<>();
+                        JsonArray jsonArray = baseResponse.getData().getAsJsonArray();
+                        if (jsonArray.size() > 0) {
+                            for (int i = 0, z = jsonArray.size(); i < z; i++) {
+                                if (jsonArray.get(i).isJsonObject()) {
+                                    News homeNews = gson.fromJson(jsonArray.get(i).getAsJsonObject().toString(), News.class);
+                                    if (homeNews != null) homeNewsList.add(homeNews);
+                                }
+                            }
+                        }
+                        setDataHomeNews(homeNewsList);
+                    } else {
+                        String message = Constants.DataNotify.DATA_ERROR;
+                        if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty())
+                            message = baseResponse.getError().getMessage();
+                        showError(message);
+                    }
+                } else showError(Constants.DataNotify.DATA_ERROR);
 
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                t.printStackTrace();
+                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                isLoading = false;
+                showError(Constants.DataNotify.DATA_ERROR);
+            }
+        });
     }
+
+    private void setDataHomeNews(ArrayList<News> homeNewsList) {
+        removeLoadmore();
+        // add list
+        if (!homeNewsList.isEmpty()) {
+            showContent();
+            int insertPosition = mHomes.size();
+            mHomes.addAll(homeNewsList);
+            if (mHomeAdapter == null) {
+                mHomeAdapter = new HomeAdapter(mContext, mHomes, mSaleNewsList, mHomeListener);
+                rvHome.setAdapter(mHomeAdapter);
+            } else {
+                mHomeAdapter.notifyItemRangeInserted(insertPosition, homeNewsList.size());
+            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mLayoutManager.findLastCompletelyVisibleItemPosition() < mHomeAdapter.getItemCount() - 1) {
+                        mHomes.add(itemLoadmore);
+                        mHomeAdapter.notifyItemInserted(mHomes.size() - 1);
+                    }
+                }
+            }, 1000);
+        } else if (mHomes.isEmpty()) {
+            showError("Hiện chưa có bài viết mới.");
+        }
+    }
+
+    private HomeListener mHomeListener = new HomeListener() {
+        @Override
+        public void goHomeNewsDetail(News news) {
+
+        }
+
+        @Override
+        public void goSaleNewsDetail(News news) {
+
+        }
+    };
 
     private void removeLoadmore() {
         // remove loadmore
-        if (!mHomes.isEmpty() && mHomes.get(mHomes.size() - 1) instanceof News && ((News) mHomes.get(mHomes.size() - 1)).isLoadmore()) {
+        if (!mHomes.isEmpty() && mHomes.get(mHomes.size() - 1).isLoadmore()) {
             int removePosition = mHomes.size() - 1;
             mHomes.remove(removePosition);
             if (mHomeAdapter != null) mHomeAdapter.notifyItemRemoved(removePosition);

@@ -24,7 +24,8 @@
         app:layout_constraintRight_toRightOf="@id/iv_notif"
         app:layout_constraintTop_toTopOf="@id/iv_notif" />
 
-    <com.enjoywater.view.TvSegoeuiSemiBold
+    <TextView
+        android:fontFamily="@font/opensans_semibold"
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -9,12 +9,19 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.enjoywater.R;
 import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.model.Location.City;
 import com.enjoywater.model.Location.District;
@@ -511,5 +518,19 @@ public class Utils {
             return deviceToken;
         }
         return deviceToken;
+    }
+
+    public static void loadImage(Context context, ImageView imageView, String url) {
+        if (url != null && url.length() > 0) {
+            Glide.with(context).load(url)
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL))
+                    .apply(RequestOptions.errorOf(R.drawable.logo_app))
+                    .apply(RequestOptions.placeholderOf(R.drawable.bg_placeholder))
+                    .thumbnail(0.1f)
+                    .into(imageView);
+
+        } else {
+            imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.logo_app));
+        }
     }
 }

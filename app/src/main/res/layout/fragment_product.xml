@@ -55,21 +55,23 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/opensans_semibold"
                             android:includeFontPadding="false"
                             android:text="Tổng tiền"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_15" />
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:id="@+id/tv_total_product_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_semibold"
                             android:text="0 đ"
-                            android:textColor="@color/colorAccent"
+                            android:textColor="@color/colorAccentDark"
                             android:textSize="@dimen/text_15" />
                     </LinearLayout>
 
@@ -101,11 +103,12 @@
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_13" />
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:id="@+id/tv_total_delivery_fee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
+                            android:fontFamily="@font/opensans_semibold"
                             android:text="0 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -161,11 +164,12 @@
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_13" />
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:id="@+id/tv_ship_type_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
+                            android:fontFamily="@font/opensans_semibold"
                             android:text="-0 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -204,11 +208,12 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:id="@+id/tv_choose_ship_date_discount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_15"
+                            android:fontFamily="@font/opensans_semibold"
                             android:text="-0 đ"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
@@ -224,10 +229,11 @@
                         android:paddingLeft="@dimen/size_15"
                         android:paddingRight="@dimen/size_15">
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:id="@+id/tv_coupon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_semibold"
                             android:includeFontPadding="false"
                             android:text="Mã giảm giá"
                             android:textColor="@color/indigo_blue"
@@ -249,8 +255,8 @@
                                 android:gravity="center_vertical"
                                 android:inputType="textCapCharacters"
                                 android:paddingLeft="@dimen/size_10"
-                                android:text="DHE3DA2QX"
                                 android:singleLine="true"
+                                android:text="DHE3DA2QX"
                                 android:textColor="@color/black_6"
                                 android:textSize="@dimen/text_13" />
 
@@ -276,11 +282,12 @@
                             android:orientation="horizontal"
                             android:visibility="gone">
 
-                            <com.enjoywater.view.TvSegoeuiSemiBold
+                            <TextView
                                 android:id="@+id/tv_coupon_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/size_25"
                                 android:background="@drawable/bg_coupon"
+                                android:fontFamily="@font/opensans_semibold"
                                 android:gravity="center_vertical"
                                 android:includeFontPadding="false"
                                 android:paddingLeft="@dimen/size_5"
@@ -303,10 +310,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
-                            <com.enjoywater.view.TvSegoeuiSemiBold
+                            <TextView
                                 android:id="@+id/tv_counpon_discount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/opensans_semibold"
                                 android:includeFontPadding="false"
                                 android:text="-0 đ"
                                 android:textColor="@color/indigo_blue"
@@ -323,22 +331,24 @@
                         android:paddingLeft="@dimen/size_15"
                         android:paddingRight="@dimen/size_15">
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/opensans_semibold"
                             android:includeFontPadding="false"
                             android:text="Tổng thanh toán"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_15" />
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:id="@+id/tv_total_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_semibold"
                             android:text="0 đ"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="@dimen/text_15" />
+                            android:textColor="@color/colorAccentDark"
+                            android:textSize="@dimen/text_16" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -398,11 +408,12 @@
                         android:orientation="horizontal"
                         android:paddingTop="@dimen/size_5">
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_weight="1"
+                            android:fontFamily="@font/opensans_semibold"
                             android:includeFontPadding="false"
                             android:text="Địa chỉ giao hàng"
                             android:textColor="@color/indigo_blue"
@@ -418,10 +429,11 @@
                             app:rv_color="@android:color/transparent"
                             app:rv_zoomScale="1.1">
 
-                            <com.enjoywater.view.TvSegoeuiSemiBold
+                            <TextView
                                 android:id="@+id/btn_change_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/opensans_semibold"
                                 android:includeFontPadding="false"
                                 android:text="Thay đổi"
                                 android:textColor="@color/colorAccent"

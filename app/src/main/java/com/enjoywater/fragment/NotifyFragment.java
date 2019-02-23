@@ -33,7 +33,6 @@ import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -48,7 +47,7 @@ import retrofit2.Response;
 public class NotifyFragment extends Fragment {
     private static final String TAG = "NotifyFragment";
     @BindView(R.id.tv_title)
-    TvSegoeuiSemiBold tvTitle;
+    TextView tvTitle;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.rv_notif)
@@ -172,20 +171,18 @@ public class NotifyFragment extends Fragment {
                 isLoading = false;
                 BaseResponse getListNotifyResponse = response.body();
                 if (getListNotifyResponse != null) {
-                    if (getListNotifyResponse.isSuccess() && getListNotifyResponse.getData() != null) {
-                        if (getListNotifyResponse.getData().isJsonArray()) {
-                            ArrayList<Notify> orders = new ArrayList<>();
-                            JsonArray arrayNotifications = getListNotifyResponse.getData().getAsJsonArray();
-                            if (arrayNotifications.size() > 0) {
-                                for (int i = 0, z = arrayNotifications.size(); i < z; i++) {
-                                    if (arrayNotifications.get(i).isJsonObject()) {
-                                        Notify notify = gson.fromJson(arrayNotifications.get(i).getAsJsonObject().toString(), Notify.class);
-                                        if (notify != null) orders.add(notify);
-                                    }
+                    if (getListNotifyResponse.isSuccess() && getListNotifyResponse.getData() != null && getListNotifyResponse.getData().isJsonArray()) {
+                        ArrayList<Notify> orders = new ArrayList<>();
+                        JsonArray arrayNotifications = getListNotifyResponse.getData().getAsJsonArray();
+                        if (arrayNotifications.size() > 0) {
+                            for (int i = 0, z = arrayNotifications.size(); i < z; i++) {
+                                if (arrayNotifications.get(i).isJsonObject()) {
+                                    Notify notify = gson.fromJson(arrayNotifications.get(i).getAsJsonObject().toString(), Notify.class);
+                                    if (notify != null) orders.add(notify);
                                 }
                             }
-                            setData(orders);
-                        } else showError(Constants.DataNotify.DATA_ERROR);
+                        }
+                        setData(orders);
                     } else {
                         String message = Constants.DataNotify.DATA_ERROR;
                         if (getListNotifyResponse.getError() != null && getListNotifyResponse.getError().getMessage() != null && !getListNotifyResponse.getError().getMessage().isEmpty())

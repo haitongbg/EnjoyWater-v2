@@ -7,19 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.enjoywater.R;
 import com.enjoywater.listener.ProductListener;
 import com.enjoywater.model.Product;
-import com.enjoywater.view.TvSegoeuiSemiBold;
-import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -59,7 +56,7 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
 
     public class CustomViewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_name)
-        TvSegoeuiSemiBold tvName;
+        TextView tvName;
         @BindView(R.id.btn_subtract)
         ImageView btnSubtract;
         @BindView(R.id.edt_count)
@@ -67,7 +64,7 @@ public class SelectedProductAdapter extends RecyclerView.Adapter<SelectedProduct
         @BindView(R.id.btn_add)
         ImageView btnAdd;
         @BindView(R.id.tv_price)
-        TvSegoeuiSemiBold tvPrice;
+        TextView tvPrice;
 
         public CustomViewholder(@NonNull View itemView) {
             super(itemView);

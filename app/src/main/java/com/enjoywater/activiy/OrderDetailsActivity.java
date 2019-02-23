@@ -30,8 +30,6 @@ import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
-import com.enjoywater.view.TvRobotoMedium;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
@@ -48,15 +46,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.btn_back)
     ImageView btnBack;
     @BindView(R.id.tv_title)
-    TvSegoeuiSemiBold tvTitle;
+    TextView tvTitle;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.iv_order_code)
     ImageView ivOrderCode;
     @BindView(R.id.tv_order_code)
-    TvRobotoMedium tvOrderCode;
+    TextView tvOrderCode;
     @BindView(R.id.tv_order_canceled)
-    TvRobotoMedium tvOrderCanceled;
+    TextView tvOrderCanceled;
     @BindView(R.id.btn_cancel_order)
     Button btnCancelOrder;
     @BindView(R.id.view_status_line)
@@ -90,11 +88,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.iv_order_time)
     ImageView ivOrderTime;
     @BindView(R.id.tv_order_time)
-    TvRobotoMedium tvCreatedTime;
+    TextView tvCreatedTime;
     @BindView(R.id.text_delivery_time)
     TextView textDeliveryTime;
     @BindView(R.id.tv_delivery_time)
-    TvRobotoMedium tvExpectedDeliveryTime;
+    TextView tvExpectedDeliveryTime;
     @BindView(R.id.iv_delivery_time)
     ImageView ivDeliveryTime;
     @BindView(R.id.group_order_status)
@@ -104,9 +102,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.iv_address)
     ImageView ivAddress;
     @BindView(R.id.text_address)
-    TvRobotoMedium textAddress;
+    TextView textAddress;
     @BindView(R.id.tv_name_and_phone)
-    TvSegoeuiSemiBold tvNameAndPhone;
+    TextView tvNameAndPhone;
     @BindView(R.id.tv_address)
     TextView tvAddress;
     @BindView(R.id.text_note)
@@ -120,7 +118,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.iv_selected_products)
     ImageView ivSelectedProducts;
     @BindView(R.id.tv_selected_products)
-    TvRobotoMedium tvSelectedProducts;
+    TextView tvSelectedProducts;
     @BindView(R.id.rv_selected_products)
     RecyclerView rvSelectedProducts;
     @BindView(R.id.line_under_selected_products)
@@ -128,29 +126,29 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_delivery_climb)
     TextView tvDeliveryClimb;
     @BindView(R.id.tv_delivery_climb_fee)
-    TvSegoeuiSemiBold tvDeliveryClimbFee;
+    TextView tvDeliveryClimbFee;
     @BindView(R.id.group_delivery_climb)
     Group groupDeliveryClimb;
     @BindView(R.id.tv_ship_type)
     TextView tvShipType;
     @BindView(R.id.tv_ship_type_discount)
-    TvSegoeuiSemiBold tvShipTypeDiscount;
+    TextView tvShipTypeDiscount;
     @BindView(R.id.tv_counpon)
     TextView tvCounpon;
     @BindView(R.id.tv_counpon_discount)
-    TvSegoeuiSemiBold tvCounponDiscount;
+    TextView tvCounponDiscount;
     @BindView(R.id.group_counpon_discount)
     Group groupCounponDiscount;
     @BindView(R.id.line_under_delivery_options)
     View lineUnderDeliveryOptions;
     @BindView(R.id.text_total_payment)
-    TvSegoeuiSemiBold textTotalPayment;
+    TextView textTotalPayment;
     @BindView(R.id.tv_total_payment)
-    TvSegoeuiSemiBold tvTotalPayment;
+    TextView tvTotalPayment;
     @BindView(R.id.text_payment_type)
-    TvSegoeuiSemiBold textPaymentType;
+    TextView textPaymentType;
     @BindView(R.id.tv_payment_type)
-    TvSegoeuiSemiBold tvPaymentType;
+    TextView tvPaymentType;
     @BindView(R.id.layout_selected_products)
     ConstraintLayout layoutSelectedProducts;
     @BindView(R.id.scrollview)
@@ -170,9 +168,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.text_total_price)
-    TvSegoeuiSemiBold textTotalPrice;
+    TextView textTotalPrice;
     @BindView(R.id.tv_total_price)
-    TvSegoeuiSemiBold tvTotalPrice;
+    TextView tvTotalPrice;
     private MainService mainService;
     private boolean isLoading = false;
     private String mToken;

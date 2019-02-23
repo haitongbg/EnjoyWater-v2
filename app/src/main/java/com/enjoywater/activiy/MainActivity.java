@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.enjoywater.R;
 import com.enjoywater.fragment.HomeFragment;
@@ -17,7 +18,6 @@ import com.enjoywater.fragment.NotifyFragment;
 import com.enjoywater.fragment.OrdersFragment;
 import com.enjoywater.fragment.PersonalFragment;
 import com.enjoywater.fragment.ProductFragment;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.iv_tab_home)
     ImageView ivTabHome;
     @BindView(R.id.tv_tab_home)
-    TvSegoeuiSemiBold tvTabHome;
+    TextView tvTabHome;
     @BindView(R.id.underline_tab_home)
     View underlineTabHome;
     @BindView(R.id.layout_tab_home)
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.iv_tab_product)
     ImageView ivTabProduct;
     @BindView(R.id.tv_tab_product)
-    TvSegoeuiSemiBold tvTabProduct;
+    TextView tvTabProduct;
     @BindView(R.id.underline_tab_product)
     View underlineTabProduct;
     @BindView(R.id.layout_tab_product)
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.iv_tab_orders)
     ImageView ivTabOrders;
     @BindView(R.id.tv_tab_orders)
-    TvSegoeuiSemiBold tvTabOrders;
+    TextView tvTabOrders;
     @BindView(R.id.underline_tab_orders)
     View underlineTabOrders;
     @BindView(R.id.layout_tab_orders)
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.iv_tab_notif)
     ImageView ivTabNotif;
     @BindView(R.id.tv_tab_notif)
-    TvSegoeuiSemiBold tvTabNotif;
+    TextView tvTabNotif;
     @BindView(R.id.underline_tab_notif)
     View underlineTabNotif;
     @BindView(R.id.layout_tab_notif)
@@ -68,14 +68,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.iv_tab_personal)
     ImageView ivTabPersonal;
     @BindView(R.id.tv_tab_personal)
-    TvSegoeuiSemiBold tvTabPersonal;
+    TextView tvTabPersonal;
     @BindView(R.id.underline_tab_personal)
     View underlineTabPersonal;
     @BindView(R.id.layout_tab_personal)
     RelativeLayout layoutTabPersonal;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int mTabSelected = 1;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.setOnPageChangeListener(onPageChangeListener);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.setCurrentItem(mTabSelected);
     }
 
@@ -115,12 +115,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: return homeFragment;
-                case 1: return productFragment;
-                case 2: return ordersFragment;
-                case 3: return notifyFragment;
-                case 4: return personalFragment;
-                default: return null;
+                case 0:
+                    return homeFragment;
+                case 1:
+                    return productFragment;
+                case 2:
+                    return ordersFragment;
+                case 3:
+                    return notifyFragment;
+                case 4:
+                    return personalFragment;
+                default:
+                    return null;
             }
         }
 

@@ -27,7 +27,6 @@ import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +45,7 @@ public class DialogActiveAccount {
     @BindView(R.id.tv_tutorial)
     TextView tvTutorial;
     @BindView(R.id.tv_email)
-    TvSegoeuiSemiBold tvEmail;
+    TextView tvEmail;
     @BindView(R.id.edt_active_code)
     EditText edtActiveCode;
     @BindView(R.id.btn_get_active_code)

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/colorBackground"
     android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
@@ -40,7 +40,8 @@
                 android:src="@drawable/ic_tab_home" />
 
 
-            <com.enjoywater.view.TvSegoeuiSemiBold
+            <TextView
+                android:fontFamily="@font/opensans_semibold"
                 android:id="@+id/tv_tab_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,7 +77,8 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_tab_product_active" />
 
-            <com.enjoywater.view.TvSegoeuiSemiBold
+            <TextView
+                android:fontFamily="@font/opensans_semibold"
                 android:id="@+id/tv_tab_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,7 +113,8 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_tab_orders" />
 
-            <com.enjoywater.view.TvSegoeuiSemiBold
+            <TextView
+                android:fontFamily="@font/opensans_semibold"
                 android:id="@+id/tv_tab_orders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,7 +149,8 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_tab_notif" />
 
-            <com.enjoywater.view.TvSegoeuiSemiBold
+            <TextView
+                android:fontFamily="@font/opensans_semibold"
                 android:id="@+id/tv_tab_notif"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,7 +185,8 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_tab_personal" />
 
-            <com.enjoywater.view.TvSegoeuiSemiBold
+            <TextView
+                android:fontFamily="@font/opensans_semibold"
                 android:id="@+id/tv_tab_personal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

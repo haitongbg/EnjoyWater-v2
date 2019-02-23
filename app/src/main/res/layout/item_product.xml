@@ -14,7 +14,8 @@
         android:layout_marginTop="@dimen/size_10"
         android:scaleType="centerInside" />
 
-    <com.enjoywater.view.TvSegoeuiBold
+    <TextView
+        android:fontFamily="@font/opensans_bold"
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +29,8 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_12" />
 
-    <com.enjoywater.view.TvSegoeuiBold
+    <TextView
+        android:fontFamily="@font/opensans_bold"
         android:id="@+id/tv_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -15,7 +15,6 @@ import com.enjoywater.listener.NotifyListener;
 import com.enjoywater.model.Notify;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.view.LoadmoreViewHolder;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 
 import java.util.ArrayList;
 
@@ -70,7 +69,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @BindView(R.id.iv_notif_unread)
         ImageView ivNotifUnread;
         @BindView(R.id.tv_title)
-        TvSegoeuiSemiBold tvTitle;
+        TextView tvTitle;
         @BindView(R.id.tv_content)
         TextView tvContent;
         @BindView(R.id.barrier_under_content)

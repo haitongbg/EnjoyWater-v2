@@ -16,12 +16,12 @@
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -41,35 +41,36 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.enjoywater.view.TvSegoeuiSemiBold
+                    <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/size_15"
                         android:layout_marginRight="@dimen/size_10"
+                        android:fontFamily="@font/opensans_semibold"
                         android:includeFontPadding="false"
                         android:singleLine="true"
+                        android:text="Name"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_16"
                         android:visibility="visible"
                         app:layout_constraintLeft_toRightOf="@id/iv_avatar"
                         app:layout_constraintRight_toLeftOf="@id/tv_coin"
-                        app:layout_constraintTop_toTopOf="@id/iv_avatar"
-                        android:text="Name" />
+                        app:layout_constraintTop_toTopOf="@id/iv_avatar" />
 
                     <TextView
                         android:id="@+id/tv_user_type"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_15"
+                        android:layout_marginRight="@dimen/size_10"
                         android:includeFontPadding="false"
                         android:text="Khách hàng mới"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_14"
-                        app:layout_constraintRight_toLeftOf="@id/tv_coin"
-                        android:layout_marginRight="@dimen/size_10"
-                        android:layout_marginLeft="@dimen/size_15"
                         app:layout_constraintLeft_toRightOf="@id/iv_avatar"
-                        app:layout_constraintTop_toBottomOf="@id/tv_name"/>
+                        app:layout_constraintRight_toLeftOf="@id/tv_coin"
+                        app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
 
                     <ImageView
@@ -82,11 +83,12 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@id/iv_avatar" />
 
-                    <com.enjoywater.view.TvSegoeuiSemiBold
+                    <TextView
                         android:id="@+id/tv_coin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/size_5"
+                        android:fontFamily="@font/opensans_semibold"
                         android:includeFontPadding="false"
                         android:text="12500"
                         android:textColor="@color/white"
@@ -100,15 +102,15 @@
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="0dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appbar"
                 android:layout_height="0dp"
                 android:background="@color/white"
                 android:descendantFocusability="blocksDescendants"
                 android:overScrollMode="never"
-                android:visibility="visible">
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,24 +131,25 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="Mã giới thiệu của bạn:"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Mã giới thiệu của bạn:" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.enjoywater.view.TvSegoeuiSemiBold
+                        <TextView
                             android:id="@+id/tv_user_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
+                            android:fontFamily="@font/opensans_semibold"
                             android:includeFontPadding="false"
+                            android:text="101010"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_16"
                             app:layout_constraintBottom_toBottomOf="@id/text_user_code"
                             app:layout_constraintLeft_toRightOf="@id/text_user_code"
-                            app:layout_constraintTop_toTopOf="@id/text_user_code"
-                            android:text="101010" />
+                            app:layout_constraintTop_toTopOf="@id/text_user_code" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"
@@ -185,11 +188,11 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="Giới thiệu bạn bè"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Giới thiệu bạn bè" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"
@@ -228,11 +231,11 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="Nhập mã giới thiệu"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Nhập mã giới thiệu" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"
@@ -273,11 +276,11 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="Đánh giá ứng dụng"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Đánh giá ứng dụng" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"
@@ -316,11 +319,11 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="CSKH: 0966555779"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="CSKH: 0966555779" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"
@@ -359,11 +362,11 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="Email: enjoywater.support@gmail.com"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Email: enjoywater.support@gmail.com" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"
@@ -402,11 +405,11 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="Website: http://nuocsach.online"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Website: http://nuocsach.online" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"
@@ -446,11 +449,11 @@
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
                             android:includeFontPadding="false"
+                            android:text="Đăng xuất"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="Đăng xuất" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:layout_width="@dimen/size_12"

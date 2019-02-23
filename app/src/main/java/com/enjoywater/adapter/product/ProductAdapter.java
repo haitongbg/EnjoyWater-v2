@@ -8,15 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
 import com.enjoywater.listener.ProductListener;
 import com.enjoywater.model.Product;
 import com.enjoywater.utils.Utils;
-import com.enjoywater.view.TvSegoeuiBold;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -66,9 +65,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.CustomVi
         @BindView(R.id.iv_image)
         ImageView ivImage;
         @BindView(R.id.tv_name)
-        TvSegoeuiBold tvName;
+        TextView tvName;
         @BindView(R.id.tv_price)
-        TvSegoeuiBold tvPrice;
+        TextView tvPrice;
         @BindView(R.id.iv_selected)
         ImageView ivSelected;
 

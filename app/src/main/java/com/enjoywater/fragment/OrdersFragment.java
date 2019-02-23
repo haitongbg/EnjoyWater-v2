@@ -12,7 +12,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
-import com.enjoywater.view.TvSegoeuiSemiBold;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -49,7 +47,7 @@ import retrofit2.Response;
 public class OrdersFragment extends Fragment {
     private static final String TAG = "OrdersFragment";
     @BindView(R.id.tv_title)
-    TvSegoeuiSemiBold tvTitle;
+    TextView tvTitle;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.rv_orders)
