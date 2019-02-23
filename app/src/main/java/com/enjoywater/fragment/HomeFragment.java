@@ -1,6 +1,7 @@
 package com.enjoywater.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
+import com.enjoywater.activiy.LoginActivity;
+import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.adapter.home.HomeAdapter;
 import com.enjoywater.listener.HomeListener;
@@ -34,6 +37,7 @@ import com.enjoywater.view.ProgressWheel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -91,6 +95,7 @@ public class HomeFragment extends Fragment {
     private HomeAdapter mHomeAdapter;
     private News itemLoadmore = new News(true, false);
     private News itemSaleNewsList = new News(false, true);
+    private DecimalFormat formatVND = new DecimalFormat("###,###,###");
 
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();
@@ -171,20 +176,29 @@ public class HomeFragment extends Fragment {
         if (mUser != null) {
             tvWellcome.setVisibility(View.GONE);
             tvUserName.setVisibility(View.VISIBLE);
+            tvUserType.setVisibility(View.VISIBLE);
+            vSeparateDot.setVisibility(View.VISIBLE);
+            ivCoin.setVisibility(View.VISIBLE);
             tvCoin.setVisibility(View.VISIBLE);
             btnEvent.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(R.drawable.gif_event).into(btnEvent);
+            String avatar = mUser.getUserInfo().getAvatar();
+            if (avatar != null && !avatar.isEmpty())
+                Glide.with(mContext).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).into(ivAvatar);
+            else ivAvatar.setImageResource(R.drawable.avatar_default);
             String name = mUser.getUserInfo().getName();
             if (name != null && !name.isEmpty()) tvUserName.setText(name);
             else tvUserName.setText(R.string.guest);
             tvUserType.setText(mUser.getUserInfo().getLevelInfo().getName());
-            String avatar = mUser.getUserInfo().getAvatar();
-            if (avatar != null && !avatar.isEmpty())
-                Glide.with(mContext).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).into(ivAvatar);
+            tvCoin.setText(formatVND.format(mUser.getUserInfo().getCoin()));
+            Glide.with(mContext).load(R.drawable.gif_event).into(btnEvent);
         } else {
             tvWellcome.setVisibility(View.VISIBLE);
             tvUserName.setVisibility(View.GONE);
+            tvUserType.setVisibility(View.GONE);
+            vSeparateDot.setVisibility(View.GONE);
+            ivCoin.setVisibility(View.GONE);
             tvCoin.setVisibility(View.GONE);
+            btnEvent.setVisibility(View.GONE);
             ivAvatar.setImageResource(R.drawable.avatar_default);
         }
     }
@@ -342,6 +356,21 @@ public class HomeFragment extends Fragment {
             if (error.equals(getString(R.string.not_login_yet)))
                 btnLogin.setVisibility(View.VISIBLE);
             else btnLogin.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
+            mToken = Utils.getToken(mContext);
+            mUser = Utils.getUser(mContext);
+            setDataUser();
+            mPageIndex = 1;
+            mHomes.clear();
+            if (mHomeAdapter != null) mHomeAdapter.notifyDataSetChanged();
+            showLoading(true);
+            getDataSale();
         }
     }
 }

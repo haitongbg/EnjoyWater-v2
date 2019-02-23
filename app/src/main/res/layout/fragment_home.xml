@@ -40,7 +40,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/wellcome"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_15"
+                android:textSize="@dimen/text_14"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
                 app:layout_constraintLeft_toRightOf="@id/iv_avatar"
@@ -92,8 +92,8 @@
 
             <View
                 android:id="@+id/v_separate_dot"
-                android:layout_width="@dimen/size_4"
-                android:layout_height="@dimen/size_4"
+                android:layout_width="@dimen/size_3"
+                android:layout_height="@dimen/size_3"
                 android:layout_marginLeft="@dimen/size_7"
                 android:background="@drawable/bg_white_circle"
                 app:layout_constraintBottom_toBottomOf="@id/tv_user_type"
@@ -115,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_3"
-                android:fontFamily="@font/opensans_bold"
+                android:fontFamily="@font/opensans_semibold"
                 android:includeFontPadding="false"
                 android:singleLine="true"
                 android:text="125.000"

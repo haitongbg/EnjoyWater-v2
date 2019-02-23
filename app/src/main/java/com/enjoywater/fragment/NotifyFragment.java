@@ -344,6 +344,9 @@ public class NotifyFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
             mToken = Utils.getToken(mContext);
+            mPageIndex = 1;
+            mNotifies.clear();
+            if (mNotifyAdapter != null) mNotifyAdapter.notifyDataSetChanged();
             showLoading(true);
             getNotificationHistory();
         }

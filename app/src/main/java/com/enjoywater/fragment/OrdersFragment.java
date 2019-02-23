@@ -355,6 +355,9 @@ public class OrdersFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
             mToken = Utils.getToken(mContext);
+            mPageIndex = 1;
+            mOrders.clear();
+            if (mOrdersAdapter != null) mOrdersAdapter.notifyDataSetChanged();
             showLoading(true);
             getOrderHistory();
         }
