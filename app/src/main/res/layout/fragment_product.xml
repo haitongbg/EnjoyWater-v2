@@ -1,5 +1,6 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -256,7 +257,6 @@
                                 android:inputType="textCapCharacters"
                                 android:paddingLeft="@dimen/size_10"
                                 android:singleLine="true"
-                                android:text="DHE3DA2QX"
                                 android:textColor="@color/black_6"
                                 android:textSize="@dimen/text_13" />
 
@@ -453,7 +453,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
-                            android:text="Tống Văn Hải,"
+                            tools:text="Tống Văn Hải,"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
 
@@ -463,7 +463,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
-                            android:text="0388326555,"
+                            tools:text="0388326555,"
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
 
@@ -473,7 +473,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
-                            android:text="Số 320 Quan Nhân, Thanh Xuân, Hà Nội."
+                            tools:text="Số 320 Quan Nhân, Thanh Xuân, Hà Nội."
                             android:textColor="@color/indigo_blue"
                             android:textSize="@dimen/text_14" />
 
