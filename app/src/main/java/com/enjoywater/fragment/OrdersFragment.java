@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.adapter.order.HistoryOrdersAdapter;
 import com.enjoywater.listener.OrderListener;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.Order;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
@@ -35,6 +37,13 @@ import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Logger;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -205,6 +214,28 @@ public class OrdersFragment extends Fragment {
 
     }
 
+    private void getOrderDetails(String orderId) {
+        isLoading = true;
+        Call<BaseResponse> getOrderDetails = mainService.getOrderDetails(mToken, orderId);
+        getOrderDetails.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                isLoading = false;
+                BaseResponse getOrderDetailsResponse = response.body();
+                if (getOrderDetailsResponse != null && getOrderDetailsResponse.isSuccess() && getOrderDetailsResponse.getData() != null && getOrderDetailsResponse.getData().isJsonObject()) {
+                    Order order = gson.fromJson(getOrderDetailsResponse.getData(), Order.class);
+                    insertOrder(order);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                isLoading = false;
+                t.printStackTrace();
+            }
+        });
+    }
+
     private void setDataHistory(ArrayList<Order> orders) {
         removeLoadmore();
         // add list
@@ -270,7 +301,8 @@ public class OrdersFragment extends Fragment {
             rvOrders.setVisibility(View.GONE);
             layoutError.setVisibility(View.VISIBLE);
             tvError.setText(error);
-            if (error.equals(getString(R.string.not_login_yet))) btnLogin.setVisibility(View.VISIBLE);
+            if (error.equals(getString(R.string.not_login_yet)))
+                btnLogin.setVisibility(View.VISIBLE);
             else btnLogin.setVisibility(View.GONE);
         }
     }
@@ -304,6 +336,29 @@ public class OrdersFragment extends Fragment {
             (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         }
     };
+
+    private void insertOrder(Order order) {
+        if (order != null && mOrders != null) {
+            if (!mOrders.isEmpty()) {
+                for (int i=0, z= mOrders.size(); i<z;i++) {
+                    if (!mOrders.get(i).isLoadmore() && mOrders.get(i).getId().equals(order.getId())) {
+                        mOrders.remove(i);
+                        if (mOrdersAdapter != null) mOrdersAdapter.notifyItemRemoved(i);
+                        break;
+                    }
+                }
+            }
+            mOrders.add(0, order);
+            if (mOrdersAdapter == null) {
+                mOrdersAdapter = new HistoryOrdersAdapter(mContext, mOrders, mOrderListener);
+                rvOrders.setAdapter(mOrdersAdapter);
+            } else {
+                mOrdersAdapter.notifyItemInserted(0);
+                mOrdersAdapter.notifyItemChanged(1);
+                rvOrders.scrollToPosition(0);
+            }
+        }
+    }
 
     private void cancelOrder(Order order) {
         isLoading = true;
@@ -347,6 +402,36 @@ public class OrdersFragment extends Fragment {
                 if (mOrdersAdapter != null) mOrdersAdapter.notifyItemChanged(i);
                 break;
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        switch (event.getAction()) {
+            case Constants.Key.ORDER_CREATED: {
+                Order order = (Order) event.getObject();
+                insertOrder(order);
+                break;
+            }
+            case Constants.Key.ORDER_UPDATED: {
+                String orderId = (String) event.getObject();
+                if (orderId != null && !orderId.isEmpty()) {
+                    getOrderDetails(orderId);
+                }
+                break;
+            }
+            default:{
+                Log.e(TAG, "onMessageEvent " + gson.toJson(event));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 

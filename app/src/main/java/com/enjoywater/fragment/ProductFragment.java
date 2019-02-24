@@ -17,7 +17,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,7 @@ import com.enjoywater.adapter.product.SelectedProductAdapter;
 import com.enjoywater.listener.ProductListener;
 import com.enjoywater.model.Address;
 import com.enjoywater.model.Coupon;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.Location.City;
 import com.enjoywater.model.Location.District;
 import com.enjoywater.model.Location.Ward;
@@ -57,6 +57,8 @@ import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -788,6 +790,7 @@ public class ProductFragment extends Fragment {
                         if (createOrderResponse.isSuccess() && createOrderResponse.getData() != null && createOrderResponse.getData().isJsonObject()) {
                             Toast.makeText(mContext, R.string.order_success, Toast.LENGTH_SHORT).show();
                             Order orderCreated = gson.fromJson(createOrderResponse.getData(), Order.class);
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_CREATED, orderCreated));
                             Intent intent = new Intent(mContext, OrderDetailsActivity.class);
                             intent.putExtra("order", orderCreated);
                             startActivity(intent);

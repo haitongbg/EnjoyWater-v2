@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.enjoywater.R;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.Order;
 import com.enjoywater.model.Product;
 import com.enjoywater.retrofit.MainService;
@@ -31,6 +32,8 @@ import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -508,6 +511,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                         Toast.makeText(OrderDetailsActivity.this, "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
                         mOrder.setStatus(Constants.Value.CANCELED);
                         setDataOrder();
+                        EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, mOrder.getId()));
                     } else {
                         String message = Constants.DataNotify.DATA_ERROR;
                         if (cancelOrderResponse.getError() != null && cancelOrderResponse.getError().getMessage() != null && !cancelOrderResponse.getError().getMessage().isEmpty())
@@ -543,6 +547,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                         Toast.makeText(OrderDetailsActivity.this, "Xác nhận thành công", Toast.LENGTH_SHORT).show();
                         mOrder.setStatus(Constants.Value.DELIVERED);
                         setDataOrder();
+                        EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, mOrder.getId()));
                         showRatingDialog();
                     } else {
                         String message = Constants.DataNotify.DATA_ERROR;

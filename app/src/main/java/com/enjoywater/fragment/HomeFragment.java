@@ -36,6 +36,7 @@ import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
+import com.enjoywater.view.RippleView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -85,6 +86,8 @@ public class HomeFragment extends Fragment {
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.group_user_info)
     Group groupUserInfo;
+    @BindView(R.id.ripple_event)
+    RippleView rippleEvent;
 
     private Context mContext;
     private MainService mainService;

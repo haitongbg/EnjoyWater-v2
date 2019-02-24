@@ -18,11 +18,13 @@
                 android:id="@+id/appbar"
                 android:layout_width="360dp"
                 android:layout_height="@dimen/size_80"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimary"
+                android:clickable="true">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/bg_ripple_primary_color"
                     app:layout_scrollFlags="scroll|enterAlways">
 
                     <de.hdodenhof.circleimageview.CircleImageView

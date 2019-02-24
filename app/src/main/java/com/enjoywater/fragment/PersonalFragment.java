@@ -201,7 +201,11 @@ public class PersonalFragment extends Fragment {
         btnShareCode.setOnClickListener(v -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Bạn tôi ơi! Muốn gọi nước sạch và tốt cho sức khỏe hãy tải ngay app Enjoy Water tại:\n" + Constants.Value.APP_LINK + "\nNhớ nhập mã giới thiệu của tôi để nhận nhiều ưu đãi hấp dẫn nhé: " + mUser.getUserInfo().getMyCode());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Bạn tôi ơi! Muốn gọi nước sạch và tốt cho sức khỏe hãy tải ngay app Enjoy Water tại:\n"
+                    + Constants.Value.ANDROID_LINK
+                    + "\nhoặc\n"
+                    + Constants.Value.IOS_LINK
+                    + "\nNhớ nhập mã giới thiệu của tôi là " + mUser.getUserInfo().getMyCode() + " để được tích điểm khi mua hàng nhé!");
             sendIntent.setType("text/plain");
             startActivity((Intent.createChooser(sendIntent, "Chia sẻ tới")));
         });
@@ -209,7 +213,7 @@ public class PersonalFragment extends Fragment {
             submitCode();
         });
         btnRateApp.setOnClickListener(v -> {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.Value.APP_LINK)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.Value.ANDROID_LINK)));
         });
         btnFeedbackEmail.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);

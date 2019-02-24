@@ -9,11 +9,14 @@ import android.util.Log;
 import com.enjoywater.R;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.activiy.SplashActivity;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.MyNotification;
 import com.enjoywater.utils.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFCMs";
@@ -27,7 +30,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String data = remoteMessage.getData().get(Constants.Key.DATA);
             if (data != null && !data.isEmpty()) {
                 MyNotification notification = gson.fromJson(data, MyNotification.class);
-                if (notification != null) createNotification(notification);
+                if (notification != null) {
+                    createNotification(notification);
+                    switch (notification.getType()) {
+                        case Constants.Value.ORDER: {
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, notification.getContent()));
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
