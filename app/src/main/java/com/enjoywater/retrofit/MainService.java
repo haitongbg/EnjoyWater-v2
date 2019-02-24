@@ -79,6 +79,14 @@ public interface MainService {
     @POST(Constants.Url.FORGET_PASSWORD)
     Call<BaseResponse> forgetPassword(@Field(Constants.Key.EMAIL) String email);
 
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.RESET_PASSWORD)
+    Call<BaseResponse> changePassword(@Field(Constants.Key.EMAIL) String email,
+                                      @Field(Constants.Key.CODE) String code,
+                                      @Field(Constants.Key.NEW_PASSWORD) String newPassword,
+                                      @Field(Constants.Key.NEW_PASSWORD_REPEATED) String newPasswordRepeated);
+
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_USER_INFO)
     Call<BaseResponse> getUserInfo(@Header(Constants.Key.TOKEN_LOGIN) String token);

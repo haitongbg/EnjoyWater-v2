@@ -17,6 +17,7 @@ public class Constants {
         public static final String GET_ACTIVE_CODE = "user/resend-mail-activate";
         public static final String ACTIVE_BY_CODE = "user/active-by-code";
         public static final String FORGET_PASSWORD = "user/forget-password";
+        public static final String RESET_PASSWORD = "user/reset-password";
         public static final String ADD_NEW_ADDRESS = "user/add-address";
         //Home
         public static final String GET_LIST_NEWS = "news/list";
@@ -92,6 +93,8 @@ public class Constants {
         public static final String DATA = "data";
         public static final String TYPE = "type";
         public static final String NEWS = "news";
+        public static final String NEW_PASSWORD = "newPass";
+        public static final String NEW_PASSWORD_REPEATED = "newPassRepeated";
     }
 
     public static class Value {

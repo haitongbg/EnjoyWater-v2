@@ -7,7 +7,7 @@
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="retrieve_password">Lấy lại mật khẩu</string>
-    <string name="retrieve_password_tutorial">Chúng tôi sẽ gửi mật khẩu mới vào email đăng ký tài khoản của bạn. Nếu bạn không nhận được email trong hộp thư đến, hãy thử tìm kiếm ở mục Spam.</string>
+    <string name="retrieve_password_tutorial">Chúng tôi sẽ gửi một mã xác nhận vào Email đăng ký tài khoản của bạn. Nếu bạn không nhận được email trong hộp thư đến, hãy thử tìm kiếm ở mục Spam.</string>
     <string name="forget_password">Quên?</string>
     <string name="login">Đăng nhập</string>
     <string name="register">Đăng ký</string>

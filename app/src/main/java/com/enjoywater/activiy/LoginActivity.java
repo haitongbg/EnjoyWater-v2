@@ -41,6 +41,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -200,7 +201,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginBySocialAccessToken(String type, String token) {
-        Log.e("AccessToken", token);
         isLoading = true;
         layoutLoading.setVisibility(View.VISIBLE);
         Call<BaseResponse> loginWithSocialAccessToken = mainService.loginBySocialAccessToken(type, token);
@@ -349,9 +349,12 @@ public class LoginActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == Constants.Value.ACTION_SUCCESS) {
-                    mUser = (User) msg.obj;
-                    Utils.saveUser(LoginActivity.this, mUser);
-                    registeDevice(mUser.getUserInfo().getId());
+                    HashMap<String, String> hashMap = (HashMap<String, String>) msg.obj;
+                    String email = hashMap.get(Constants.Key.EMAIL);
+                    String password = hashMap.get(Constants.Key.PASSWORD);
+                    edtEmail.setText(email);
+                    edtPassword.setText(password);
+                    loginByAccount(email, password);
                 } else if (msg.what == Constants.Value.ACTION_CLOSE) {
                     delaySendingActiveCode = (long) msg.obj;
                     countDownDelaySending = new CountDownTimer(delaySendingActiveCode, 1000) {
