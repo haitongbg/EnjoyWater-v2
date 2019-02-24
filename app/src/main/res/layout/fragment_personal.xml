@@ -16,12 +16,9 @@
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="360dp"
+                android:layout_height="@dimen/size_80"
+                android:background="@color/colorPrimary">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -30,58 +27,62 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_avatar"
-                        android:layout_width="@dimen/size_45"
-                        android:layout_height="@dimen/size_45"
-                        android:layout_margin="@dimen/size_15"
-                        android:background="@drawable/bg_white_circle"
+                        android:layout_width="@dimen/size_55"
+                        android:layout_height="@dimen/size_55"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/text_15"
                         android:clickable="true"
-                        android:scaleType="centerCrop"
                         android:src="@drawable/avatar_default"
+                        app:civ_border_color="@color/black_c"
+                        app:civ_border_width="@dimen/size_0_5"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+
                     <TextView
-                        android:id="@+id/tv_name"
+                        android:id="@+id/tv_user_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_15"
-                        android:layout_marginRight="@dimen/size_10"
+                        android:layout_marginLeft="@dimen/text_10"
                         android:fontFamily="@font/opensans_semibold"
                         android:includeFontPadding="false"
                         android:singleLine="true"
-                        android:text="Name"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_16"
+                        android:textSize="@dimen/text_17"
                         android:visibility="visible"
+                        app:layout_constraintBottom_toTopOf="@id/tv_user_type"
                         app:layout_constraintLeft_toRightOf="@id/iv_avatar"
                         app:layout_constraintRight_toLeftOf="@id/tv_coin"
-                        app:layout_constraintTop_toTopOf="@id/iv_avatar" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        tools:text="Customer Name" />
 
                     <TextView
                         android:id="@+id/tv_user_type"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_15"
-                        android:layout_marginRight="@dimen/size_10"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_marginTop="@dimen/size_3"
+                        android:fontFamily="@font/opensans_semibold"
                         android:includeFontPadding="false"
-                        android:text="Khách hàng mới"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_14"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@id/iv_avatar"
                         app:layout_constraintRight_toLeftOf="@id/tv_coin"
-                        app:layout_constraintTop_toBottomOf="@id/tv_name" />
-
+                        app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+                        tools:text="Khách hàng mới" />
 
                     <ImageView
                         android:id="@+id/iv_coin"
-                        android:layout_width="@dimen/size_15"
-                        android:layout_height="@dimen/size_15"
+                        android:layout_width="@dimen/size_18"
+                        android:layout_height="@dimen/size_18"
                         android:layout_marginRight="@dimen/size_15"
                         android:src="@drawable/ic_coin"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/iv_avatar" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_coin"
@@ -90,12 +91,13 @@
                         android:layout_marginRight="@dimen/size_5"
                         android:fontFamily="@font/opensans_semibold"
                         android:includeFontPadding="false"
-                        android:text="12500"
+                        android:singleLine="true"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_16"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+                        android:textSize="@dimen/text_17"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/iv_coin"
-                        app:layout_constraintTop_toTopOf="@id/iv_avatar" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="125.000" />
                 </android.support.constraint.ConstraintLayout>
             </android.support.design.widget.AppBarLayout>
 
@@ -103,7 +105,6 @@
                 android:id="@+id/scrollView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/white"
                 android:descendantFocusability="blocksDescendants"
                 android:overScrollMode="never"
                 android:visibility="visible"
@@ -124,18 +125,31 @@
                         android:background="@drawable/bg_white_ripple_grey"
                         android:clickable="true">
 
+                        <ImageView
+                            android:id="@+id/iv_user_code"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_usercode_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <TextView
                             android:id="@+id/text_user_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:includeFontPadding="false"
                             android:text="Mã giới thiệu của bạn:"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintBottom_toBottomOf="@id/iv_user_code"
+                            app:layout_constraintLeft_toRightOf="@id/iv_user_code"
+                            app:layout_constraintTop_toTopOf="@id/iv_user_code" />
 
                         <TextView
                             android:id="@+id/tv_user_code"
@@ -147,74 +161,75 @@
                             android:text="101010"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_16"
-                            app:layout_constraintBottom_toBottomOf="@id/text_user_code"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_user_code"
                             app:layout_constraintLeft_toRightOf="@id/text_user_code"
-                            app:layout_constraintTop_toTopOf="@id/text_user_code" />
+                            app:layout_constraintTop_toTopOf="@id/iv_user_code" />
 
                         <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
+                            android:layout_width="@dimen/size_30"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginRight="@dimen/size_10"
+                            android:padding="@dimen/size_5"
                             android:rotation="180"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_user_code"
+                            android:src="@drawable/ic_copy_grey"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_user_code"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_user_code" />
+                            app:layout_constraintTop_toTopOf="@id/iv_user_code" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_0_5"
                             android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
                             android:background="@color/black_c"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_user_code" />
+                            app:layout_constraintRight_toRightOf="parent" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
-                        android:id="@+id/btn_send_code"
+                        android:id="@+id/btn_share_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_white_ripple_grey"
                         android:clickable="true">
 
-                        <TextView
-                            android:id="@+id/text_send_code"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:id="@+id/iv_share_code"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_share_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/text_share_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:includeFontPadding="false"
                             android:text="Giới thiệu bạn bè"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:rotation="180"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_send_code"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_send_code" />
+                            app:layout_constraintBottom_toBottomOf="@id/iv_share_code"
+                            app:layout_constraintLeft_toRightOf="@id/iv_share_code"
+                            app:layout_constraintTop_toTopOf="@id/iv_share_code" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_0_5"
                             android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
                             android:background="@color/black_c"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_send_code" />
+                            app:layout_constraintRight_toRightOf="parent" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
@@ -224,171 +239,164 @@
                         android:background="@drawable/bg_white_ripple_grey"
                         android:clickable="true">
 
+                        <ImageView
+                            android:id="@+id/iv_submit_code"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_inputcode_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <TextView
                             android:id="@+id/text_submit_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:includeFontPadding="false"
                             android:text="Nhập mã giới thiệu"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:rotation="180"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_submit_code"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_submit_code" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/size_0_5"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:background="@color/black_c"
-                            android:visibility="visible"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_submit_code" />
+                            app:layout_constraintBottom_toBottomOf="@id/iv_submit_code"
+                            app:layout_constraintLeft_toRightOf="@id/iv_submit_code"
+                            app:layout_constraintTop_toTopOf="@id/iv_submit_code" />
                     </android.support.constraint.ConstraintLayout>
-
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/btn_rate_app"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_15"
                         android:background="@drawable/bg_white_ripple_grey"
                         android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/iv_rate_app"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_rating_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/text_rate_app"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:includeFontPadding="false"
                             android:text="Đánh giá ứng dụng"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:rotation="180"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_rate_app"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_rate_app" />
+                            app:layout_constraintBottom_toBottomOf="@id/iv_rate_app"
+                            app:layout_constraintLeft_toRightOf="@id/iv_rate_app"
+                            app:layout_constraintTop_toTopOf="@id/iv_rate_app" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_0_5"
                             android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
                             android:background="@color/black_c"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_rate_app" />
+                            app:layout_constraintRight_toRightOf="parent" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
-                        android:id="@+id/btn_cskh"
+                        android:id="@+id/btn_feedback_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_white_ripple_grey"
                         android:clickable="true">
 
-                        <TextView
-                            android:id="@+id/text_cskh"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:id="@+id/iv_feedback_email"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
-                            android:includeFontPadding="false"
-                            android:text="CSKH: 0966555779"
-                            android:textColor="@color/black_3"
-                            android:textSize="@dimen/text_14"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_email_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:rotation="180"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_cskh"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_cskh" />
+                        <TextView
+                            android:id="@+id/text_feedback_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_10"
+                            android:includeFontPadding="false"
+                            android:text="Lắng nghe khách hàng"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_feedback_email"
+                            app:layout_constraintLeft_toRightOf="@id/iv_feedback_email"
+                            app:layout_constraintTop_toTopOf="@id/iv_feedback_email" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_0_5"
                             android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
                             android:background="@color/black_c"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_cskh" />
+                            app:layout_constraintRight_toRightOf="parent" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
-                        android:id="@+id/btn_email"
+                        android:id="@+id/btn_hotline"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_white_ripple_grey"
                         android:clickable="true">
 
-                        <TextView
-                            android:id="@+id/text_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <ImageView
+                            android:id="@+id/iv_hotline"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
                             android:layout_marginLeft="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_15"
-                            android:includeFontPadding="false"
-                            android:text="Email: enjoywater.support@gmail.com"
-                            android:textColor="@color/black_3"
-                            android:textSize="@dimen/text_14"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_support_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:rotation="180"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_email"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_email" />
+                        <TextView
+                            android:id="@+id/text_hotline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_10"
+                            android:includeFontPadding="false"
+                            android:text="Hotline: 0966 555 779"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_hotline"
+                            app:layout_constraintLeft_toRightOf="@id/iv_hotline"
+                            app:layout_constraintTop_toTopOf="@id/iv_hotline" />
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_0_5"
                             android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
                             android:layout_marginRight="@dimen/size_15"
                             android:background="@color/black_c"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_email" />
+                            app:layout_constraintRight_toRightOf="parent" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
@@ -398,96 +406,75 @@
                         android:background="@drawable/bg_white_ripple_grey"
                         android:clickable="true">
 
+                        <ImageView
+                            android:id="@+id/iv_website"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_website_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <TextView
                             android:id="@+id/text_website"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:includeFontPadding="false"
-                            android:text="Website: http://nuocsach.online"
+                            android:text="Website"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:rotation="180"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_website"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_website" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/size_0_5"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:background="@color/black_c"
-                            android:visibility="visible"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_website" />
+                            app:layout_constraintBottom_toBottomOf="@id/iv_website"
+                            app:layout_constraintLeft_toRightOf="@id/iv_website"
+                            app:layout_constraintTop_toTopOf="@id/iv_website" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/btn_logout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_white_ripple_grey"
+                        android:background="@drawable/bg_ripple_grey"
                         android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/iv_logout"
+                            android:layout_width="@dimen/size_18"
+                            android:layout_height="@dimen/size_18"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_logout_grey"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/text_logout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginLeft="@dimen/size_10"
                             android:includeFontPadding="false"
                             android:text="Đăng xuất"
                             android:textColor="@color/black_3"
                             android:textSize="@dimen/text_14"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:layout_width="@dimen/size_12"
-                            android:layout_height="@dimen/size_12"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:rotation="180"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_back_black6"
-                            app:layout_constraintBottom_toBottomOf="@id/text_logout"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_logout" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/size_0_5"
-                            android:layout_marginLeft="@dimen/size_15"
-                            android:layout_marginTop="@dimen/size_15"
-                            android:layout_marginRight="@dimen/size_15"
-                            android:background="@color/black_c"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/text_logout" />
+                            app:layout_constraintBottom_toBottomOf="@id/iv_logout"
+                            app:layout_constraintLeft_toRightOf="@id/iv_logout"
+                            app:layout_constraintTop_toTopOf="@id/iv_logout" />
                     </android.support.constraint.ConstraintLayout>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 
+
             <com.enjoywater.view.RippleView
-                android:id="@+id/btn_promotion"
+                android:id="@+id/ripple_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/size_20"
-                android:layout_marginBottom="@dimen/size_20"
-                android:elevation="@dimen/size_2"
-                android:visibility="visible"
+                android:layout_margin="@dimen/size_10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:rv_alpha="0"
@@ -495,11 +482,12 @@
                 app:rv_zoomScale="1.2">
 
                 <ImageView
-                    android:layout_width="@dimen/size_50"
-                    android:layout_height="@dimen/size_50"
-                    android:padding="@dimen/size_8"
+                    android:id="@+id/btn_event"
+                    android:layout_width="@dimen/size_80"
+                    android:layout_height="@dimen/size_70"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_gift" />
+                    tools:src="@drawable/gif_event" />
+
             </com.enjoywater.view.RippleView>
         </android.support.constraint.ConstraintLayout>
 

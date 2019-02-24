@@ -1,12 +1,16 @@
 package com.enjoywater.activiy;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,12 +22,14 @@ import com.enjoywater.fragment.NotifyFragment;
 import com.enjoywater.fragment.OrdersFragment;
 import com.enjoywater.fragment.PersonalFragment;
 import com.enjoywater.fragment.ProductFragment;
+import com.enjoywater.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_LOGIN_FROM_MAIN = 111;
+    public static final int REQUEST_CODE_CALL_PHONE_PERMISSION = 212;
     int[] tabDrawableOn = {R.drawable.ic_tab_home_active, R.drawable.ic_tab_product_active, R.drawable.ic_tab_orders_active, R.drawable.ic_tab_notif_active, R.drawable.ic_tab_personal_active};
     int[] tabDrawableOff = {R.drawable.ic_tab_home, R.drawable.ic_tab_product, R.drawable.ic_tab_orders, R.drawable.ic_tab_notif, R.drawable.ic_tab_personal};
     HomeFragment homeFragment;
@@ -81,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mTabSelected = getIntent().getIntExtra("tab_selected", 1);
         initUI();
     }
 
@@ -274,5 +281,21 @@ public class MainActivity extends AppCompatActivity {
         ordersFragment.onActivityResult(requestCode, resultCode, data);
         notifyFragment.onActivityResult(requestCode, resultCode, data);
         personalFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_CALL_PHONE_PERMISSION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Constants.Value.HOTLINE));
+                    startActivity(intent);
+                }
+                break;
+            }
+            default:
+                break;
+        }
     }
 }

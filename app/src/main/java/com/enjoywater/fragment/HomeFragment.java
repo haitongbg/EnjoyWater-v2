@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.Group;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -82,6 +83,8 @@ public class HomeFragment extends Fragment {
     RelativeLayout layoutError;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.group_user_info)
+    Group groupUserInfo;
 
     private Context mContext;
     private MainService mainService;
@@ -176,12 +179,7 @@ public class HomeFragment extends Fragment {
     private void setDataUser() {
         if (mUser != null) {
             tvWellcome.setVisibility(View.GONE);
-            tvUserName.setVisibility(View.VISIBLE);
-            tvUserType.setVisibility(View.VISIBLE);
-            vSeparateDot.setVisibility(View.VISIBLE);
-            ivCoin.setVisibility(View.VISIBLE);
-            tvCoin.setVisibility(View.VISIBLE);
-            btnEvent.setVisibility(View.VISIBLE);
+            groupUserInfo.setVisibility(View.VISIBLE);
             String avatar = mUser.getUserInfo().getAvatar();
             if (avatar != null && !avatar.isEmpty())
                 Glide.with(mContext).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).into(ivAvatar);
@@ -194,12 +192,7 @@ public class HomeFragment extends Fragment {
             Glide.with(mContext).load(R.drawable.gif_event).into(btnEvent);
         } else {
             tvWellcome.setVisibility(View.VISIBLE);
-            tvUserName.setVisibility(View.GONE);
-            tvUserType.setVisibility(View.GONE);
-            vSeparateDot.setVisibility(View.GONE);
-            ivCoin.setVisibility(View.GONE);
-            tvCoin.setVisibility(View.GONE);
-            btnEvent.setVisibility(View.GONE);
+            groupUserInfo.setVisibility(View.GONE);
             ivAvatar.setImageResource(R.drawable.avatar_default);
         }
     }

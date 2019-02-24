@@ -119,6 +119,9 @@ public class Constants {
         public static final String ANDROID = "android";
         public static final String SALE = "sale";
         public static final String HOME = "home";
+        public static final String APP_LINK = "https://play.google.com/store/apps/details?id=vn.vtvnews";
+        public static final String WEBSITE_LINK = "http://www.nuocsach.online";
+        public static final String HOTLINE = "0966555779";
     }
 
     public static class DataNotify {

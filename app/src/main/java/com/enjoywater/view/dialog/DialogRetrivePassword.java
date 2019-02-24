@@ -80,11 +80,12 @@ public class DialogRetrivePassword {
     private String mEmail;
 
 
-    public DialogRetrivePassword(Context context, Handler callbackHandler, long delaySending) {
+    public DialogRetrivePassword(Context context, Handler callbackHandler, long delaySending, String email) {
         mContext = context;
         mainService = MyApplication.getInstance().getMainService();
         mCallBackHandler = callbackHandler;
         mDelaySending = delaySending;
+        mEmail = email;
         initUI();
     }
 
@@ -212,6 +213,8 @@ public class DialogRetrivePassword {
             }
             return true;
         });
+        edtEmail.setText(Utils.isValidEmail(mEmail) ? mEmail : "");
+        edtEmail.setSelection(edtEmail.length());
         if (mDelaySending < 1000) {
             isDelaying = false;
             mDelaySending = 0;

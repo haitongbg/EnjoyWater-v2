@@ -344,6 +344,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @SuppressLint("HandlerLeak")
     private void retrivePassword() {
+        String email = edtEmail.getText().toString();
         new DialogRetrivePassword(LoginActivity.this, new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -369,7 +370,7 @@ public class LoginActivity extends AppCompatActivity {
                     countDownDelaySending.start();
                 }
             }
-        }, delaySendingActiveCode);
+        }, delaySendingActiveCode, email);
     }
 
     private void registeDevice(String userId) {
