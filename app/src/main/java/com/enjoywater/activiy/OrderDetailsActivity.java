@@ -56,8 +56,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     ImageView ivOrderCode;
     @BindView(R.id.tv_order_code)
     TextView tvOrderCode;
-    @BindView(R.id.tv_order_canceled)
-    TextView tvOrderCanceled;
+    @BindView(R.id.tv_order_status)
+    TextView tvOrderStatus;
     @BindView(R.id.btn_cancel_order)
     Button btnCancelOrder;
     @BindView(R.id.view_status_line)
@@ -327,9 +327,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         if (status.equals(Constants.Value.CANCELED)) {
             btnCancelOrder.setVisibility(View.GONE);
             groupOrderStatus.setVisibility(View.GONE);
-            tvOrderCanceled.setVisibility(View.VISIBLE);
+            tvOrderStatus.setVisibility(View.VISIBLE);
+            tvOrderStatus.setText("- Đã hủy");
+            tvOrderStatus.setTextColor(getResources().getColor(R.color.black_3));
         } else {
-            tvOrderCanceled.setVisibility(View.GONE);
+            tvOrderStatus.setVisibility(View.GONE);
             groupOrderStatus.setVisibility(View.VISIBLE);
             btnCancelOrder.setVisibility(View.GONE);
             viewStatusOrdered.setBackgroundResource(R.color.black_c);
@@ -381,6 +383,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     break;
                 }
                 case Constants.Value.DELIVERED: {
+                    tvOrderStatus.setVisibility(View.VISIBLE);
+                    tvOrderStatus.setText("- Đã giao hàng");
+                    tvOrderStatus.setTextColor(getResources().getColor(R.color.colorAccentDark));
                     btnCancelOrder.setVisibility(View.GONE);
                     viewStatusOrdered.setBackgroundResource(R.color.colorAccent);
                     viewStatusConfirmed.setBackgroundResource(R.color.colorAccent);

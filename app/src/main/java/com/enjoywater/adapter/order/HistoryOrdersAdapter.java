@@ -73,8 +73,8 @@ public class HistoryOrdersAdapter extends RecyclerView.Adapter<RecyclerView.View
         ImageView ivOrderCode;
         @BindView(R.id.tv_order_code)
         TextView tvOrderCode;
-        @BindView(R.id.tv_order_canceled)
-        TextView tvOrderCanceled;
+        @BindView(R.id.tv_order_status)
+        TextView tvOrderStatus;
         @BindView(R.id.view_status_line)
         View viewStatusLine;
         @BindView(R.id.iv_status_ordered)
@@ -142,9 +142,11 @@ public class HistoryOrdersAdapter extends RecyclerView.Adapter<RecyclerView.View
                     btnCancelOrder.setVisibility(View.GONE);
                     groupOrderInfo.setVisibility(View.GONE);
                     groupOrderStatus.setVisibility(View.GONE);
-                    tvOrderCanceled.setVisibility(View.VISIBLE);
+                    tvOrderStatus.setVisibility(View.VISIBLE);
+                    tvOrderStatus.setText("- Đã hủy");
+                    tvOrderStatus.setTextColor(mContext.getResources().getColor(R.color.black_3));
                 } else {
-                    tvOrderCanceled.setVisibility(View.GONE);
+                    tvOrderStatus.setVisibility(View.GONE);
                     groupOrderInfo.setVisibility(View.VISIBLE);
                     btnCancelOrder.setVisibility(View.GONE);
                     viewStatusOrdered.setBackgroundResource(R.color.black_c);
@@ -195,6 +197,9 @@ public class HistoryOrdersAdapter extends RecyclerView.Adapter<RecyclerView.View
                             break;
                         }
                         case Constants.Value.DELIVERED: {
+                            tvOrderStatus.setVisibility(View.VISIBLE);
+                            tvOrderStatus.setText("- Đã giao hàng");
+                            tvOrderStatus.setTextColor(mContext.getResources().getColor(R.color.colorAccentDark));
                             groupOrderStatus.setVisibility(View.GONE);
                             btnCancelOrder.setVisibility(View.GONE);
                             viewStatusOrdered.setBackgroundResource(R.color.colorAccent);

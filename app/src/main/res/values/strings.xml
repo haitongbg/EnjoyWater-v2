@@ -50,7 +50,7 @@
     <string name="cancel_order">Hủy đơn hàng</string>
     <string name="order_confirmed">Nhận đơn</string>
     <string name="delivering">Giao hàng</string>
-    <string name="received">Đã nhận</string>
+    <string name="delivered">Đã giao</string>
     <string name="order_time">Thời gian đặt hàng</string>
     <string name="expected_delivery_time">Dự kiến giao hàng</string>
     <string name="delivered_time">Hoàn thành giao hàng</string>

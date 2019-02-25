@@ -339,6 +339,7 @@ public class OrdersFragment extends Fragment {
 
     private void insertOrder(Order order) {
         if (order != null && mOrders != null) {
+            showContent();
             if (!mOrders.isEmpty()) {
                 for (int i=0, z= mOrders.size(); i<z;i++) {
                     if (!mOrders.get(i).isLoadmore() && mOrders.get(i).getId().equals(order.getId())) {

@@ -39,7 +39,7 @@
         tools:text="Mã đơn hàng: #CH12345" />
 
     <TextView
-        android:id="@+id/tv_order_canceled"
+        android:id="@+id/tv_order_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/size_5"
@@ -184,7 +184,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_5"
-        android:text="@string/received"
+        android:text="@string/delivered"
         android:textColor="@color/black_c"
         android:textSize="@dimen/text_14"
         app:layout_constraintLeft_toLeftOf="@id/iv_status_received"

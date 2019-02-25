@@ -26,7 +26,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "onMessageReceived " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "onMessageReceived " + remoteMessage.getData().get("data"));
+            Log.e(TAG, "onMessageReceived " + remoteMessage.getData().get(Constants.Key.DATA));
             String data = remoteMessage.getData().get(Constants.Key.DATA);
             if (data != null && !data.isEmpty()) {
                 MyNotification notification = gson.fromJson(data, MyNotification.class);
@@ -58,9 +58,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             default: {
                 intent = new Intent(this, SplashActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
             }
         }
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, notification.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getResources().getString(R.string.my_notif_channel_id))
                 .setSmallIcon(R.mipmap.ic_launcher)

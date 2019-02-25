@@ -82,6 +82,9 @@
         <activity
             android:name=".activiy.OrderDetailsActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activiy.WebViewActivity"
