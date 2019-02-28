@@ -17,7 +17,7 @@
         android:textAlignment="center"
         android:textColor="@color/black_9"
         android:textSize="@dimen/text_14"
-        tools:text="@string/not_login_yet" />
+        tools:text="Vui lòng đăng nhập để sử dụng chức năng này." />
 
     <Button
         android:id="@+id/btn_login"

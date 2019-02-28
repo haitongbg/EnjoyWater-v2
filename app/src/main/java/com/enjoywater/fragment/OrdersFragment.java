@@ -163,7 +163,7 @@ public class OrdersFragment extends Fragment {
             }
         });
         if (mToken.isEmpty()) {
-            showError(getString(R.string.not_login_yet));
+            showError(Constants.DataNotify.NOT_LOGIN_YET);
         } else {
             showLoading(true);
             getOrderHistory();
@@ -301,7 +301,7 @@ public class OrdersFragment extends Fragment {
             rvOrders.setVisibility(View.GONE);
             layoutError.setVisibility(View.VISIBLE);
             tvError.setText(error);
-            if (error.equals(getString(R.string.not_login_yet)))
+            if (error.equals(Constants.DataNotify.NOT_LOGIN_YET))
                 btnLogin.setVisibility(View.VISIBLE);
             else btnLogin.setVisibility(View.GONE);
         }

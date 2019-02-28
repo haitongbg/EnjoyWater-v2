@@ -170,11 +170,11 @@ public class LoginActivity extends AppCompatActivity {
                                 Utils.saveUser(LoginActivity.this, mUser);
                                 registeDevice(mUser.getUserInfo().getId());
                             } else
-                                Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                         } else
-                            Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                     } else {
-                        String message = getResources().getString(R.string.data_error);
+                        String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
                         if (loginResponse.getError() != null && loginResponse.getError().getMessage() != null && !loginResponse.getError().getMessage().isEmpty()) {
                             message = loginResponse.getError().getMessage();
                             if (message.equalsIgnoreCase("Invalid email"))
@@ -187,14 +187,14 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 } else
-                    Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 isLoading = false;
                 t.printStackTrace();
-                Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                 layoutLoading.setVisibility(View.GONE);
             }
         });
@@ -218,25 +218,25 @@ public class LoginActivity extends AppCompatActivity {
                                 Utils.saveUser(LoginActivity.this, mUser);
                                 registeDevice(mUser.getUserInfo().getId());
                             } else
-                                Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                         } else
-                            Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                     } else {
-                        String message = getResources().getString(R.string.data_error);
+                        String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
                         if (loginResponse.getError() != null && loginResponse.getError().getMessage() != null && !loginResponse.getError().getMessage().isEmpty()) {
                             message = loginResponse.getError().getMessage();
                         }
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 } else
-                    Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 isLoading = false;
                 t.printStackTrace();
-                Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                 layoutLoading.setVisibility(View.GONE);
             }
         });
@@ -287,7 +287,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     isLoading = false;
                     layoutLoading.setVisibility(View.GONE);
-                    Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -295,7 +295,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<GoogleOAuthResponse> call, Throwable t) {
                 isLoading = false;
                 t.printStackTrace();
-                Toast.makeText(LoginActivity.this, R.string.data_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, Constants.DataNotify.DATA_ERROR_TRY_AGAIN, Toast.LENGTH_SHORT).show();
                 layoutLoading.setVisibility(View.GONE);
             }
         });

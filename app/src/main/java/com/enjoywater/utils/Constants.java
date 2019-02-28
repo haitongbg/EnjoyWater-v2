@@ -19,6 +19,7 @@ public class Constants {
         public static final String FORGET_PASSWORD = "user/forget-password";
         public static final String RESET_PASSWORD = "user/reset-password";
         public static final String ADD_NEW_ADDRESS = "user/add-address";
+        public static final String SUBMIT_REF_CODE = "user/update-referral-code";
         //Home
         public static final String GET_LIST_NEWS = "news/list";
         public static final String GET_NEWS_DETAILS = "news/info";
@@ -131,5 +132,6 @@ public class Constants {
         public static final String DATA_ERROR = "Không tìm thấy dữ liệu.";
         public static final String NO_CONNECTION = "Không có kết nối mạng.";
         public static final String DATA_ERROR_TRY_AGAIN = "Lỗi dữ liệu, xin thử lại.";
+        public static final String NOT_LOGIN_YET = "Vui lòng đăng nhập để sử dụng chức năng này.";
     }
 }

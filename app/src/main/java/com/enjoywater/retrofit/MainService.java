@@ -94,7 +94,7 @@ public interface MainService {
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.GET_ACTIVE_CODE)
-    Call<BaseResponse> resendActiveMaild(@Field(Constants.Key.EMAIL) String email);
+    Call<BaseResponse> resendActiveMail(@Field(Constants.Key.EMAIL) String email);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
@@ -121,6 +121,12 @@ public interface MainService {
                                      //@Field(Constants.Key.WARD_ID) String wardId,
                                      @Field(Constants.Key.ADDRESS) String address,
                                      @Field(Constants.Key.IS_DEFAULT) int isDefault);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.SUBMIT_REF_CODE)
+    Call<BaseResponse> submitRefCode(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                      @Field(Constants.Key.CODE) String code);
 
     //Home
     @Headers(Constants.Value.SECRET_HEADER)

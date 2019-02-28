@@ -16,7 +16,7 @@
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/size_80"
                 android:background="@color/colorPrimary"
                 android:clickable="true">
@@ -266,6 +266,18 @@
                             app:layout_constraintBottom_toBottomOf="@id/iv_submit_code"
                             app:layout_constraintLeft_toRightOf="@id/iv_submit_code"
                             app:layout_constraintTop_toTopOf="@id/iv_submit_code" />
+
+                        <View
+                            android:visibility="gone"
+                            android:id="@+id/v_overlay_submit_code"
+                            android:background="#a6ffffff"
+                            android:clickable="true"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"/>
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout

@@ -39,6 +39,17 @@
                     android:paddingTop="@dimen/size_15"
                     android:paddingBottom="@dimen/size_60">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/opensans_semibold"
+                        android:includeFontPadding="false"
+                        android:text="Đơn hàng"
+                        android:layout_marginBottom="@dimen/size_5"
+                        android:layout_marginLeft="@dimen/size_15"
+                        android:textColor="@color/indigo_blue"
+                        android:textSize="@dimen/text_15" />
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_selected_products"
                         android:layout_width="match_parent"

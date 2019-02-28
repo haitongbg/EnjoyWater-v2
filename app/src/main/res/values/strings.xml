@@ -30,7 +30,6 @@
     <string name="email_invalid">Email không hợp lệ</string>
     <string name="phone_invalid">Số điện thoại không hợp lệ</string>
     <string name="password_invalid">Mật khẩu không hợp lệ</string>
-    <string name="data_error">Lỗi dữ liệu, xin thử lại</string>
     <string name="password_wrong">Mật khẩu không đúng</string>
     <string name="guest">Guest</string>
     <string name="login_by_google">Đăng nhập với Google</string>
@@ -73,10 +72,10 @@
     <string name="register_account">Đăng ký tài khoản</string>
     <string name="ref_code_tutorial">* Nhập mã giới thiệu từ bạn bè, người thân để nhận chiết khấu hấp dẫn khi đặt hàng</string>
     <string name="empty_name">Vui lòng nhập họ và tên của bạn.</string>
-    <string name="password_tutorial">* Mật khẩu chứa ít nhất 6 ký tự, bao gồm chữ số, chữ thường và chữ in hoa.</string>
+    <string name="password_tutorial">* Mật khẩu chứa ít nhất 6 ký tự, bao gồm cả chữ và số.</string>
     <string name="change_password">Đổi mật khẩu</string>
-    <string name="not_login_yet">Vui lòng đăng nhập để sử dụng chức năng này.</string>
     <string name="my_notif_channel_id">enjoy_water_channel</string>
     <string name="my_notif_channel_name">enjoy_water</string>
     <string name="my_notif_channel_description">enjoy_water</string>
+    <string name="tutorial_submit_ref_code">Nhập mã giới thiệu từ bạn bè để được tặng ngay 5.000 điểm thưởng và chiết khấu 1% cho tất cả đơn hàng của bạn.</string>
 </resources>

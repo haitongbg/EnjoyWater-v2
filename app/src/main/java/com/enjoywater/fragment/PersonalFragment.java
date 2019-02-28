@@ -1,12 +1,15 @@
 package com.enjoywater.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -18,7 +21,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,8 @@ import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
+import com.enjoywater.view.RippleView;
+import com.enjoywater.view.dialog.DialogSubmitRefCode;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
@@ -132,6 +136,10 @@ public class PersonalFragment extends Fragment {
     RelativeLayout layoutError;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.v_overlay_submit_code)
+    View vOverlaySubmitCode;
+    @BindView(R.id.ripple_event)
+    RippleView rippleEvent;
     private Context mContext;
     private MainService mainService;
     private User mUser;
@@ -266,6 +274,54 @@ public class PersonalFragment extends Fragment {
         setDataUser();
     }
 
+    private void getDataUser() {
+        if (mToken != null && !mToken.isEmpty()) {
+            isLoading = true;
+            Call<BaseResponse> getUserInfo = mainService.getUserInfo(mToken);
+            getUserInfo.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    isLoading = false;
+                    if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                    BaseResponse baseResponse = response.body();
+                    if (baseResponse != null) {
+                        if (baseResponse.isSuccess() && baseResponse.getData() != null) {
+                            if (baseResponse.getData().isJsonObject()) {
+                                User.UserInfo userInfo = gson.fromJson(baseResponse.getData().getAsJsonObject(), User.UserInfo.class);
+                                if (userInfo != null) {
+                                    mUser.setUserInfo(userInfo);
+                                    Utils.saveUser(mContext, mUser);
+                                    setDataUser();
+                                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                        } else {
+                            String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
+                            if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty()) {
+                                message = baseResponse.getError().getMessage();
+                                if (message.equalsIgnoreCase("Invalid email"))
+                                    message = getResources().getString(R.string.email_invalid);
+                                if (message.equalsIgnoreCase("User invalid"))
+                                    message = getResources().getString(R.string.user_invalid);
+                                if (message.equalsIgnoreCase("Password invalid"))
+                                    message = getResources().getString(R.string.password_wrong);
+                            }
+                            showError(message);
+                        }
+                    } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    isLoading = false;
+                    if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                    t.printStackTrace();
+                    showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                    layoutLoading.setVisibility(View.GONE);
+                }
+            });
+        } else showError(Constants.DataNotify.NOT_LOGIN_YET);
+    }
+
     private void setDataUser() {
         if (mUser != null) {
             showContent();
@@ -279,17 +335,27 @@ public class PersonalFragment extends Fragment {
             tvUserType.setText(mUser.getUserInfo().getLevelInfo().getName());
             tvCoin.setText(formatVND.format(mUser.getUserInfo().getCoin()));
             tvUserCode.setText(mUser.getUserInfo().getMyCode());
+            if (mUser.getUserInfo().getRefId() != null && !mUser.getUserInfo().getRefId().isEmpty() && !mUser.getUserInfo().getRefId().equals("0"))
+                vOverlaySubmitCode.setVisibility(View.VISIBLE);
+            else vOverlaySubmitCode.setVisibility(View.GONE);
             Glide.with(mContext).load(R.drawable.gif_event).into(btnEvent);
-        } else showError(mContext.getString(R.string.not_login_yet));
-    }
-
-    private void getDataUser() {
-
+        } else showError(Constants.DataNotify.NOT_LOGIN_YET);
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void submitCode() {
-
+        new DialogSubmitRefCode(mContext, new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == Constants.Value.ACTION_SUCCESS) {
+                    mUser = (User) msg.obj;
+                    Utils.saveUser(mContext, mUser);
+                    vOverlaySubmitCode.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void logout() {
@@ -302,11 +368,13 @@ public class PersonalFragment extends Fragment {
         registerDevice.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                isLoading = false;
                 reStart();
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
+                isLoading = false;
                 t.printStackTrace();
                 reStart();
             }
@@ -347,7 +415,7 @@ public class PersonalFragment extends Fragment {
         layoutContent.setVisibility(View.GONE);
         layoutError.setVisibility(View.VISIBLE);
         tvError.setText(error);
-        if (error.equals(getString(R.string.not_login_yet)))
+        if (error.equals(Constants.DataNotify.NOT_LOGIN_YET))
             btnLogin.setVisibility(View.VISIBLE);
         else btnLogin.setVisibility(View.GONE);
     }
