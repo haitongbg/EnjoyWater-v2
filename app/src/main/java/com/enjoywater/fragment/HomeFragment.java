@@ -27,6 +27,7 @@ import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.activiy.NewsDetailsActivity;
+import com.enjoywater.activiy.PersonalActivity;
 import com.enjoywater.adapter.home.HomeAdapter;
 import com.enjoywater.listener.HomeListener;
 import com.enjoywater.model.News;
@@ -155,6 +156,10 @@ public class HomeFragment extends Fragment {
             } else if (progress == 1.0f) {
                 progressLoading.setProgress(0.0f);
             }
+        });
+        appbar.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, PersonalActivity.class));
+            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         rvHome.setLayoutManager(mLayoutManager);

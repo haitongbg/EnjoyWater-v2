@@ -35,6 +35,7 @@ import com.enjoywater.R;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
+import com.enjoywater.activiy.PersonalActivity;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
@@ -202,6 +203,10 @@ public class PersonalFragment extends Fragment {
                 getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
                 (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
             }
+        });
+        appbar.setOnClickListener(v -> {
+            startActivity(new Intent(mContext, PersonalActivity.class));
+            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         btnUserCode.setOnClickListener(v -> {
             Utils.copyTextToClipboard(mContext, mUser.getUserInfo().getMyCode());

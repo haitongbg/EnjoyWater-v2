@@ -17,19 +17,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-        See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+        Set custom default icon. This is used when no icon is set for incoming notification messages.
+        See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_enjoy_water" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
@@ -40,7 +43,7 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
 
-        <!--facebook sdk-->
+        <!-- facebook sdk -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -52,7 +55,8 @@
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
-            <intent-filter><action android:name="android.intent.action.VIEW" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -61,7 +65,7 @@
             </intent-filter>
         </activity>
 
-        <!--app-->
+        <!-- app -->
         <activity
             android:name=".activiy.SplashActivity"
             android:screenOrientation="portrait"
@@ -81,15 +85,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activiy.OrderDetailsActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
             android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=""
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activiy.NewsDetailsActivity"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".activiy.PersonalActivity"></activity>
     </application>
 
 </manifest>

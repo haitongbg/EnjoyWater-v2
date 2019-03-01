@@ -78,4 +78,13 @@
     <string name="my_notif_channel_name">enjoy_water</string>
     <string name="my_notif_channel_description">enjoy_water</string>
     <string name="tutorial_submit_ref_code">Nhập mã giới thiệu từ bạn bè để được tặng ngay 5.000 điểm thưởng và chiết khấu 1% cho tất cả đơn hàng của bạn.</string>
+    <string name="user_info">Thông tin cá nhân</string>
+    <string name="view_detail_underline"><u>Chi tiết</u></string>
+    <string name="gender">Giới tính</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="other">Khác</string>
+    <string name="birthday">Sinh nhật</string>
+    <string name="phone_full">Số điện thoại</string>
+    <string name="user_ref_code">Mã của bạn</string>
 </resources>

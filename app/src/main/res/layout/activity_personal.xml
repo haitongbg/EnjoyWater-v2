@@ -1,0 +1,485 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_45"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/size_45"
+                android:layout_height="@dimen/size_45"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_ripple_primary_color"
+                android:clickable="true"
+                android:padding="@dimen/size_15"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back_white" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/btn_back"
+                android:fontFamily="@font/opensans_semibold"
+                android:includeFontPadding="false"
+                android:text="@string/user_info"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18" />
+        </RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:elevation="@dimen/size_1">
+
+                        <ImageView
+                            android:id="@+id/iv_background"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintDimensionRatio="7:3"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            tools:src="@drawable/bg_splash" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_avatar"
+                            android:layout_width="@dimen/size_60"
+                            android:layout_height="@dimen/size_60"
+                            android:layout_marginTop="@dimen/size_25"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:src="@drawable/avatar_default" />
+
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_10"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="Họ Và Tên"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+
+                        <TextView
+                            android:id="@+id/text_coin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_5"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="Điểm thưởng: "
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_13"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/tv_coin"
+                            app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+                        <TextView
+                            android:id="@+id/tv_coin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:includeFontPadding="false"
+                            android:text="125.000"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_15"
+                            app:layout_constraintBottom_toBottomOf="@id/text_coin"
+                            app:layout_constraintLeft_toRightOf="@id/text_coin"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/text_coin" />
+
+                        <TextView
+                            android:id="@+id/btn_coin_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:clickable="true"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:padding="@dimen/size_5"
+                            android:text="@string/view_detail_underline"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintBottom_toBottomOf="@id/text_coin"
+                            app:layout_constraintLeft_toRightOf="@id/tv_coin"
+                            app:layout_constraintTop_toTopOf="@id/text_coin" />
+
+                        <TextView
+                            android:id="@+id/text_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:fontFamily="@font/opensans_regular"
+                            android:includeFontPadding="false"
+                            android:text="@string/fullname"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_background"
+                            app:layout_constraintWidth_percent="0.3" />
+
+                        <EditText
+                            android:id="@+id/edt_name"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@null"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center_vertical"
+                            android:hint="Nhập Họ và Tên"
+                            android:inputType="textPersonName"
+                            android:singleLine="true"
+                            android:text="Tống Văn Hải"
+                            android:textColor="@color/black_0"
+                            android:textCursorDrawable="@drawable/cursor_blue_1dp"
+                            android:textSize="@dimen/size_15"
+                            app:layout_constraintBottom_toBottomOf="@id/text_name"
+                            app:layout_constraintLeft_toRightOf="@id/text_name"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/text_name" />
+
+                        <View
+                            android:id="@+id/v_underline_name"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_0_5"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@color/black_c"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_name" />
+
+                        <TextView
+                            android:id="@+id/text_gender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:fontFamily="@font/opensans_regular"
+                            android:includeFontPadding="false"
+                            android:text="@string/gender"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_underline_name"
+                            app:layout_constraintWidth_percent="0.3" />
+
+                        <RadioGroup
+                            android:id="@+id/radio_group_gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="@id/text_gender"
+                            app:layout_constraintLeft_toRightOf="@id/text_gender"
+                            app:layout_constraintTop_toTopOf="@id/text_gender">
+
+                            <RadioButton
+                                android:id="@+id/radio_male"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:checked="false"
+                                android:fontFamily="@font/opensans_semibold"
+                                android:paddingRight="@dimen/size_5"
+                                android:text="@string/male"
+                                android:textColor="@color/black_0"
+                                android:textSize="@dimen/text_14" />
+
+                            <RadioButton
+                                android:id="@+id/radio_female"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/size_10"
+                                android:background="@null"
+                                android:checked="false"
+                                android:fontFamily="@font/opensans_semibold"
+                                android:paddingRight="@dimen/size_5"
+                                android:text="@string/female"
+                                android:textColor="@color/black_0"
+                                android:textSize="@dimen/text_14" />
+
+                            <RadioButton
+                                android:id="@+id/radio_other"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/size_10"
+                                android:background="@null"
+                                android:checked="true"
+                                android:fontFamily="@font/opensans_semibold"
+                                android:paddingRight="@dimen/size_5"
+                                android:text="@string/other"
+                                android:textColor="@color/black_0"
+                                android:textSize="@dimen/text_14" />
+                        </RadioGroup>
+
+                        <View
+                            android:id="@+id/v_underline_gender"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_0_5"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@color/black_c"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_gender" />
+
+                        <TextView
+                            android:id="@+id/text_birthday"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:fontFamily="@font/opensans_regular"
+                            android:includeFontPadding="false"
+                            android:text="@string/birthday"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_underline_gender"
+                            app:layout_constraintWidth_percent="0.3" />
+
+                        <TextView
+                            android:id="@+id/tv_birthday"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@null"
+                            android:clickable="true"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center_vertical"
+                            android:hint="Chọn ngày sinh"
+                            android:singleLine="true"
+                            android:textColor="@color/black_0"
+                            android:textCursorDrawable="@drawable/cursor_blue_1dp"
+                            android:textSize="@dimen/size_15"
+                            app:layout_constraintBottom_toBottomOf="@id/text_birthday"
+                            app:layout_constraintLeft_toRightOf="@id/text_birthday"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/text_birthday"
+                            tools:text="16/09/1995" />
+
+                        <View
+                            android:id="@+id/v_underline_birthday"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_0_5"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@color/black_c"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_birthday" />
+
+                        <TextView
+                            android:id="@+id/text_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:fontFamily="@font/opensans_regular"
+                            android:includeFontPadding="false"
+                            android:text="@string/phone_full"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_underline_birthday"
+                            app:layout_constraintWidth_percent="0.3" />
+
+                        <EditText
+                            android:id="@+id/edt_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@null"
+                            android:clickable="true"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center_vertical"
+                            android:hint="Nhập số điện thoại"
+                            android:inputType="phone"
+                            android:singleLine="true"
+                            android:textColor="@color/black_0"
+                            android:textCursorDrawable="@drawable/cursor_blue_1dp"
+                            android:textSize="@dimen/size_15"
+                            app:layout_constraintBottom_toBottomOf="@id/text_phone"
+                            app:layout_constraintLeft_toRightOf="@id/text_phone"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/text_phone"
+                            tools:text="0388326555" />
+
+                        <View
+                            android:id="@+id/v_underline_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_0_5"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@color/black_c"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_phone" />
+
+                        <TextView
+                            android:id="@+id/text_email"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:fontFamily="@font/opensans_regular"
+                            android:includeFontPadding="false"
+                            android:text="@string/email"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_underline_phone"
+                            app:layout_constraintWidth_percent="0.3" />
+
+                        <TextView
+                            android:id="@+id/tv_email"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@null"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:textColor="@color/black_0"
+                            android:textSize="@dimen/size_15"
+                            app:layout_constraintBottom_toBottomOf="@id/text_email"
+                            app:layout_constraintLeft_toRightOf="@id/text_email"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/text_email"
+                            tools:text="haitongbg@gmail.com" />
+
+                        <View
+                            android:id="@+id/v_underline_email"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_0_5"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@color/black_c"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_email" />
+
+                        <TextView
+                            android:id="@+id/text_ref_code"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_15"
+                            android:layout_marginBottom="@dimen/size_15"
+                            android:fontFamily="@font/opensans_regular"
+                            android:includeFontPadding="false"
+                            android:text="@string/user_ref_code"
+                            android:textColor="@color/black_3"
+                            android:textSize="@dimen/text_14"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_underline_email"
+                            app:layout_constraintWidth_percent="0.3" />
+
+                        <TextView
+                            android:id="@+id/tv_ref_code"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:layout_marginRight="@dimen/size_15"
+                            android:background="@null"
+                            android:fontFamily="@font/opensans_semibold"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:textColor="@color/black_0"
+                            android:textSize="@dimen/size_15"
+                            app:layout_constraintBottom_toBottomOf="@id/text_ref_code"
+                            app:layout_constraintLeft_toRightOf="@id/text_ref_code"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/text_ref_code"
+                            tools:text="100006" />
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.v4.widget.NestedScrollView>
+
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_40"
+                    android:layout_marginLeft="@dimen/size_40"
+                    android:layout_marginRight="@dimen/size_40"
+                    android:layout_marginBottom="@dimen/size_15"
+                    android:background="@drawable/bg_btn_green_corner_4"
+                    android:clickable="true"
+                    android:text="@string/save"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_16"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <include
+                layout="@layout/layout_loading"
+                android:visibility="gone" />
+
+            <include
+                layout="@layout/layout_error"
+                android:visibility="gone" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
