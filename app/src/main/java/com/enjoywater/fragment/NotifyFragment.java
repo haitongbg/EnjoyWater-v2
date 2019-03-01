@@ -282,7 +282,7 @@ public class NotifyFragment extends Fragment {
                 switch (notify.getType()) {
                     case Constants.Value.ORDER: {
                         Intent intent = new Intent(mContext, OrderDetailsActivity.class);
-                        intent.putExtra("order_id", notify.getContent());
+                        intent.putExtra(Constants.Key.ORDER_ID, notify.getContent());
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                     }

@@ -139,7 +139,7 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_NEWS_DETAILS)
     Call<BaseResponse> getNewsDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                      @Query(Constants.Key.NEWS_ID) String newsId);
+                                      @Path(Constants.Key.NEWS_ID) String newsId);
 
     //Product
     @Headers(Constants.Value.SECRET_HEADER)

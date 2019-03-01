@@ -792,7 +792,7 @@ public class ProductFragment extends Fragment {
                             Order orderCreated = gson.fromJson(createOrderResponse.getData(), Order.class);
                             EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_CREATED, orderCreated));
                             Intent intent = new Intent(mContext, OrderDetailsActivity.class);
-                            intent.putExtra("order", orderCreated);
+                            intent.putExtra(Constants.Key.ORDER, orderCreated);
                             startActivity(intent);
                             (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                         } else {

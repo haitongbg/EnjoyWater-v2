@@ -193,8 +193,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         mToken = Utils.getToken(this);
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra("order")) mOrder = intent.getParcelableExtra("order");
-            if (intent.hasExtra("order_id")) mOrderId = intent.getStringExtra("order_id");
+            if (intent.hasExtra(Constants.Key.ORDER)) mOrder = intent.getParcelableExtra(Constants.Key.ORDER);
+            if (intent.hasExtra(Constants.Key.ORDER_ID)) mOrderId = intent.getStringExtra(Constants.Key.ORDER_ID);
         }
         initUI();
     }

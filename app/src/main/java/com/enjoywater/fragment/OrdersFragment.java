@@ -331,7 +331,7 @@ public class OrdersFragment extends Fragment {
         @Override
         public void goOrderDetails(Order order) {
             Intent intent = new Intent(mContext, OrderDetailsActivity.class);
-            intent.putExtra("order", order);
+            intent.putExtra(Constants.Key.ORDER, order);
             startActivity(intent);
             (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         }

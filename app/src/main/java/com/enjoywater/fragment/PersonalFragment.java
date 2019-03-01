@@ -298,12 +298,6 @@ public class PersonalFragment extends Fragment {
                             String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
                             if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty()) {
                                 message = baseResponse.getError().getMessage();
-                                if (message.equalsIgnoreCase("Invalid email"))
-                                    message = getResources().getString(R.string.email_invalid);
-                                if (message.equalsIgnoreCase("User invalid"))
-                                    message = getResources().getString(R.string.user_invalid);
-                                if (message.equalsIgnoreCase("Password invalid"))
-                                    message = getResources().getString(R.string.password_wrong);
                             }
                             showError(message);
                         }

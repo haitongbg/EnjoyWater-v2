@@ -7,6 +7,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.enjoywater.R;
+import com.enjoywater.activiy.NewsDetailsActivity;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.activiy.SplashActivity;
 import com.enjoywater.model.EventBusMessage;
@@ -37,6 +38,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, notification.getContent()));
                             break;
                         }
+                        case Constants.Value.BONUS: {
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.BONUS_UPDATED, notification.getContent()));
+                            break;
+                        }
+                        case Constants.Value.NEWS: {
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.NEWS_UPDATED, notification.getContent()));
+                        }
                         default: {
                             break;
                         }
@@ -51,7 +59,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         switch (notification.getType()) {
             case Constants.Value.ORDER: {
                 intent = new Intent(this, OrderDetailsActivity.class);
-                intent.putExtra("order_id", notification.getContent());
+                intent.putExtra(Constants.Key.ORDER_ID, notification.getContent());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
+            }
+            case Constants.Value.NEWS: {
+                intent = new Intent(this, NewsDetailsActivity.class);
+                intent.putExtra(Constants.Key.NEWS_ID, notification.getContent());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 break;
             }

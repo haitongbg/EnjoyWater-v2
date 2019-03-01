@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    android:fitsSystemWindows="false"
-    android:orientation="vertical">
+    android:fitsSystemWindows="false">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -35,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/size_15"
-                android:layout_toLeftOf="@id/progress_loading"
+                android:layout_toLeftOf="@id/progress_loading_url"
                 android:layout_toRightOf="@id/btn_back"
                 android:fontFamily="@font/opensans_semibold"
                 android:includeFontPadding="false"
@@ -44,7 +43,7 @@
                 android:textSize="@dimen/text_16" />
 
             <com.enjoywater.view.ProgressWheel
-                android:id="@+id/progress_loading"
+                android:id="@+id/progress_loading_url"
                 android:layout_width="@dimen/size_25"
                 android:layout_height="@dimen/size_25"
                 android:layout_alignParentRight="true"
@@ -60,6 +59,15 @@
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/appbar"
         android:overScrollMode="never"
         android:scrollbars="none" />
-</LinearLayout>
+
+    <include
+        layout="@layout/layout_loading"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/layout_error"
+        android:visibility="gone" />
+</RelativeLayout>

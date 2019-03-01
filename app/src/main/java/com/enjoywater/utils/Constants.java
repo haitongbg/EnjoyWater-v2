@@ -22,7 +22,7 @@ public class Constants {
         public static final String SUBMIT_REF_CODE = "user/update-referral-code";
         //Home
         public static final String GET_LIST_NEWS = "news/list";
-        public static final String GET_NEWS_DETAILS = "news/info";
+        public static final String GET_NEWS_DETAILS = "news/info/{newsId}";
         //Product
         public static final String GET_LIST_PRODUCTS = "product/list";
         public static final String GET_PRODUCT_DETAILS = "product/info";
@@ -98,6 +98,9 @@ public class Constants {
         public static final String NEW_PASSWORD_REPEATED = "newPassRepeated";
         public static final String ORDER_CREATED = "orderCreated";
         public static final String ORDER_UPDATED = "orderUpdated";
+        public static final String BONUS_UPDATED = "coinUpdated";
+        public static final String NEWS_UPDATED = "newsUpdated";
+        public static final String ORDER = "order";
     }
 
     public static class Value {
@@ -115,6 +118,8 @@ public class Constants {
         public static final String READ = "read";
         public static final String UNREAD = "unread";
         public static final String ORDER = "order";
+        public static final String BONUS = "bonus";
+        public static final String NEWS = "news";
         public static final String FACEBOOK = "facebook";
         public static final String GOOGLE = "google";
         public static final String AUTHORIZATION_CODE = "authorization_code";

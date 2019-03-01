@@ -87,7 +87,7 @@
             android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".activiy.WebViewActivity"
+            android:name=".activiy.NewsDetailsActivity"
             android:screenOrientation="portrait" />
 
     </application>
