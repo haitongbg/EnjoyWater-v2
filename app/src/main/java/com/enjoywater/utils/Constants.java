@@ -131,6 +131,9 @@ public class Constants {
         public static final String IOS_LINK = "https://itunes.apple.com/vn/app/enjoy-water/id959449140";
         public static final String WEBSITE_LINK = "http://www.nuocsach.online";
         public static final String HOTLINE = "0966555779";
+        public static final String MALE = "male";
+        public static final String FEMALE = "female";
+        public static final String UNKNOWN = "unknown";
     }
 
     public static class DataNotify {

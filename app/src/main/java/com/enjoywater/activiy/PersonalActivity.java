@@ -193,7 +193,7 @@ public class PersonalActivity extends AppCompatActivity {
             }).into(ivAvatar);
         else {
             ivAvatar.setImageResource(R.drawable.avatar_default);
-            ivBackground.setImageResource(R.drawable.bg_splash);
+            //ivBackground.setImageResource(R.drawable.bg_splash);
         }
         String name = mUser.getUserInfo().getName();
         if (name != null && !name.isEmpty()) {
@@ -205,7 +205,29 @@ public class PersonalActivity extends AppCompatActivity {
             edtName.setText("");
         }
         tvCoin.setText(formatVND.format(mUser.getUserInfo().getCoin()));
-
+        switch (mUser.getUserInfo().getGender()) {
+            case Constants.Value.MALE: {
+                radioMale.setChecked(true);
+                break;
+            }
+            case Constants.Value.FEMALE: {
+                radioFemale.setChecked(true);
+                break;
+            }
+            default: {
+                radioOther.setChecked(true);
+                break;
+            }
+        }
+        String birthday = mUser.getUserInfo().getBirthday();
+        if (birthday != null && !birthday.isEmpty()) {
+            calendar.setTimeInMillis(Long.parseLong(birthday) * 1000);
+            tvBirthday.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR));
+        } else tvBirthday.setText("");
+        if (mUser.getUserInfo().getPhone() != null)
+            edtPhone.setText(mUser.getUserInfo().getPhone());
+        tvEmail.setText(mUser.getUserInfo().getEmail());
+        tvRefCode.setText(mUser.getUserInfo().getMyCode());
     }
 
     private void preUpdateUserInfo() {
