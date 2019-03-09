@@ -220,7 +220,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 BaseResponse baseResponse = response.body();
                 if (baseResponse != null && baseResponse.isSuccess() && baseResponse.getData() != null && baseResponse.getData().isJsonArray()) {
-                    mSaleNewsList = new ArrayList<>();
+                    mSaleNewsList.clear();
                     JsonArray jsonArray = baseResponse.getData().getAsJsonArray();
                     if (jsonArray.size() > 0) {
                         for (int i = 0, z = jsonArray.size(); i < z; i++) {
@@ -335,7 +335,10 @@ public class HomeFragment extends Fragment {
         if (!mHomes.isEmpty() && mHomes.get(mHomes.size() - 1).isLoadmore()) {
             int removePosition = mHomes.size() - 1;
             mHomes.remove(removePosition);
-            if (mHomeAdapter != null) mHomeAdapter.notifyItemRemoved(removePosition);
+            if (mHomeAdapter != null) {
+                mHomeAdapter.notifyItemRemoved(removePosition);
+                mHomeAdapter.notifyItemChanged(removePosition-1);
+            }
         }
     }
 
@@ -397,8 +400,60 @@ public class HomeFragment extends Fragment {
                 setDataUser();
                 break;
             }
-            default:{
+            case Constants.Key.INSERT_NEWS: {
+                News news = (News) event.getObject();
+                insertNews(news);
+                break;
+            }
+            default: {
                 //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
+                break;
+            }
+        }
+    }
+
+    private void insertNews(News news) {
+        switch (news.getType()) {
+            case Constants.Value.SALE: {
+                boolean existed = false;
+                for (int i = 0, z = mSaleNewsList.size(); i < z; i++) {
+                    if (mSaleNewsList.get(i).getId() == news.getId()) {
+                        existed = true;
+                        mSaleNewsList.set(i, news);
+                        if (mHomeAdapter != null) mHomeAdapter.notifyItemSaleChanged(i);
+                        break;
+                    }
+                }
+                if (!existed) {
+                    mSaleNewsList.add(0, news);
+                    if (mHomeAdapter != null) mHomeAdapter.notifyItemSaleInserted();
+                }
+                break;
+            }
+            case Constants.Value.HOME: {
+                boolean existed = false;
+                for (int i = 0, z = mHomes.size(); i < z; i++) {
+                    if (mHomes.get(i).getId() == news.getId()) {
+                        existed = true;
+                        mHomes.set(i, news);
+                        mHomeAdapter.notifyItemChanged(i);
+                        break;
+                    }
+                }
+                if (!existed) {
+                    int insertPosition;
+                    if (mHomes.get(0).isSaleNewsList()) insertPosition = 1;
+                    else insertPosition = 0;
+                    mHomes.add(insertPosition, news);
+                    if (mHomeAdapter != null) {
+                        mHomeAdapter.notifyItemInserted(insertPosition);
+                        mHomeAdapter.notifyItemChanged(insertPosition + 1);
+                        rvHome.scrollToPosition(insertPosition);
+                    } else {
+                        mHomeAdapter = new HomeAdapter(mContext, mHomes, mSaleNewsList, mHomeListener);
+                        rvHome.setAdapter(mHomeAdapter);
+                    }
+                }
                 break;
             }
         }

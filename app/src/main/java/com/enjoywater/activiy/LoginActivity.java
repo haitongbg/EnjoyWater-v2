@@ -373,10 +373,10 @@ public class LoginActivity extends AppCompatActivity {
         }, delaySendingActiveCode, email);
     }
 
-    private void registeDevice(String userId) {
+    private void registeDevice(int userId) {
         String deviceId = Utils.getDeviceUuid(this);
         String devicetoken = Utils.getDeviceToken(this);
-        Call<BaseResponse> registerDevice = mainService.registerDevice(userId, deviceId, devicetoken , Constants.Value.ANDROID, true);
+        Call<BaseResponse> registerDevice = mainService.registerDevice(String.valueOf(userId), deviceId, devicetoken , Constants.Value.ANDROID, true);
         registerDevice.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

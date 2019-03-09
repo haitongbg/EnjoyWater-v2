@@ -67,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
                             mUser = gson.fromJson(loginResponse.getData().getAsJsonObject(), User.class);
                             if (mUser != null && mUser.getToken() != null && !mUser.getToken().isEmpty() && mUser.getUserInfo() != null) {
                                 Utils.saveUser(SplashActivity.this, mUser);
-                                registeDevice(mUser.getUserInfo().getId());
+                                registeDevice(String.valueOf(mUser.getUserInfo().getId()));
                             } else showErrorLogin();
                         } else showErrorLogin();
                     } else showErrorLogin();

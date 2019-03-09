@@ -12,7 +12,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,11 +38,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Logger;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -316,11 +312,11 @@ public class OrdersFragment extends Fragment {
     };
 
     private void insertOrder(Order order) {
-        if (order != null && mOrders != null) {
+        if (order != null) {
             showContent();
             if (!mOrders.isEmpty()) {
                 for (int i=0, z= mOrders.size(); i<z;i++) {
-                    if (!mOrders.get(i).isLoadmore() && mOrders.get(i).getId().equals(order.getId())) {
+                    if (!mOrders.get(i).isLoadmore() && mOrders.get(i).getId() == order.getId()) {
                         mOrders.remove(i);
                         if (mOrdersAdapter != null) mOrdersAdapter.notifyItemRemoved(i);
                         break;
@@ -376,7 +372,7 @@ public class OrdersFragment extends Fragment {
 
     private void updateOrder(Order order) {
         for (int i = 0, z = mOrders.size(); i < z; i++) {
-            if (mOrders.get(i).getId().equals(order.getId())) {
+            if (mOrders.get(i).getId() == order.getId()) {
                 mOrders.set(i, order);
                 if (mOrdersAdapter != null) mOrdersAdapter.notifyItemChanged(i);
                 break;
@@ -387,7 +383,7 @@ public class OrdersFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusMessage event) {
         switch (event.getAction()) {
-            case Constants.Key.ORDER_CREATED: {
+            case Constants.Key.INSERT_ORDER: {
                 Order order = (Order) event.getObject();
                 insertOrder(order);
                 break;

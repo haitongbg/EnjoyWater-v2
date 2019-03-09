@@ -17,7 +17,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -473,7 +472,7 @@ public class ProductFragment extends Fragment {
                 boolean existed = false;
                 if (!mSelectedProducts.isEmpty()) {
                     for (Product selectedProduct : mSelectedProducts) {
-                        if (selectedProduct.getId().equals(product.getId())) {
+                        if (selectedProduct.getId() == product.getId()) {
                             existed = true;
                             break;
                         }
@@ -486,7 +485,7 @@ public class ProductFragment extends Fragment {
                 }
             } else if (!mSelectedProducts.isEmpty()) {
                 for (int i = 0, z = mSelectedProducts.size(); i < z; i++) {
-                    if (mSelectedProducts.get(i).getId().equals(product.getId())) {
+                    if (mSelectedProducts.get(i).getId() == product.getId()) {
                         mSelectedProducts.remove(i);
                         break;
                     }
@@ -507,7 +506,7 @@ public class ProductFragment extends Fragment {
         public void updateProduct(Product product) {
             if (mSelectedProducts.size() > 0) {
                 for (int i = 0, z = mSelectedProducts.size(); i < z; i++) {
-                    if (mSelectedProducts.get(i).getId().equals(product.getId())) {
+                    if (mSelectedProducts.get(i).getId() == product.getId()) {
                         mSelectedProducts.set(i, product);
                         break;
                     }
@@ -793,7 +792,7 @@ public class ProductFragment extends Fragment {
                         if (createOrderResponse.isSuccess() && createOrderResponse.getData() != null && createOrderResponse.getData().isJsonObject()) {
                             Toast.makeText(mContext, R.string.order_success, Toast.LENGTH_SHORT).show();
                             Order orderCreated = gson.fromJson(createOrderResponse.getData(), Order.class);
-                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_CREATED, orderCreated));
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.INSERT_ORDER, orderCreated));
                             Intent intent = new Intent(mContext, OrderDetailsActivity.class);
                             intent.putExtra(Constants.Key.ORDER, orderCreated);
                             startActivity(intent);

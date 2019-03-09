@@ -23,6 +23,8 @@ import com.enjoywater.fragment.OrdersFragment;
 import com.enjoywater.fragment.PersonalFragment;
 import com.enjoywater.fragment.ProductFragment;
 import com.enjoywater.model.EventBusMessage;
+import com.enjoywater.model.News;
+import com.enjoywater.model.Notify;
 import com.enjoywater.model.Order;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
@@ -324,9 +326,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case Constants.Key.ORDER_UPDATED: {
-                String orderId = (String) event.getObject();
-                if (orderId != null && !orderId.isEmpty()) {
+                int orderId = Integer.parseInt(((Notify) event.getObject()).getContent());
+                if (orderId != 0) {
                     getOrderDetails(orderId);
+                }
+                break;
+            }
+            case Constants.Key.NEWS_UPDATED: {
+                int newsId = Integer.parseInt(((Notify) event.getObject()).getContent());
+                if (newsId != 0) {
+                    getNewsDetails(newsId);
                 }
                 break;
             }
@@ -371,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getOrderDetails(String orderId) {
+    private void getOrderDetails(int orderId) {
         String token = Utils.getToken(this);
         Call<BaseResponse> getOrderDetails = mainService.getOrderDetails(token, orderId);
         getOrderDetails.enqueue(new Callback<BaseResponse>() {
@@ -380,7 +389,29 @@ public class MainActivity extends AppCompatActivity {
                 BaseResponse getOrderDetailsResponse = response.body();
                 if (getOrderDetailsResponse != null && getOrderDetailsResponse.isSuccess() && getOrderDetailsResponse.getData() != null && getOrderDetailsResponse.getData().isJsonObject()) {
                     Order order = gson.fromJson(getOrderDetailsResponse.getData(), Order.class);
-                    EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_CREATED, order));
+                    EventBus.getDefault().post(new EventBusMessage(Constants.Key.INSERT_ORDER, order));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void getNewsDetails(int newsId) {
+        String token = Utils.getToken(this);
+        Call<BaseResponse> getNewsDetails = mainService.getNewsDetails(token, newsId);
+        getNewsDetails.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null && baseResponse.isSuccess() && baseResponse.getData() != null && baseResponse.getData().isJsonObject()) {
+                    News news = gson.fromJson(baseResponse.getData().getAsJsonObject(), News.class);
+                    if (news != null && news.getContent() != null && !news.getContent().isEmpty()) {
+                        EventBus.getDefault().post(new EventBusMessage(Constants.Key.INSERT_NEWS, news));
+                    }
                 }
             }
 

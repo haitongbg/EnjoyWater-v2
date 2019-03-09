@@ -21,9 +21,9 @@ public class Notify implements Parcelable {
     @SerializedName("type")
     private String type;
     @SerializedName("userId")
-    private String userId;
+    private int userId;
     @SerializedName("id")
-    private String id;
+    private int id;
     private boolean isLoadmore = false;
 
     public Notify() {
@@ -41,8 +41,8 @@ public class Notify implements Parcelable {
         title = in.readString();
         status = in.readString();
         type = in.readString();
-        userId = in.readString();
-        id = in.readString();
+        userId = in.readInt();
+        id = in.readInt();
     }
 
     @Override
@@ -54,8 +54,8 @@ public class Notify implements Parcelable {
         dest.writeString(title);
         dest.writeString(status);
         dest.writeString(type);
-        dest.writeString(userId);
-        dest.writeString(id);
+        dest.writeInt(userId);
+        dest.writeInt(id);
     }
 
     @Override
@@ -131,19 +131,19 @@ public class Notify implements Parcelable {
         this.type = type;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

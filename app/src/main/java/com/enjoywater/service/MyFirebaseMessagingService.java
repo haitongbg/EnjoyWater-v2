@@ -12,9 +12,8 @@ import com.enjoywater.activiy.NewsDetailsActivity;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.activiy.SplashActivity;
 import com.enjoywater.model.EventBusMessage;
-import com.enjoywater.model.MyNotification;
+import com.enjoywater.model.Notify;
 import com.enjoywater.utils.Constants;
-import com.enjoywater.utils.Utils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -32,20 +31,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "onMessageReceived " + remoteMessage.getData().get(Constants.Key.DATA));
             String data = remoteMessage.getData().get(Constants.Key.DATA);
             if (data != null && !data.isEmpty()) {
-                MyNotification notification = gson.fromJson(data, MyNotification.class);
+                Notify notification = gson.fromJson(data, Notify.class);
                 if (notification != null) {
                     createNotification(notification);
                     switch (notification.getType()) {
                         case Constants.Value.ORDER: {
-                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, notification.getContent()));
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, notification));
                             break;
                         }
                         case Constants.Value.BONUS: {
-                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.BONUS_UPDATED, notification.getContent()));
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.BONUS_UPDATED, notification));
                             break;
                         }
                         case Constants.Value.NEWS: {
-                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.NEWS_UPDATED, notification.getContent()));
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.NEWS_UPDATED, notification));
                         }
                         default: {
                             break;
@@ -56,7 +55,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void createNotification(MyNotification notification) {
+    private void createNotification(Notify notification) {
         Intent intent;
         switch (notification.getType()) {
             case Constants.Value.ORDER: {

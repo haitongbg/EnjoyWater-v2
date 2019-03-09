@@ -29,7 +29,9 @@ import com.enjoywater.activiy.NewsDetailsActivity;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.adapter.notify.NotifyAdapter;
 import com.enjoywater.listener.NotifyListener;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.Notify;
+import com.enjoywater.model.Order;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
@@ -37,6 +39,10 @@ import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -287,17 +293,20 @@ public class NotifyFragment extends Fragment {
                         intent.putExtra(Constants.Key.ORDER_ID, notify.getContent());
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+                        break;
                     }
                     case Constants.Value.BONUS: {
                         Intent intent = new Intent(mContext, BonusDetailsActivity.class);
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+                        break;
                     }
                     case Constants.Value.NEWS: {
                         Intent intent = new Intent(mContext, NewsDetailsActivity.class);
                         intent.putExtra(Constants.Key.NEWS_ID, notify.getContent());
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+                        break;
                     }
                     default:
                         break;
@@ -343,11 +352,26 @@ public class NotifyFragment extends Fragment {
     }
 
     private void updateNotification(Notify notify) {
+        showContent();
+        boolean existed = false;
         for (int i = 0, z = mNotifies.size(); i < z; i++) {
-            if (mNotifies.get(i).getId().equals(notify.getId())) {
+            if (mNotifies.get(i).getId() == notify.getId()) {
+                existed = true;
                 mNotifies.set(i, notify);
-                if (mNotifyAdapter != null) mNotifyAdapter.notifyItemChanged(i);
+                mNotifyAdapter.notifyItemChanged(i);
                 break;
+            }
+        }
+        if (!existed) {
+            mNotifies.add(0, notify);
+            if (mNotifyAdapter != null) {
+                mNotifyAdapter.notifyItemInserted(0);
+                mNotifyAdapter.notifyItemChanged(1);
+                rvNotif.scrollToPosition(0);
+            }
+            else {
+                mNotifyAdapter = new NotifyAdapter(mContext, mNotifies, mNotifyListener);
+                rvNotif.setAdapter(mNotifyAdapter);
             }
         }
     }
@@ -362,6 +386,36 @@ public class NotifyFragment extends Fragment {
             if (mNotifyAdapter != null) mNotifyAdapter.notifyDataSetChanged();
             showLoading(true);
             getNotificationHistory();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        switch (event.getAction()) {
+            case Constants.Key.BONUS_UPDATED: {
+                Notify notify = (Notify) event.getObject();
+                updateNotification(notify);
+                break;
+            }
+            case Constants.Key.ORDER_UPDATED: {
+                Notify notify = (Notify) event.getObject();
+                updateNotification(notify);
+                break;
+            }
+            case Constants.Key.NEWS_UPDATED: {
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 }

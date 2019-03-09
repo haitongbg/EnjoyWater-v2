@@ -140,7 +140,7 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_NEWS_DETAILS)
     Call<BaseResponse> getNewsDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                      @Path(Constants.Key.NEWS_ID) String newsId);
+                                      @Path(Constants.Key.NEWS_ID) int newsId);
 
     //Product
     @Headers(Constants.Value.SECRET_HEADER)
@@ -159,7 +159,7 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_ORDER_DETAILS)
     Call<BaseResponse> getOrderDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                       @Path(Constants.Key.ORDER_ID) String orderId);
+                                       @Path(Constants.Key.ORDER_ID) int orderId);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.CREATE_ORDER)
@@ -169,12 +169,12 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.CANCEL_ORDER)
     Call<BaseResponse> cancelOrder(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                   @Path(Constants.Key.ORDER_ID) String orderId);
+                                   @Path(Constants.Key.ORDER_ID) int orderId);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.CONFIRM_RECEIVED)
     Call<BaseResponse> confirmReceived(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                       @Path(Constants.Key.ORDER_ID) String orderId);
+                                       @Path(Constants.Key.ORDER_ID) int orderId);
 
     //promotion
     @Headers(Constants.Value.SECRET_HEADER)
@@ -191,13 +191,13 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_NOTIF_DETAILS)
     Call<BaseResponse> getNotifyDetails(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                        @Path(Constants.Key.NOTIFY_ID) String notifyId);
+                                        @Path(Constants.Key.NOTIFY_ID) int notifyId);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.UPDATE_STATUS_NOTIF)
     Call<BaseResponse> updateNotifyStatus(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                          @Path(Constants.Key.NOTIFY_ID) String notifyId,
+                                          @Path(Constants.Key.NOTIFY_ID) int notifyId,
                                           @Field(Constants.Key.STATUS) String status);
 
     //Google

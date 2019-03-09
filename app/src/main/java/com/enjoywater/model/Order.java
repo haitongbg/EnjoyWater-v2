@@ -46,9 +46,9 @@ public class Order implements Parcelable {
     @SerializedName("updatedAt")
     private String updatedAt;
     @SerializedName("userId")
-    private String userId;
+    private int userId;
     @SerializedName("id")
-    private String id;
+    private int id;
     @SerializedName("comment")
     private String comment;
     @SerializedName("rate")
@@ -99,8 +99,8 @@ public class Order implements Parcelable {
         notes = in.readString();
         createdAt = in.readString();
         updatedAt = in.readString();
-        userId = in.readString();
-        id = in.readString();
+        userId = in.readInt();
+        id = in.readInt();
         comment = in.readString();
         rate = in.readInt();
         received = in.readByte() != 0;
@@ -133,8 +133,8 @@ public class Order implements Parcelable {
         dest.writeString(notes);
         dest.writeString(createdAt);
         dest.writeString(updatedAt);
-        dest.writeString(userId);
-        dest.writeString(id);
+        dest.writeInt(userId);
+        dest.writeInt(id);
         dest.writeString(comment);
         dest.writeInt(rate);
         dest.writeByte((byte) (received ? 1 : 0));
@@ -294,19 +294,19 @@ public class Order implements Parcelable {
         this.updatedAt = updatedAt;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

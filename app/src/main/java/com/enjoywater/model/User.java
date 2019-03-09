@@ -80,7 +80,7 @@ public class User implements Parcelable{
         @SerializedName("emailVerified")
         private boolean emailVerified;
         @SerializedName("id")
-        private String id;
+        private int id;
         @SerializedName("coin")
         private int coin;
         @SerializedName("refId")
@@ -119,7 +119,7 @@ public class User implements Parcelable{
             group = in.readString();
             phone = in.readString();
             emailVerified = in.readByte() != 0;
-            id = in.readString();
+            id = in.readInt();
             coin = in.readInt();
             refId = in.readString();
             myCode = in.readString();
@@ -145,7 +145,7 @@ public class User implements Parcelable{
             dest.writeString(group);
             dest.writeString(phone);
             dest.writeByte((byte) (emailVerified ? 1 : 0));
-            dest.writeString(id);
+            dest.writeInt(id);
             dest.writeInt(coin);
             dest.writeString(refId);
             dest.writeString(myCode);
@@ -249,11 +249,11 @@ public class User implements Parcelable{
             this.emailVerified = emailVerified;
         }
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 

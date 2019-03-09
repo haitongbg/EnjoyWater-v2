@@ -33,6 +33,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<News> mHomes;
     private ArrayList<News> mSaleNewsList;
     private HomeListener mHomeListener;
+    private SaleNewsAdapter saleNewsAdapter;
+    private RecyclerView rvSaleNews;
 
     public HomeAdapter(Context context, ArrayList<News> homes, ArrayList<News> saleNews, HomeListener homeListener) {
         this.mContext = context;
@@ -76,7 +78,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SaleNewsListViewholder)
-            ((SaleNewsListViewholder) holder).setData(position);
+            ((SaleNewsListViewholder) holder).setData();
         else if (holder instanceof HomeNewsViewholder)
             ((HomeNewsViewholder) holder).setData(position);
     }
@@ -87,22 +89,35 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class SaleNewsListViewholder extends RecyclerView.ViewHolder {
-        @BindView(R.id.rv_sale_news)
-        RecyclerView rvSaleNews;
-        private SaleNewsAdapter saleNewsAdapter;
 
         public SaleNewsListViewholder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            rvSaleNews = itemView.findViewById(R.id.rv_sale_news);
             rvSaleNews.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
         }
 
-        public void setData(int position) {
+        public void setData() {
             if (mSaleNewsList != null && !mSaleNewsList.isEmpty()) {
                 saleNewsAdapter = new SaleNewsAdapter(mContext, mSaleNewsList, mHomeListener);
                 rvSaleNews.setAdapter(saleNewsAdapter);
                 rvSaleNews.setVisibility(View.VISIBLE);
             } else rvSaleNews.setVisibility(View.GONE);
+        }
+
+        public RecyclerView getRecyclerView() {
+            return rvSaleNews;
+        }
+    }
+
+    public void notifyItemSaleChanged(int position) {
+        if (saleNewsAdapter != null) saleNewsAdapter.notifyItemChanged(position);
+    }
+
+    public void notifyItemSaleInserted() {
+        if (saleNewsAdapter != null) {
+            saleNewsAdapter.notifyItemInserted(0);
+            saleNewsAdapter.notifyItemChanged(1);
+            if (rvSaleNews != null) rvSaleNews.scrollToPosition(0);
         }
     }
 
@@ -134,8 +149,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 tvSapo.setText(sapo);
                 tvSapo.setVisibility(View.VISIBLE);
             } else tvSapo.setVisibility(View.GONE);
-            ((RecyclerView.LayoutParams) itemView.getLayoutParams()).topMargin = position == 0 ? mContext.getResources().getDimensionPixelSize(R.dimen.size_15) : mContext.getResources().getDimensionPixelSize(R.dimen.size_5);
-            ((RecyclerView.LayoutParams) itemView.getLayoutParams()).bottomMargin = position == (mSaleNewsList.size() - 1) ? mContext.getResources().getDimensionPixelSize(R.dimen.size_15) : mContext.getResources().getDimensionPixelSize(R.dimen.size_5);
+            int carePosition = 0;
+            if (mSaleNewsList != null && !mSaleNewsList.isEmpty()) carePosition = 1;
+            ((RecyclerView.LayoutParams) itemView.getLayoutParams()).topMargin = position == carePosition ? mContext.getResources().getDimensionPixelSize(R.dimen.size_7_5) : mContext.getResources().getDimensionPixelSize(R.dimen.size_5);
+            ((RecyclerView.LayoutParams) itemView.getLayoutParams()).bottomMargin = position == (mHomes.size() - 1) ? mContext.getResources().getDimensionPixelSize(R.dimen.size_15) : mContext.getResources().getDimensionPixelSize(R.dimen.size_5);
             itemView.setOnClickListener(v -> mHomeListener.goHomeNewsDetail(news));
         }
     }

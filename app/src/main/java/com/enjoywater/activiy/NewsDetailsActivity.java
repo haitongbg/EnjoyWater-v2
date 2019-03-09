@@ -74,8 +74,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
         if (news != null && news.getContent() != null && !news.getContent().isEmpty())
             setDataNews(news);
         else {
-            String newsId = getIntent().getStringExtra(Constants.Key.NEWS_ID);
-            if (newsId != null && !newsId.isEmpty()) {
+            int newsId = getIntent().getIntExtra(Constants.Key.NEWS_ID, 0);
+            if (newsId != 0) {
                 showLoading(true);
                 getNewsDetails(newsId);
             } else {
@@ -155,7 +155,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         webView.loadUrl(mNews.getContent());
     }
 
-    private void getNewsDetails(String newsId) {
+    private void getNewsDetails(int newsId) {
         isLoading = true;
         Call<BaseResponse> getNewsDetails = mainService.getNewsDetails(mToken, newsId);
         getNewsDetails.enqueue(new Callback<BaseResponse>() {

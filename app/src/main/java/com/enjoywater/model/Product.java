@@ -18,7 +18,7 @@ public class Product implements Parcelable {
     @SerializedName("status")
     private String status;
     @SerializedName("catId")
-    private String catId;
+    private int catId;
     @SerializedName("thumbnail")
     private String thumbnail;
     @SerializedName("desctiption")
@@ -26,7 +26,7 @@ public class Product implements Parcelable {
     @SerializedName("name")
     private String name;
     @SerializedName("id")
-    private String id;
+    private int id;
     @SerializedName("deliveryFee")
     private int deliveryFee;
     @SerializedName("discount")
@@ -36,7 +36,7 @@ public class Product implements Parcelable {
     @SerializedName("bid")
     private int bid;
     @SerializedName("productId")
-    private String productId;
+    private int productId;
     @SerializedName("volume")
     private int volume;
     private boolean isSelected = false;
@@ -49,16 +49,16 @@ public class Product implements Parcelable {
         createdAt = in.readString();
         createdBy = in.readString();
         status = in.readString();
-        catId = in.readString();
+        catId = in.readInt();
         thumbnail = in.readString();
         desctiption = in.readString();
         name = in.readString();
-        id = in.readString();
+        id = in.readInt();
         deliveryFee = in.readInt();
         discount = in.readInt();
         ask = in.readInt();
         bid = in.readInt();
-        productId = in.readString();
+        productId = in.readInt();
         volume = in.readInt();
         isSelected = in.readByte() != 0;
     }
@@ -69,16 +69,16 @@ public class Product implements Parcelable {
         dest.writeString(createdAt);
         dest.writeString(createdBy);
         dest.writeString(status);
-        dest.writeString(catId);
+        dest.writeInt(catId);
         dest.writeString(thumbnail);
         dest.writeString(desctiption);
         dest.writeString(name);
-        dest.writeString(id);
+        dest.writeInt(id);
         dest.writeInt(deliveryFee);
         dest.writeInt(discount);
         dest.writeInt(ask);
         dest.writeInt(bid);
-        dest.writeString(productId);
+        dest.writeInt(productId);
         dest.writeInt(volume);
         dest.writeByte((byte) (isSelected ? 1 : 0));
     }
@@ -100,17 +100,17 @@ public class Product implements Parcelable {
         }
     };
 
-    public String getId() {
-        if (id == null || id.isEmpty()) id = productId;
+    public int getId() {
+        if (id == 0) id = productId;
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getProductId() {
-        if (productId == null || productId.isEmpty()) productId = id;
+    public int getProductId() {
+        if (productId == 0) productId = id;
         return productId;
     }
 
@@ -146,11 +146,11 @@ public class Product implements Parcelable {
         this.status = status;
     }
 
-    public String getCatId() {
+    public int getCatId() {
         return catId;
     }
 
-    public void setCatId(String catId) {
+    public void setCatId(int catId) {
         this.catId = catId;
     }
 
@@ -210,7 +210,7 @@ public class Product implements Parcelable {
         this.bid = bid;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 

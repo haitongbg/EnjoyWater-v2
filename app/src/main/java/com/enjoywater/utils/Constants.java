@@ -96,9 +96,10 @@ public class Constants {
         public static final String NEWS = "news";
         public static final String NEW_PASSWORD = "newPass";
         public static final String NEW_PASSWORD_REPEATED = "newPassRepeated";
-        public static final String ORDER_CREATED = "orderCreated";
+        public static final String INSERT_ORDER = "insertOrder";
+        public static final String INSERT_NEWS = "insertNews";
         public static final String ORDER_UPDATED = "orderUpdated";
-        public static final String BONUS_UPDATED = "coinUpdated";
+        public static final String BONUS_UPDATED = "bonusUpdated";
         public static final String NEWS_UPDATED = "newsUpdated";
         public static final String PROFILE_UPDATED = "profileUpdated";
         public static final String ORDER = "order";

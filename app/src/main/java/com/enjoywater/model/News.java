@@ -12,6 +12,10 @@ public class News implements Parcelable {
     private String createdAt;
     @SerializedName("status")
     private String status;
+    @SerializedName("type")
+    private String type;
+    @SerializedName("id")
+    private int id;
     @SerializedName("content")
     private String content;
     @SerializedName("image")
@@ -20,8 +24,6 @@ public class News implements Parcelable {
     private String desctiption;
     @SerializedName("title")
     private String title;
-    @SerializedName("id")
-    private String id;
     private boolean isLoadmore = false;
     private boolean isSaleNewsList = false;
 
@@ -41,7 +43,7 @@ public class News implements Parcelable {
         image = in.readString();
         desctiption = in.readString();
         title = in.readString();
-        id = in.readString();
+        id = in.readInt();
         isLoadmore = in.readByte() != 0;
         isSaleNewsList = in.readByte() != 0;
     }
@@ -55,7 +57,7 @@ public class News implements Parcelable {
         dest.writeString(image);
         dest.writeString(desctiption);
         dest.writeString(title);
-        dest.writeString(id);
+        dest.writeInt(id);
         dest.writeByte((byte) (isLoadmore ? 1 : 0));
         dest.writeByte((byte) (isSaleNewsList ? 1 : 0));
     }
@@ -133,11 +135,11 @@ public class News implements Parcelable {
         this.title = title;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -155,5 +157,13 @@ public class News implements Parcelable {
 
     public void setSaleNewsList(boolean saleNewsList) {
         isSaleNewsList = saleNewsList;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

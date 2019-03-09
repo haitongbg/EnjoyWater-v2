@@ -184,7 +184,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private DecimalFormat formatPercent = new DecimalFormat("#.0");
     private Calendar calendar = Calendar.getInstance();
     private Order mOrder;
-    private String mOrderId;
+    private int mOrderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,7 +196,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra(Constants.Key.ORDER)) mOrder = intent.getParcelableExtra(Constants.Key.ORDER);
-            if (intent.hasExtra(Constants.Key.ORDER_ID)) mOrderId = intent.getStringExtra(Constants.Key.ORDER_ID);
+            if (intent.hasExtra(Constants.Key.ORDER_ID)) mOrderId = intent.getIntExtra(Constants.Key.ORDER_ID, 0);
         }
         initUI();
     }
@@ -281,7 +281,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         });
         if (mOrder != null) {
             setDataOrder();
-        } else if (mOrderId != null && !mOrderId.isEmpty()) {
+        } else if (mOrderId != 0) {
             showLoading(true);
             getOrderDetails();
         }
@@ -518,7 +518,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
                         Toast.makeText(OrderDetailsActivity.this, "Hủy đơn hàng thành công", Toast.LENGTH_SHORT).show();
                         mOrder.setStatus(Constants.Value.CANCELED);
                         setDataOrder();
-                        EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, mOrder.getId()));
                     } else {
                         String message = Constants.DataNotify.DATA_ERROR;
                         if (cancelOrderResponse.getError() != null && cancelOrderResponse.getError().getMessage() != null && !cancelOrderResponse.getError().getMessage().isEmpty())
@@ -554,7 +553,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
                         Toast.makeText(OrderDetailsActivity.this, "Xác nhận thành công", Toast.LENGTH_SHORT).show();
                         mOrder.setStatus(Constants.Value.DELIVERED);
                         setDataOrder();
-                        EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_UPDATED, mOrder.getId()));
                         showRatingDialog();
                     } else {
                         String message = Constants.DataNotify.DATA_ERROR;
@@ -620,9 +618,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusMessage event) {
         switch (event.getAction()) {
-            case Constants.Key.ORDER_CREATED: {
+            case Constants.Key.INSERT_ORDER: {
                 Order order = (Order) event.getObject();
-                if (order != null && order.getId() != null && order.getId().equals(mOrderId)) {
+                if (order != null && order.getId() != 0) {
                     mOrder = order;
                     setDataOrder();
                 }
