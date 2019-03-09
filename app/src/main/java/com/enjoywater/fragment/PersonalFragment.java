@@ -21,7 +21,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
-import com.enjoywater.activiy.BonusDetailsActivity;
 import com.enjoywater.activiy.EventActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
@@ -352,7 +350,6 @@ public class PersonalFragment extends Fragment {
         } else showError(Constants.DataNotify.NOT_LOGIN_YET);
     }
 
-
     @SuppressLint("HandlerLeak")
     private void submitCode() {
         new DialogSubmitRefCode(mContext, new Handler() {
@@ -461,5 +458,11 @@ public class PersonalFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 }

@@ -20,6 +20,7 @@ public class Constants {
         public static final String RESET_PASSWORD = "user/reset-password";
         public static final String ADD_NEW_ADDRESS = "user/add-address";
         public static final String SUBMIT_REF_CODE = "user/update-referral-code";
+        public static final String GET_BONUS_HISTORY = "user/bonus-history";
         //Home
         public static final String GET_LIST_NEWS = "news/list";
         public static final String GET_NEWS_DETAILS = "news/info/{newsId}";
@@ -136,6 +137,7 @@ public class Constants {
         public static final String MALE = "male";
         public static final String FEMALE = "female";
         public static final String UNKNOWN = "unknown";
+        public static final String REF = "ref";
     }
 
     public static class DataNotify {

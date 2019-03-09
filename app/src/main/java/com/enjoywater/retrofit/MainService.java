@@ -129,6 +129,12 @@ public interface MainService {
     Call<BaseResponse> submitRefCode(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                       @Field(Constants.Key.CODE) String code);
 
+    @Headers(Constants.Value.SECRET_HEADER)
+    @GET(Constants.Url.GET_BONUS_HISTORY)
+    Call<BaseResponse> getBonusHistory(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                     @Query(Constants.Key.LIMIT) int limit,
+                                     @Query(Constants.Key.PAGE) int page);
+
     //Home
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_LIST_NEWS)

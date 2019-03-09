@@ -100,7 +100,7 @@
             android:name=".activiy.PersonalActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activiy.BonusDetailsActivity"
+            android:name=".activiy.BonusHistoryActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

@@ -871,4 +871,10 @@ public class ProductFragment extends Fragment {
             EventBus.getDefault().register(this);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
+    }
 }

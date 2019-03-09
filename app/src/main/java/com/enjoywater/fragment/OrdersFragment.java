@@ -415,4 +415,10 @@ public class OrdersFragment extends Fragment {
             getOrderHistory();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
+    }
 }

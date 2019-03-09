@@ -7,7 +7,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.enjoywater.R;
-import com.enjoywater.activiy.BonusDetailsActivity;
+import com.enjoywater.activiy.BonusHistoryActivity;
 import com.enjoywater.activiy.NewsDetailsActivity;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.activiy.SplashActivity;
@@ -71,7 +71,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 break;
             }
             case Constants.Value.BONUS: {
-                intent = new Intent(this, BonusDetailsActivity.class);
+                intent = new Intent(this, BonusHistoryActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 break;
             }

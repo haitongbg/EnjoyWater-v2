@@ -32,7 +32,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.enjoywater.R;
-import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
@@ -42,8 +41,6 @@ import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
 import com.enjoywater.view.dialog.DialogChangePassword;
 import com.google.gson.Gson;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -192,7 +189,7 @@ public class PersonalActivity extends AppCompatActivity {
             }
         });
         rippleBtnCoinDetails.setOnRippleCompleteListener(rippleView -> {
-            startActivity(new Intent(PersonalActivity.this, BonusDetailsActivity.class));
+            startActivity(new Intent(PersonalActivity.this, BonusHistoryActivity.class));
             overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         rippleBtnChangePassword.setOnRippleCompleteListener(rippleView -> {

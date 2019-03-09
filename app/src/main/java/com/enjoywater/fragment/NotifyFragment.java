@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enjoywater.R;
-import com.enjoywater.activiy.BonusDetailsActivity;
+import com.enjoywater.activiy.BonusHistoryActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
@@ -31,7 +30,6 @@ import com.enjoywater.adapter.notify.NotifyAdapter;
 import com.enjoywater.listener.NotifyListener;
 import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.Notify;
-import com.enjoywater.model.Order;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
@@ -296,7 +294,7 @@ public class NotifyFragment extends Fragment {
                         break;
                     }
                     case Constants.Value.BONUS: {
-                        Intent intent = new Intent(mContext, BonusDetailsActivity.class);
+                        Intent intent = new Intent(mContext, BonusHistoryActivity.class);
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                         break;
@@ -417,5 +415,11 @@ public class NotifyFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 }

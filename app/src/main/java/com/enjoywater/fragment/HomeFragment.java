@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
-import com.enjoywater.activiy.BonusDetailsActivity;
 import com.enjoywater.activiy.EventActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
@@ -35,7 +33,6 @@ import com.enjoywater.adapter.home.HomeAdapter;
 import com.enjoywater.listener.HomeListener;
 import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.News;
-import com.enjoywater.model.Order;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
@@ -343,7 +340,6 @@ public class HomeFragment extends Fragment {
             mHomes.remove(removePosition);
             if (mHomeAdapter != null) {
                 mHomeAdapter.notifyItemRemoved(removePosition);
-                mHomeAdapter.notifyItemChanged(removePosition-1);
             }
         }
     }
@@ -471,5 +467,11 @@ public class HomeFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 }

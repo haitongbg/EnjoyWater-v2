@@ -55,7 +55,7 @@ public class EventActivity extends AppCompatActivity {
     private void initUI() {
         btnBack.setOnClickListener(view -> onBackPressed());
         rippleBtnViewMyCoin.setOnRippleCompleteListener(rippleView -> {
-            startActivity(new Intent(EventActivity.this, BonusDetailsActivity.class));
+            startActivity(new Intent(EventActivity.this, BonusHistoryActivity.class));
             overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         btnShareCode.setOnClickListener(view -> {
@@ -77,6 +77,6 @@ public class EventActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
+        overridePendingTransition(R.anim.slide_left_to_right_in, R.anim.slide_left_to_right_out);
     }
 }
