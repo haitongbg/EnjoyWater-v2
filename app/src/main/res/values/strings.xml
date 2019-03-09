@@ -91,4 +91,9 @@
     <string name="title_activity_tutorial">TutorialActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="event_title">Chia sẻ và hướng dẫn bạn bè sử dụng app để nhận được điểm thưởng mãi mãi!</string>
+    <string name="event_content">[1] Gửi link Chia sẻ ứng dụng ở dưới cho bạn bè.\n[2] Hướng dẫn bạn bè cài app và nhập Mã giới thiệu của bạn vào.\n[3] Hướng dẫn bạn bè đăng ký tài khoản và sử dụng.\n[4] Với mỗi đơn hàng của bạn bè hoàn tất thanh toán bạn sẽ được nhận điểm thưởng.\n[5] Sử dụng điểm thưởng để đặt hàng trên app.</string>
+    <string name="share_now">Chia sẻ ngay</string>
+    <string name="your_code">Lấy mã giới thiệu</string>
+    <string name="my_bonus_coin"><u>Kho điểm của tôi</u></string>
 </resources>

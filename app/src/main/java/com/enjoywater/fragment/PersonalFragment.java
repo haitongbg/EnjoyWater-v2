@@ -33,6 +33,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
+import com.enjoywater.activiy.BonusDetailsActivity;
+import com.enjoywater.activiy.EventActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
@@ -281,6 +283,10 @@ public class PersonalFragment extends Fragment {
                     .setNegativeButton("Hủy", (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
+        });
+        btnEvent.setOnClickListener(view -> {
+            startActivity(new Intent(mContext, EventActivity.class));
+            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         setDataUser();
     }

@@ -290,7 +290,7 @@ public class NotifyFragment extends Fragment {
                 switch (notify.getType()) {
                     case Constants.Value.ORDER: {
                         Intent intent = new Intent(mContext, OrderDetailsActivity.class);
-                        intent.putExtra(Constants.Key.ORDER_ID, notify.getContent());
+                        intent.putExtra(Constants.Key.ORDER_ID, Integer.parseInt(notify.getContent()));
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                         break;
@@ -303,7 +303,7 @@ public class NotifyFragment extends Fragment {
                     }
                     case Constants.Value.NEWS: {
                         Intent intent = new Intent(mContext, NewsDetailsActivity.class);
-                        intent.putExtra(Constants.Key.NEWS_ID, notify.getContent());
+                        intent.putExtra(Constants.Key.NEWS_ID, Integer.parseInt(notify.getContent()));
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                         break;

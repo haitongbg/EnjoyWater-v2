@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activiy.EventActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_45"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/size_45"
+                android:layout_height="@dimen/size_45"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_ripple_primary_color"
+                android:clickable="true"
+                android:padding="@dimen/size_15"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back_white" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/btn_back"
+                android:fontFamily="@font/opensans_semibold"
+                android:includeFontPadding="false"
+                android:text="Chia sẻ cho bạn bè"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18" />
+        </RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/iv_event_thumb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20"
+        android:src="@drawable/ic_enjoy_water"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar" />
+
+    <!--<ImageView
+        android:id="@+id/iv_event_thumb"
+        android:layout_width="@dimen/size_150"
+        android:layout_height="@dimen/size_150"
+        android:layout_marginTop="@dimen/size_10"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_event"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar" />-->
+
+    <TextView
+        android:id="@+id/tv_event_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_15"
+        android:layout_marginRight="@dimen/size_20"
+        android:fontFamily="@font/opensans_semibold"
+        android:includeFontPadding="false"
+        android:text="@string/event_title"
+        android:textAlignment="center"
+        android:textColor="@color/black_3"
+        android:textSize="@dimen/text_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_event_thumb" />
+
+    <TextView
+        android:id="@+id/tv_event_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_15"
+        android:layout_marginTop="@dimen/size_15"
+        android:layout_marginRight="@dimen/size_15"
+        android:fontFamily="@font/opensans_semibold"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="@dimen/size_2"
+        android:text="@string/event_content"
+        android:textColor="@color/black_3"
+        android:textSize="@dimen/text_14_5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_event_title" />
+
+    <com.enjoywater.view.RippleView
+        android:id="@+id/ripple_btn_view_my_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/size_10"
+        app:rv_alpha="0"
+        android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_event_content"
+        app:rv_color="@android:color/transparent"
+        app:rv_zoomScale="1.1">
+
+    <TextView
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_17"
+        android:textAllCaps="false"
+        android:includeFontPadding="false"
+        android:fontFamily="@font/opensans_semibold"
+        android:text="@string/my_bonus_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </com.enjoywater.view.RippleView>
+
+    <Button
+        android:id="@+id/btn_copy_code"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_40"
+        android:layout_marginLeft="@dimen/size_70"
+        android:layout_marginRight="@dimen/size_70"
+        android:layout_marginBottom="@dimen/size_15"
+        android:background="@drawable/bg_white_border_blackc_corner4"
+        android:clickable="true"
+        android:text="@string/your_code"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/black_6"
+        android:textSize="@dimen/text_16"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/btn_share_code"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_share_code"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_40"
+        android:layout_marginLeft="@dimen/size_40"
+        android:layout_marginRight="@dimen/size_40"
+        android:layout_marginBottom="@dimen/size_15"
+        android:background="@drawable/bg_btn_green_corner_4"
+        android:clickable="true"
+        android:text="@string/share_now"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_16"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

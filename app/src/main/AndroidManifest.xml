@@ -107,7 +107,9 @@
             android:taskAffinity="" />
         <activity
             android:name=".activiy.TutorialActivity"
-            android:label="@string/title_activity_tutorial"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activiy.EventActivity"
             android:screenOrientation="portrait" />
     </application>
 

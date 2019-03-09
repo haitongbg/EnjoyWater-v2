@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
+import com.enjoywater.activiy.BonusDetailsActivity;
+import com.enjoywater.activiy.EventActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
@@ -166,6 +168,10 @@ public class HomeFragment extends Fragment {
         });
         appbar.setOnClickListener(v -> {
             startActivity(new Intent(mContext, PersonalActivity.class));
+            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+        });
+        btnEvent.setOnClickListener(view -> {
+            startActivity(new Intent(mContext, EventActivity.class));
             getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
