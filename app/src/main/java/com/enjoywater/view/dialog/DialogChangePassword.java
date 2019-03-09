@@ -142,11 +142,13 @@ public class DialogChangePassword {
             String newPassword = edtNewPassword.getText().toString();
             String newPasswordRepeated = edtNewPasswordRepeated.getText().toString();
             if (!Utils.isValidPasswordSimple(oldPassword)) {
-                Toast.makeText(mContext, "Vui lòng nhập mật khẩu hợp lệ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Mật khẩu hiện tại không hợp lệ.", Toast.LENGTH_SHORT).show();
             } else if (!Utils.isValidPasswordSimple(newPassword)) {
-                Toast.makeText(mContext, "Vui lòng nhập mật khẩu hợp lệ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Mật khẩu mới không hợp lệ.", Toast.LENGTH_SHORT).show();
+            } else if(newPassword.equals(oldPassword)) {
+                Toast.makeText(mContext, "Mật khẩu mới không được trùng mật khẩu hiện tại.", Toast.LENGTH_SHORT).show();
             } else if (!newPasswordRepeated.equals(newPassword)) {
-                Toast.makeText(mContext, "Xác nhận mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Xác nhận mật khẩu mới không khớp.", Toast.LENGTH_SHORT).show();
             } else checkPassword(mEmail, oldPassword, newPassword);
         });
         btnVisibleNewPassword.setOnTouchListener((view, motionEvent) -> {

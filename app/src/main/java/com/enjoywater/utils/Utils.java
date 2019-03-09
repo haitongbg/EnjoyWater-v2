@@ -136,8 +136,7 @@ public class Utils {
         return dateTimeReturn;
     }
 
-    public static long convertDateTimeToTimeStamp(String date, int type_format) {
-        long dateTimeReturn = 0;
+    public static long convertDateTimeToTimeMillis(String date, int type_format) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         switch (type_format) {
             case 1: {
@@ -156,16 +155,47 @@ public class Utils {
                 format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 break;
             }
+            case 5: {
+                format = new SimpleDateFormat("yyyy-MM-dd");
+                break;
+            }
             default:
                 break;
         }
-        try {
-            Date past = format.parse(date);
-            dateTimeReturn = past.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        return format.parse(date).getTime();
+    }
+
+    public static String convertTimeMillisToDateTime(long timeMillis, int type_format) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        switch (type_format) {
+            case 1: {
+                format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                break;
+            }
+            case 2: {
+                format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                break;
+            }
+            case 3: {
+                format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
+                break;
+            }
+            case 4: {
+                format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                break;
+            }
+            case 5: {
+                format = new SimpleDateFormat("yyyy-MM-dd");
+                break;
+            }
+            case 6: {
+                format = new SimpleDateFormat("dd/MM/yyyy");
+                break;
+            }
+            default:
+                break;
         }
-        return dateTimeReturn;
+        return format.format(new Date(timeMillis));
     }
 
     public static String converDateTimeToTimeAgo(String date, int type_format) {

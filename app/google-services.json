@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "269078269723-05h6td9n0533ts1erere8bqq3amdrpdt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enjoywater",
+            "certificate_hash": "beef11fec4efdd947ee7fb9f993720a6e8b53a13"
+          }
+        },
+        {
           "client_id": "269078269723-0u333b650l1o24lhv8j8eattq10motba.apps.googleusercontent.com",
           "client_type": 3
         }

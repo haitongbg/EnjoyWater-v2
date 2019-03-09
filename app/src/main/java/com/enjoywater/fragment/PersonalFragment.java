@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
 import com.enjoywater.activiy.PersonalActivity;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
@@ -45,6 +47,10 @@ import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
 import com.enjoywater.view.dialog.DialogSubmitRefCode;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 
@@ -425,6 +431,29 @@ public class PersonalFragment extends Fragment {
             mToken = Utils.getToken(mContext);
             mUser = Utils.getUser(mContext);
             setDataUser();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        switch (event.getAction()) {
+            case Constants.Key.PROFILE_UPDATED: {
+                mUser = (User) event.getObject();
+                setDataUser();
+                break;
+            }
+            default:{
+                //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 }

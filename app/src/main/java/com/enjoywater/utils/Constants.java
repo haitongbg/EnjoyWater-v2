@@ -100,6 +100,7 @@ public class Constants {
         public static final String ORDER_UPDATED = "orderUpdated";
         public static final String BONUS_UPDATED = "coinUpdated";
         public static final String NEWS_UPDATED = "newsUpdated";
+        public static final String PROFILE_UPDATED = "profileUpdated";
         public static final String ORDER = "order";
     }
 

@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.enjoywater.R;
 import com.enjoywater.model.Location.City;
@@ -46,7 +47,7 @@ public class MyApplication extends MultiDexApplication {
         FacebookSdk.sdkInitialize(this);
         AppEventsLogger.activateApp(this);
         mFaceBookCallbackManager = CallbackManager.Factory.create();
-        //Log.e("AppLog", "key:" + FacebookSdk.getApplicationSignature(this));
+        Log.e("AppLog", "key:" + FacebookSdk.getApplicationSignature(this));
         mCities = Utils.getCities(this);
     }
 

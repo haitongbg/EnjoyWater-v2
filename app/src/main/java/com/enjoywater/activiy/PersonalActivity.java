@@ -1,6 +1,7 @@
 package com.enjoywater.activiy;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -32,6 +34,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.enjoywater.R;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
@@ -39,11 +42,13 @@ import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
-import com.enjoywater.view.dialog.DialogActiveAccount;
 import com.enjoywater.view.dialog.DialogChangePassword;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -157,7 +162,7 @@ public class PersonalActivity extends AppCompatActivity {
         mUser = Utils.getUser(this);
         mToken = Utils.getToken(this);
         if (mUser != null && mToken != null && !mToken.isEmpty()) setDataUser();
-        else showError(Constants.DataNotify.NOT_LOGIN_YET);
+        else showError(Constants.DataNotify.NOT_LOGIN_YET, true);
     }
 
     @SuppressLint("HandlerLeak")
@@ -175,7 +180,7 @@ public class PersonalActivity extends AppCompatActivity {
                     }
                 } else {
                     swipeRefresh.setRefreshing(false);
-                    showError(Constants.DataNotify.NO_CONNECTION);
+                    showError(Constants.DataNotify.NO_CONNECTION, true);
                 }
             }
         });
@@ -205,13 +210,16 @@ public class PersonalActivity extends AppCompatActivity {
                 }
             }, tvEmail.getText().toString());
         });
-        datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, monthOfYear);
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            tvBirthday.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR));
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        tvBirthday.setOnClickListener(view -> {
+            datePickerDialog = new DatePickerDialog(PersonalActivity.this, AlertDialog.THEME_HOLO_LIGHT, (datePicker, year, monthOfYear, dayOfMonth) -> {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                tvBirthday.setText(Utils.convertTimeMillisToDateTime(calendar.getTimeInMillis(), 6));
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.show();
+        });
         btnSave.setOnClickListener(v -> {
             updateUserInfo();
         });
@@ -234,16 +242,16 @@ public class PersonalActivity extends AppCompatActivity {
                                 mUser.setUserInfo(userInfo);
                                 Utils.saveUser(PersonalActivity.this, mUser);
                                 setDataUser();
-                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
-                        } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
+                        } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
                     } else {
                         String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
                         if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty()) {
                             message = baseResponse.getError().getMessage();
                         }
-                        showError(message);
+                        showError(message, false);
                     }
-                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
             }
 
             @Override
@@ -251,7 +259,7 @@ public class PersonalActivity extends AppCompatActivity {
                 isLoading = false;
                 if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
                 t.printStackTrace();
-                showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
             }
         });
     }
@@ -303,8 +311,12 @@ public class PersonalActivity extends AppCompatActivity {
         }
         String birthday = mUser.getUserInfo().getBirthday();
         if (birthday != null && !birthday.isEmpty()) {
-            calendar.setTimeInMillis(Long.parseLong(birthday) * 1000);
-            tvBirthday.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR));
+            try {
+                calendar.setTimeInMillis(Utils.convertDateTimeToTimeMillis(birthday, 5));
+                tvBirthday.setText(Utils.convertTimeMillisToDateTime(calendar.getTimeInMillis(), 6));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else tvBirthday.setText("");
         if (mUser.getUserInfo().getPhone() != null)
             edtPhone.setText(mUser.getUserInfo().getPhone());
@@ -319,7 +331,7 @@ public class PersonalActivity extends AppCompatActivity {
         else if (radioFemale.isChecked()) gender = Constants.Value.FEMALE;
         String birthday = "";
         if (!tvBirthday.getText().toString().isEmpty())
-            birthday = String.valueOf(calendar.getTimeInMillis() / 1000);
+            birthday = Utils.convertTimeMillisToDateTime(calendar.getTimeInMillis(), 5);
         String phone = edtPhone.getText().toString();
         if (name.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập họ và tên.", Toast.LENGTH_SHORT).show();
@@ -344,16 +356,17 @@ public class PersonalActivity extends AppCompatActivity {
                                     mUser.setUserInfo(userInfo);
                                     Utils.saveUser(PersonalActivity.this, mUser);
                                     setDataUser();
-                                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
-                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                                    EventBus.getDefault().post(new EventBusMessage(Constants.Key.PROFILE_UPDATED, mUser));
+                                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
+                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
                         } else {
                             String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
                             if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty()) {
                                 message = baseResponse.getError().getMessage();
                             }
-                            showError(message);
+                            showError(message, false);
                         }
-                    } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                    } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
                 }
 
                 @Override
@@ -361,7 +374,7 @@ public class PersonalActivity extends AppCompatActivity {
                     isLoading = false;
                     if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
                     t.printStackTrace();
-                    showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                    showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
                 }
             });
         }
@@ -385,11 +398,17 @@ public class PersonalActivity extends AppCompatActivity {
         layoutError.setVisibility(View.GONE);
     }
 
-    private void showError(@NonNull String error) {
+    private void showError(@NonNull String error, boolean goneContent) {
+        if (goneContent) {
+            layoutContent.setVisibility(View.GONE);
+            layoutError.setVisibility(View.VISIBLE);
+            tvError.setText(error);
+        } else {
+            layoutContent.setVisibility(View.VISIBLE);
+            layoutError.setVisibility(View.GONE);
+            Toast.makeText(PersonalActivity.this, error, Toast.LENGTH_SHORT).show();
+        }
         layoutLoading.setVisibility(View.GONE);
-        layoutContent.setVisibility(View.GONE);
-        layoutError.setVisibility(View.VISIBLE);
-        tvError.setText(error);
     }
 
     @Override

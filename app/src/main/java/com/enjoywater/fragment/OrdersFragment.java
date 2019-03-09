@@ -422,7 +422,7 @@ public class OrdersFragment extends Fragment {
                 break;
             }
             default:{
-                Log.e(TAG, "onMessageEvent " + gson.toJson(event));
+                //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
                 break;
             }
         }

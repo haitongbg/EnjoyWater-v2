@@ -88,4 +88,7 @@
     <string name="phone_full">Số điện thoại</string>
     <string name="user_ref_code">Mã của bạn</string>
     <string name="change">Đổi</string>
+    <string name="title_activity_tutorial">TutorialActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

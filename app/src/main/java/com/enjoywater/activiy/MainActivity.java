@@ -22,7 +22,14 @@ import com.enjoywater.fragment.NotifyFragment;
 import com.enjoywater.fragment.OrdersFragment;
 import com.enjoywater.fragment.PersonalFragment;
 import com.enjoywater.fragment.ProductFragment;
+import com.enjoywater.model.EventBusMessage;
+import com.enjoywater.model.User;
 import com.enjoywater.utils.Constants;
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +37,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_LOGIN_FROM_MAIN = 111;
     public static final int REQUEST_CODE_CALL_PHONE_PERMISSION = 212;
+    private static final String TAG = "MainActivity";
     int[] tabDrawableOn = {R.drawable.ic_tab_home_active, R.drawable.ic_tab_product_active, R.drawable.ic_tab_orders_active, R.drawable.ic_tab_notif_active, R.drawable.ic_tab_personal_active};
     int[] tabDrawableOff = {R.drawable.ic_tab_home, R.drawable.ic_tab_product, R.drawable.ic_tab_orders, R.drawable.ic_tab_notif, R.drawable.ic_tab_personal};
     HomeFragment homeFragment;
@@ -296,6 +304,24 @@ public class MainActivity extends AppCompatActivity {
             }
             default:
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        switch (event.getAction()) {
+            default:{
+                Log.e(TAG, "onMessageEvent " + (new Gson()).toJson(event));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 }

@@ -17,6 +17,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -845,5 +848,28 @@ public class ProductFragment extends Fragment {
             mToken = Utils.getToken(mContext);
             setDataAddress();
         } //else Toast.makeText(mContext, "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        switch (event.getAction()) {
+            case Constants.Key.PROFILE_UPDATED: {
+                mUser = (User) event.getObject();
+                setDataAddress();
+                break;
+            }
+            default:{
+                //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 }

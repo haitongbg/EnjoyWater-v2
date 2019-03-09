@@ -94,7 +94,11 @@
             android:name=".activiy.NewsDetailsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activiy.PersonalActivity" />
-        <activity android:name=".activiy.CoinDetailsActivity"></activity>
+        <activity android:name=".activiy.CoinDetailsActivity" />
+        <activity
+            android:name=".activiy.TutorialActivity"
+            android:label="@string/title_activity_tutorial"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

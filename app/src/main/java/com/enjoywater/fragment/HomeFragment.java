@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,9 @@ import com.enjoywater.activiy.NewsDetailsActivity;
 import com.enjoywater.activiy.PersonalActivity;
 import com.enjoywater.adapter.home.HomeAdapter;
 import com.enjoywater.listener.HomeListener;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.News;
+import com.enjoywater.model.Order;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
@@ -40,6 +43,10 @@ import com.enjoywater.view.ProgressWheel;
 import com.enjoywater.view.RippleView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -379,6 +386,29 @@ public class HomeFragment extends Fragment {
             if (mHomeAdapter != null) mHomeAdapter.notifyDataSetChanged();
             showLoading(true);
             getDataSale();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        switch (event.getAction()) {
+            case Constants.Key.PROFILE_UPDATED: {
+                mUser = (User) event.getObject();
+                setDataUser();
+                break;
+            }
+            default:{
+                //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 }
