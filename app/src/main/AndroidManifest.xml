@@ -92,13 +92,23 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activiy.NewsDetailsActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="" />
+        <activity
+            android:name=".activiy.PersonalActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activiy.PersonalActivity" />
-        <activity android:name=".activiy.CoinDetailsActivity" />
+        <activity
+            android:name=".activiy.BonusDetailsActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="" />
         <activity
             android:name=".activiy.TutorialActivity"
             android:label="@string/title_activity_tutorial"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

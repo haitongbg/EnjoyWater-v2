@@ -23,8 +23,12 @@ import com.enjoywater.fragment.OrdersFragment;
 import com.enjoywater.fragment.PersonalFragment;
 import com.enjoywater.fragment.ProductFragment;
 import com.enjoywater.model.EventBusMessage;
+import com.enjoywater.model.Order;
 import com.enjoywater.model.User;
+import com.enjoywater.retrofit.MainService;
+import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
+import com.enjoywater.utils.Utils;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,6 +37,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_LOGIN_FROM_MAIN = 111;
@@ -89,12 +96,15 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout layoutTabPersonal;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int mTabSelected = 1;
+    private MainService mainService;
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mainService = MyApplication.getInstance().getMainService();
         mTabSelected = getIntent().getIntExtra("tab_selected", 1);
         initUI();
     }
@@ -120,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(5);
         viewPager.setCurrentItem(mTabSelected);
     }
-
 
     public class MyViewPagerAdapter extends FragmentStatePagerAdapter {
         public MyViewPagerAdapter(FragmentManager fm) {
@@ -310,6 +319,17 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusMessage event) {
         switch (event.getAction()) {
+            case Constants.Key.BONUS_UPDATED: {
+                getDataUser();
+                break;
+            }
+            case Constants.Key.ORDER_UPDATED: {
+                String orderId = (String) event.getObject();
+                if (orderId != null && !orderId.isEmpty()) {
+                    getOrderDetails(orderId);
+                }
+                break;
+            }
             default:{
                 Log.e(TAG, "onMessageEvent " + (new Gson()).toJson(event));
                 break;
@@ -323,5 +343,51 @@ public class MainActivity extends AppCompatActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    private void getDataUser() {
+        String token = Utils.getToken(this);
+        User user = Utils.getUser(this);
+        if (user != null && !token.isEmpty()) {
+            Call<BaseResponse> getUserInfo = mainService.getUserInfo(token);
+            getUserInfo.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    BaseResponse baseResponse = response.body();
+                    if (baseResponse != null && baseResponse.isSuccess() && baseResponse.getData() != null && baseResponse.getData().isJsonObject()) {
+                        User.UserInfo userInfo = gson.fromJson(baseResponse.getData().getAsJsonObject(), User.UserInfo.class);
+                        if (userInfo != null) {
+                            user.setUserInfo(userInfo);
+                            Utils.saveUser(MainActivity.this, user);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+    private void getOrderDetails(String orderId) {
+        String token = Utils.getToken(this);
+        Call<BaseResponse> getOrderDetails = mainService.getOrderDetails(token, orderId);
+        getOrderDetails.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                BaseResponse getOrderDetailsResponse = response.body();
+                if (getOrderDetailsResponse != null && getOrderDetailsResponse.isSuccess() && getOrderDetailsResponse.getData() != null && getOrderDetailsResponse.getData().isJsonObject()) {
+                    Order order = gson.fromJson(getOrderDetailsResponse.getData(), Order.class);
+                    EventBus.getDefault().post(new EventBusMessage(Constants.Key.ORDER_CREATED, order));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }

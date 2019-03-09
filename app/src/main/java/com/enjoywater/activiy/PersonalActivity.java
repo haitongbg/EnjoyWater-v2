@@ -15,10 +15,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -194,7 +192,7 @@ public class PersonalActivity extends AppCompatActivity {
             }
         });
         rippleBtnCoinDetails.setOnRippleCompleteListener(rippleView -> {
-            startActivity(new Intent(PersonalActivity.this, CoinDetailsActivity.class));
+            startActivity(new Intent(PersonalActivity.this, BonusDetailsActivity.class));
             overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         rippleBtnChangePassword.setOnRippleCompleteListener(rippleView -> {
@@ -356,7 +354,6 @@ public class PersonalActivity extends AppCompatActivity {
                                     mUser.setUserInfo(userInfo);
                                     Utils.saveUser(PersonalActivity.this, mUser);
                                     setDataUser();
-                                    EventBus.getDefault().post(new EventBusMessage(Constants.Key.PROFILE_UPDATED, mUser));
                                 } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
                             } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN, false);
                         } else {

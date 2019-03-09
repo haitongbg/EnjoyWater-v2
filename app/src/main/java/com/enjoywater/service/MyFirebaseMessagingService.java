@@ -7,12 +7,14 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.enjoywater.R;
+import com.enjoywater.activiy.BonusDetailsActivity;
 import com.enjoywater.activiy.NewsDetailsActivity;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.activiy.SplashActivity;
 import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.MyNotification;
 import com.enjoywater.utils.Constants;
+import com.enjoywater.utils.Utils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -66,6 +68,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             case Constants.Value.NEWS: {
                 intent = new Intent(this, NewsDetailsActivity.class);
                 intent.putExtra(Constants.Key.NEWS_ID, notification.getContent());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                break;
+            }
+            case Constants.Value.BONUS: {
+                intent = new Intent(this, BonusDetailsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 break;
             }

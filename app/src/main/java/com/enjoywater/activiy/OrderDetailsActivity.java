@@ -34,6 +34,8 @@ import com.enjoywater.view.ProgressWheel;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -609,6 +611,35 @@ public class OrderDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         overridePendingTransition(R.anim.slide_left_to_right_in, R.anim.slide_left_to_right_out);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusMessage event) {
+        switch (event.getAction()) {
+            case Constants.Key.ORDER_CREATED: {
+                Order order = (Order) event.getObject();
+                if (order != null && order.getId() != null && order.getId().equals(mOrderId)) {
+                    mOrder = order;
+                    setDataOrder();
+                }
+                break;
+            }
+            default:{
+                //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 }

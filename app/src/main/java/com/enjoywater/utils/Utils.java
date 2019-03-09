@@ -2,6 +2,7 @@ package com.enjoywater.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -23,6 +24,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
 import com.enjoywater.activiy.MyApplication;
+import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.Location.City;
 import com.enjoywater.model.Location.District;
 import com.enjoywater.model.Location.Ward;
@@ -31,6 +33,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +49,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -56,6 +60,18 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Utils {
     private static Gson gson = new Gson();
+
+    public static boolean isAppRunning(Context context, String packageName) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+        ActivityManager.RunningAppProcessInfo topProcessInfo = runningProcesses.get(0);
+        if (topProcessInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+            if (topProcessInfo.processName.equalsIgnoreCase(packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static String convertDateTimeToDateTime(String date, String timeZone, int old_format, int new_format) {
         String dateTimeReturn = "";
@@ -303,6 +319,7 @@ public class Utils {
 
     //Login
     public static void saveUser(Context context, User user) {
+        EventBus.getDefault().post(new EventBusMessage(Constants.Key.PROFILE_UPDATED, user));
         saveString(context, Constants.Key.USER, gson.toJson(user));
     }
 

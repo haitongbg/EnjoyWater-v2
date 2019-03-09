@@ -306,7 +306,7 @@ public class HomeFragment extends Fragment {
                         mHomeAdapter.notifyItemInserted(mHomes.size() - 1);
                     }
                 }
-            }, 1000);
+            }, 500);
         } else if (mHomes.isEmpty()) {
             showError("Hiện chưa có bài viết mới.");
         }

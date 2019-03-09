@@ -214,28 +214,6 @@ public class OrdersFragment extends Fragment {
 
     }
 
-    private void getOrderDetails(String orderId) {
-        isLoading = true;
-        Call<BaseResponse> getOrderDetails = mainService.getOrderDetails(mToken, orderId);
-        getOrderDetails.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                isLoading = false;
-                BaseResponse getOrderDetailsResponse = response.body();
-                if (getOrderDetailsResponse != null && getOrderDetailsResponse.isSuccess() && getOrderDetailsResponse.getData() != null && getOrderDetailsResponse.getData().isJsonObject()) {
-                    Order order = gson.fromJson(getOrderDetailsResponse.getData(), Order.class);
-                    insertOrder(order);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                isLoading = false;
-                t.printStackTrace();
-            }
-        });
-    }
-
     private void setDataHistory(ArrayList<Order> orders) {
         removeLoadmore();
         // add list
@@ -257,7 +235,7 @@ public class OrdersFragment extends Fragment {
                         mOrdersAdapter.notifyItemInserted(mOrders.size() - 1);
                     }
                 }
-            }, 1000);
+            }, 500);
         } else if (mOrders.isEmpty()) {
             showError("Bạn chưa tạo đơn hàng nào.");
         }
@@ -412,13 +390,6 @@ public class OrdersFragment extends Fragment {
             case Constants.Key.ORDER_CREATED: {
                 Order order = (Order) event.getObject();
                 insertOrder(order);
-                break;
-            }
-            case Constants.Key.ORDER_UPDATED: {
-                String orderId = (String) event.getObject();
-                if (orderId != null && !orderId.isEmpty()) {
-                    getOrderDetails(orderId);
-                }
                 break;
             }
             default:{

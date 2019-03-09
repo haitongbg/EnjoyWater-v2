@@ -21,9 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enjoywater.R;
+import com.enjoywater.activiy.BonusDetailsActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
+import com.enjoywater.activiy.NewsDetailsActivity;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.adapter.notify.NotifyAdapter;
 import com.enjoywater.listener.NotifyListener;
@@ -224,7 +226,7 @@ public class NotifyFragment extends Fragment {
                         mNotifyAdapter.notifyItemInserted(mNotifies.size() - 1);
                     }
                 }
-            }, 1000);
+            }, 500);
         } else if (mNotifies.isEmpty()) {
             showError("Hiện chưa có thông báo mới.");
         }
@@ -283,6 +285,17 @@ public class NotifyFragment extends Fragment {
                     case Constants.Value.ORDER: {
                         Intent intent = new Intent(mContext, OrderDetailsActivity.class);
                         intent.putExtra(Constants.Key.ORDER_ID, notify.getContent());
+                        startActivity(intent);
+                        (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+                    }
+                    case Constants.Value.BONUS: {
+                        Intent intent = new Intent(mContext, BonusDetailsActivity.class);
+                        startActivity(intent);
+                        (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+                    }
+                    case Constants.Value.NEWS: {
+                        Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                        intent.putExtra(Constants.Key.NEWS_ID, notify.getContent());
                         startActivity(intent);
                         (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                     }
