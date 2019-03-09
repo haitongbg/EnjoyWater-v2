@@ -315,7 +315,6 @@ public class PersonalFragment extends Fragment {
                     if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
                     t.printStackTrace();
                     showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
-                    layoutLoading.setVisibility(View.GONE);
                 }
             });
         } else showError(Constants.DataNotify.NOT_LOGIN_YET);

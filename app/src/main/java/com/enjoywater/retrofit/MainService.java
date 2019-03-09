@@ -82,10 +82,16 @@ public interface MainService {
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.RESET_PASSWORD)
-    Call<BaseResponse> changePassword(@Field(Constants.Key.EMAIL) String email,
-                                      @Field(Constants.Key.CODE) String code,
-                                      @Field(Constants.Key.NEW_PASSWORD) String newPassword,
-                                      @Field(Constants.Key.NEW_PASSWORD_REPEATED) String newPasswordRepeated);
+    Call<BaseResponse> resetPassword(@Field(Constants.Key.EMAIL) String email,
+                                     @Field(Constants.Key.CODE) String code,
+                                     @Field(Constants.Key.NEW_PASSWORD) String newPassword,
+                                     @Field(Constants.Key.NEW_PASSWORD_REPEATED) String newPasswordRepeated);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.UPDATE_USER_INFO)
+    Call<BaseResponse> changePassword(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                      @Field(Constants.Key.PASSWORD) String password);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_USER_INFO)
@@ -101,14 +107,9 @@ public interface MainService {
     @POST(Constants.Url.UPDATE_USER_INFO)
     Call<BaseResponse> updateUserInfo(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                       @Field(Constants.Key.NAME) String name,
-                                      @Field(Constants.Key.PASSWORD) String password,
-                                      @Field(Constants.Key.AVATAR) String avatar,
                                       @Field(Constants.Key.GENDER) String gender,
                                       @Field(Constants.Key.BIRTHDAY) String birthday,
-                                      @Field(Constants.Key.ADDRESS) String address,
-                                      @Field(Constants.Key.PASSPORT) String passport,
-                                      @Field(Constants.Key.PHONE) String phone,
-                                      @Field(Constants.Key.EMAIL) String email);
+                                      @Field(Constants.Key.PHONE) String phone);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)

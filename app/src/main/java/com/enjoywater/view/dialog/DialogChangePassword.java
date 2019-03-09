@@ -24,11 +24,14 @@ import android.widget.Toast;
 
 import com.enjoywater.R;
 import com.enjoywater.activiy.MyApplication;
+import com.enjoywater.activiy.PersonalActivity;
+import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -39,22 +42,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DialogRetrivePassword {
+public class DialogChangePassword {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.btn_close)
     ImageView btnClose;
-    @BindView(R.id.tv_tutorial)
-    TextView tvTutorial;
-    @BindView(R.id.edt_email)
-    EditText edtEmail;
-    @BindView(R.id.btn_get_confirm_code)
-    Button btnGetConfirmCode;
-    @BindView(R.id.tv_change_password)
-    TextView tvChangePassword;
-    @BindView(R.id.edt_confirm_code)
-    EditText edtConfirmCode;
+    @BindView(R.id.edt_old_password)
+    EditText edtOldPassword;
     @BindView(R.id.edt_new_password)
     EditText edtNewPassword;
     @BindView(R.id.btn_visible_new_password)
@@ -75,16 +70,15 @@ public class DialogRetrivePassword {
     private MainService mainService;
     private Dialog mDialog;
     private Handler mCallBackHandler;
-    private boolean isLoading, isDelaying;
-    private long mDelaySending;
+    private boolean isLoading;
     private String mEmail;
+    private Gson gson = new Gson();
+    private User mUser;
 
-
-    public DialogRetrivePassword(Context context, Handler callbackHandler, long delaySending, String email) {
+    public DialogChangePassword(Context context, Handler callbackHandler, String email) {
         mContext = context;
         mainService = MyApplication.getInstance().getMainService();
         mCallBackHandler = callbackHandler;
-        mDelaySending = delaySending;
         mEmail = email;
         initUI();
     }
@@ -95,8 +89,8 @@ public class DialogRetrivePassword {
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setCancelable(false);
-        mDialog.setContentView(R.layout.dialog_retrive_password);
-        ButterKnife.bind(DialogRetrivePassword.this, mDialog);
+        mDialog.setContentView(R.layout.dialog_change_password);
+        ButterKnife.bind(DialogChangePassword.this, mDialog);
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_up_over_screen);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -132,7 +126,6 @@ public class DialogRetrivePassword {
                 public void onAnimationEnd(Animation animation) {
                     Message message = new Message();
                     message.what = Constants.Value.ACTION_CLOSE;
-                    message.obj = mDelaySending;
                     mCallBackHandler.sendMessage(message);
                     mDialog.dismiss();
                 }
@@ -144,28 +137,17 @@ public class DialogRetrivePassword {
             });
             layoutContent.startAnimation(endAnimation);
         });
-        btnGetConfirmCode.setOnClickListener(v -> {
-            String email = edtEmail.getText().toString();
-            if (email.isEmpty())
-                Toast.makeText(mContext, "Vui lòng nhập email.", Toast.LENGTH_SHORT).show();
-            else {
-                mEmail = email;
-                getConfirmCode(email);
-            }
-        });
         btnChangePassword.setOnClickListener(v -> {
-            String code = edtConfirmCode.getText().toString();
+            String oldPassword = edtOldPassword.getText().toString();
             String newPassword = edtNewPassword.getText().toString();
             String newPasswordRepeated = edtNewPasswordRepeated.getText().toString();
-            if (mEmail.isEmpty())
-                Toast.makeText(mContext, "Vui lòng nhập email.", Toast.LENGTH_SHORT).show();
-            else if (code.isEmpty()) {
-                Toast.makeText(mContext, "Vui lòng nhập mã xác nhận", Toast.LENGTH_SHORT).show();
+            if (!Utils.isValidPasswordSimple(oldPassword)) {
+                Toast.makeText(mContext, "Vui lòng nhập mật khẩu hợp lệ", Toast.LENGTH_SHORT).show();
             } else if (!Utils.isValidPasswordSimple(newPassword)) {
                 Toast.makeText(mContext, "Vui lòng nhập mật khẩu hợp lệ", Toast.LENGTH_SHORT).show();
             } else if (!newPasswordRepeated.equals(newPassword)) {
                 Toast.makeText(mContext, "Xác nhận mật khẩu không khớp", Toast.LENGTH_SHORT).show();
-            } else changePassword(mEmail, code, newPassword, newPasswordRepeated);
+            } else checkPassword(mEmail, oldPassword, newPassword);
         });
         btnVisibleNewPassword.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
@@ -213,41 +195,45 @@ public class DialogRetrivePassword {
             }
             return true;
         });
-        edtEmail.setText(Utils.isValidEmail(mEmail) ? mEmail : "");
-        edtEmail.setSelection(edtEmail.length());
-        if (mDelaySending < 1000) {
-            isDelaying = false;
-            mDelaySending = 0;
-            btnGetConfirmCode.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_green_corner_4));
-            btnGetConfirmCode.setTextColor(mContext.getResources().getColor(R.color.white));
-            btnGetConfirmCode.setText("Lấy mã");
-        } else delaySending(mDelaySending);
         mDialog.show();
     }
 
-    private void getConfirmCode(String email) {
-        if (!isLoading && !isDelaying) {
+    private void checkPassword(String email, String password, String newPassword) {
+        if (!isLoading) {
             isLoading = true;
             progressLoading.setVisibility(View.VISIBLE);
-            Call<BaseResponse> getConfirmCode = mainService.forgetPassword(email);
-            getConfirmCode.enqueue(new Callback<BaseResponse>() {
+            layoutContent.setVisibility(View.GONE);
+            Call<BaseResponse> login = mainService.login(email, password);
+            login.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     isLoading = false;
-                    BaseResponse baseResponse = response.body();
-                    if (baseResponse != null) {
-                        if (baseResponse.isSuccess()) {
-                            progressLoading.setVisibility(View.GONE);
-                            delaySending(120000);
+                    BaseResponse loginResponse = response.body();
+                    if (loginResponse != null) {
+                        if (loginResponse.isSuccess() && loginResponse.getData() != null) {
+                            if (loginResponse.getData().isJsonObject()) {
+                                mUser = gson.fromJson(loginResponse.getData().getAsJsonObject(), User.class);
+                                if (mUser != null && mUser.getToken() != null && !mUser.getToken().isEmpty() && mUser.getUserInfo() != null) {
+                                    Utils.saveUser(mContext, mUser);
+                                    changePassword(Utils.getToken(mContext), newPassword);
+                                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                            } else
+                                showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
                         } else {
                             String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
-                            if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty())
-                                message = baseResponse.getError().getMessage();
+                            if (loginResponse.getError() != null && loginResponse.getError().getMessage() != null && !loginResponse.getError().getMessage().isEmpty()) {
+                                message = loginResponse.getError().getMessage();
+                                if (message.equalsIgnoreCase("Invalid email"))
+                                    message = mContext.getResources().getString(R.string.email_invalid);
+                                if (message.equalsIgnoreCase("User invalid"))
+                                    message = mContext.getResources().getString(R.string.user_invalid);
+                                if (message.equalsIgnoreCase("Password invalid"))
+                                    message = mContext.getResources().getString(R.string.password_wrong);
+                            }
                             showError(message);
                         }
-                    } else {
+                    } else
                         showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
-                    }
                 }
 
                 @Override
@@ -260,52 +246,34 @@ public class DialogRetrivePassword {
         }
     }
 
-    private void delaySending(long delayCount) {
-        isDelaying = true;
-        btnGetConfirmCode.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_grey_corner_4));
-        btnGetConfirmCode.setTextColor(mContext.getResources().getColor(R.color.black_9));
-        btnGetConfirmCode.setText("Chờ " + delayCount / 1000 + "s");
-        new CountDownTimer(delayCount, 1000) {
-            public void onTick(long millisUntilFinished) {
-                btnGetConfirmCode.setText("Chờ " + millisUntilFinished / 1000 + "s");
-                mDelaySending = millisUntilFinished;
-            }
-
-            public void onFinish() {
-                isDelaying = false;
-                mDelaySending = 0;
-                btnGetConfirmCode.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_green_corner_4));
-                btnGetConfirmCode.setTextColor(mContext.getResources().getColor(R.color.white));
-                btnGetConfirmCode.setText("Lấy mã");
-            }
-        }.start();
-    }
-
-    private void changePassword(String email, String code, String newPassword, String newPasswordRepeated) {
+    private void changePassword(String token, String newPassword) {
         isLoading = true;
-        progressLoading.setVisibility(View.VISIBLE);
-        layoutContent.setVisibility(View.GONE);
-        Call<BaseResponse> changePassword = mainService.resetPassword(email, code, newPassword, newPasswordRepeated);
+        Call<BaseResponse> changePassword = mainService.changePassword(token, newPassword);
         changePassword.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 isLoading = false;
                 BaseResponse baseResponse = response.body();
                 if (baseResponse != null) {
-                    if (baseResponse.isSuccess()) {
-                        Toast.makeText(mContext, "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-                        HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put(Constants.Key.EMAIL, mEmail);
-                        hashMap.put(Constants.Key.PASSWORD, newPassword);
-                        Message message = new Message();
-                        message.what = Constants.Value.ACTION_SUCCESS;
-                        message.obj = hashMap;
-                        mCallBackHandler.sendMessage(message);
-                        mDialog.dismiss();
+                    if (baseResponse.isSuccess() && baseResponse.getData() != null) {
+                        if (baseResponse.getData().isJsonObject()) {
+                            User.UserInfo userInfo = gson.fromJson(baseResponse.getData().getAsJsonObject(), User.UserInfo.class);
+                            if (userInfo != null) {
+                                Toast.makeText(mContext, "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                                mUser.setUserInfo(userInfo);
+                                Utils.saveUser(mContext, mUser);
+                                Message message = new Message();
+                                message.what = Constants.Value.ACTION_SUCCESS;
+                                message.obj = mUser;
+                                mCallBackHandler.sendMessage(message);
+                                mDialog.dismiss();
+                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                        } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
                     } else {
-                        String message = Constants.DataNotify.DATA_ERROR;
-                        if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty())
+                        String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
+                        if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty()) {
                             message = baseResponse.getError().getMessage();
+                        }
                         showError(message);
                     }
                 } else showError(Constants.DataNotify.DATA_ERROR);

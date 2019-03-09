@@ -1,9 +1,12 @@
 package com.enjoywater.activiy;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -13,6 +16,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -30,9 +34,13 @@ import com.bumptech.glide.request.target.Target;
 import com.enjoywater.R;
 import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
+import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
+import com.enjoywater.view.RippleView;
+import com.enjoywater.view.dialog.DialogActiveAccount;
+import com.enjoywater.view.dialog.DialogChangePassword;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
@@ -41,9 +49,11 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PersonalActivity extends AppCompatActivity {
-
     @BindView(R.id.btn_back)
     ImageView btnBack;
     @BindView(R.id.tv_title)
@@ -60,8 +70,8 @@ public class PersonalActivity extends AppCompatActivity {
     TextView textCoin;
     @BindView(R.id.tv_coin)
     TextView tvCoin;
-    @BindView(R.id.btn_coin_details)
-    TextView btnCoinDetails;
+    @BindView(R.id.ripple_btn_coin_details)
+    RippleView rippleBtnCoinDetails;
     @BindView(R.id.text_name)
     TextView textName;
     @BindView(R.id.edt_name)
@@ -98,6 +108,14 @@ public class PersonalActivity extends AppCompatActivity {
     TextView tvEmail;
     @BindView(R.id.v_underline_email)
     View vUnderlineEmail;
+    @BindView(R.id.text_password)
+    TextView textPassword;
+    @BindView(R.id.tv_password)
+    TextView tvPassword;
+    @BindView(R.id.ripple_btn_change_password)
+    RippleView rippleBtnChangePassword;
+    @BindView(R.id.v_underline_password)
+    View vUnderlinePassword;
     @BindView(R.id.text_ref_code)
     TextView textRefCode;
     @BindView(R.id.tv_ref_code)
@@ -122,10 +140,12 @@ public class PersonalActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefresh;
     private MainService mainService;
     private User mUser;
+    private String mToken;
     private boolean isLoading = false;
     private Gson gson = new Gson();
     private DecimalFormat formatVND = new DecimalFormat("###,###,###");
     private Calendar calendar = Calendar.getInstance();
+    private DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,10 +155,12 @@ public class PersonalActivity extends AppCompatActivity {
         initUI();
         mainService = MyApplication.getInstance().getMainService();
         mUser = Utils.getUser(this);
-        if (mUser != null) setDataUser();
+        mToken = Utils.getToken(this);
+        if (mUser != null && mToken != null && !mToken.isEmpty()) setDataUser();
         else showError(Constants.DataNotify.NOT_LOGIN_YET);
     }
 
+    @SuppressLint("HandlerLeak")
     private void initUI() {
         btnBack.setOnClickListener(v -> onBackPressed());
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
@@ -166,16 +188,76 @@ public class PersonalActivity extends AppCompatActivity {
                 progressLoading.setProgress(0.0f);
             }
         });
+        rippleBtnCoinDetails.setOnRippleCompleteListener(rippleView -> {
+            startActivity(new Intent(PersonalActivity.this, CoinDetailsActivity.class));
+            overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+        });
+        rippleBtnChangePassword.setOnRippleCompleteListener(rippleView -> {
+            new DialogChangePassword(PersonalActivity.this, new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    if (msg.what == Constants.Value.ACTION_SUCCESS) {
+                        mUser = (User) msg.obj;
+                        setDataUser();
+                    }
+
+                }
+            }, tvEmail.getText().toString());
+        });
+        datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            tvBirthday.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR));
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         btnSave.setOnClickListener(v -> {
-            preUpdateUserInfo();
+            updateUserInfo();
         });
     }
 
     private void getDataUser() {
         isLoading = true;
+        Call<BaseResponse> getUserInfo = mainService.getUserInfo(mToken);
+        getUserInfo.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                isLoading = false;
+                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null) {
+                    if (baseResponse.isSuccess() && baseResponse.getData() != null) {
+                        if (baseResponse.getData().isJsonObject()) {
+                            User.UserInfo userInfo = gson.fromJson(baseResponse.getData().getAsJsonObject(), User.UserInfo.class);
+                            if (userInfo != null) {
+                                mUser.setUserInfo(userInfo);
+                                Utils.saveUser(PersonalActivity.this, mUser);
+                                setDataUser();
+                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                        } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                    } else {
+                        String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
+                        if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty()) {
+                            message = baseResponse.getError().getMessage();
+                        }
+                        showError(message);
+                    }
+                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                isLoading = false;
+                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                t.printStackTrace();
+                showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+            }
+        });
     }
 
     private void setDataUser() {
+        showContent();
         String avatar = mUser.getUserInfo().getAvatar();
         if (avatar != null && !avatar.isEmpty())
             Glide.with(this).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).listener(new RequestListener<Drawable>() {
@@ -230,8 +312,59 @@ public class PersonalActivity extends AppCompatActivity {
         tvRefCode.setText(mUser.getUserInfo().getMyCode());
     }
 
-    private void preUpdateUserInfo() {
+    private void updateUserInfo() {
+        String name = edtName.getText().toString();
+        String gender = Constants.Value.UNKNOWN;
+        if (radioMale.isChecked()) gender = Constants.Value.MALE;
+        else if (radioFemale.isChecked()) gender = Constants.Value.FEMALE;
+        String birthday = "";
+        if (!tvBirthday.getText().toString().isEmpty())
+            birthday = String.valueOf(calendar.getTimeInMillis() / 1000);
+        String phone = edtPhone.getText().toString();
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập họ và tên.", Toast.LENGTH_SHORT).show();
+        } else if (!Utils.isValidPhone(phone)) {
+            Toast.makeText(this, "Vui lòng nhập SĐT hợp lệ.", Toast.LENGTH_SHORT).show();
+        } else {
+            isLoading = true;
+            showLoading(false);
+            Call<BaseResponse> updateUserInfo = mainService.updateUserInfo(mToken, name, gender, birthday, phone);
+            updateUserInfo.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    isLoading = false;
+                    if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                    BaseResponse baseResponse = response.body();
+                    if (baseResponse != null) {
+                        if (baseResponse.isSuccess() && baseResponse.getData() != null) {
+                            if (baseResponse.getData().isJsonObject()) {
+                                User.UserInfo userInfo = gson.fromJson(baseResponse.getData().getAsJsonObject(), User.UserInfo.class);
+                                if (userInfo != null) {
+                                    Toast.makeText(PersonalActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                                    mUser.setUserInfo(userInfo);
+                                    Utils.saveUser(PersonalActivity.this, mUser);
+                                    setDataUser();
+                                } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                            } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                        } else {
+                            String message = Constants.DataNotify.DATA_ERROR_TRY_AGAIN;
+                            if (baseResponse.getError() != null && baseResponse.getError().getMessage() != null && !baseResponse.getError().getMessage().isEmpty()) {
+                                message = baseResponse.getError().getMessage();
+                            }
+                            showError(message);
+                        }
+                    } else showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                }
 
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    isLoading = false;
+                    if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+                    t.printStackTrace();
+                    showError(Constants.DataNotify.DATA_ERROR_TRY_AGAIN);
+                }
+            });
+        }
     }
 
     private void showLoading(boolean goneContent) {

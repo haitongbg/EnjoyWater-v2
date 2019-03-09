@@ -87,4 +87,5 @@
     <string name="birthday">Sinh nhật</string>
     <string name="phone_full">Số điện thoại</string>
     <string name="user_ref_code">Mã của bạn</string>
+    <string name="change">Đổi</string>
 </resources>
