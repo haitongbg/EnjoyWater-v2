@@ -1,147 +1,148 @@
 package com.enjoywater.activiy;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
-
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enjoywater.R;
+import com.enjoywater.fragment.TutorialFragment;
+import com.enjoywater.utils.Utils;
+import com.enjoywater.view.RippleViewLinear;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class TutorialActivity extends AppCompatActivity {
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
+    @BindView(R.id.tabDots)
+    TabLayout tabDots;
+    @BindView(R.id.ripple_btn_skip)
+    RippleViewLinear rippleBtnSkip;
+    @BindView(R.id.main_content)
+    ConstraintLayout mainContent;
+    @BindView(R.id.ripple_btn_next)
+    RippleViewLinear rippleBtnNext;
+    @BindView(R.id.tv_next)
+    TextView tvNext;
+    @BindView(R.id.ic_next)
+    ImageView icNext;
+    private MyPagerAdapter mPagerAdapter;
+    private int mCurrentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutorial);
+        boolean isFirstRun = Utils.getBoolean(this,"first_run", true);
+        if (!isFirstRun) {
+            startActivity(new Intent(TutorialActivity.this, SplashActivity.class));
+            finish();
+        } else {
+            setContentView(R.layout.activity_tutorial);
+            ButterKnife.bind(this);
+            initUI();
+            Utils.saveBoolean(this,"first_run", false);
+        }
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+    private void initUI() {
+        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mPagerAdapter);
+        tabDots.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(4);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mCurrentPosition = position;
+                switch (position) {
+                    case 3: {
+                        tvNext.setText(R.string.start);
+                        icNext.setVisibility(View.GONE);
+                        rippleBtnNext.setOnRippleCompleteListener(rippleView -> {
+                            startActivity(new Intent(TutorialActivity.this, SplashActivity.class));
+                            overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
+                            finish();
+                        });
+                        break;
+                    }
+                    default: {
+                        tvNext.setText(R.string.next);
+                        icNext.setVisibility(View.VISIBLE);
+                        rippleBtnNext.setOnRippleCompleteListener(rippleView -> {
+                            viewPager.setCurrentItem(mCurrentPosition + 1);
+                        });
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
-
+        rippleBtnNext.setOnRippleCompleteListener(rippleView -> {
+            viewPager.setCurrentItem(mCurrentPosition + 1);
+        });
+        rippleBtnSkip.setOnRippleCompleteListener(rippleView -> {
+            startActivity(new Intent(TutorialActivity.this, SplashActivity.class));
+            overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
+            finish();
+        });
+        initFragment();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tutorial, menu);
-        return true;
+    private void initFragment() {
+        ArrayList<Fragment> fragmentList = mPagerAdapter.getFragmentList();
+        TutorialFragment fragment1 = TutorialFragment.newInstance(getString(R.string.tutorial_1_title), getString(R.string.tutorial_1_desc));
+        TutorialFragment fragment2 = TutorialFragment.newInstance(getString(R.string.tutorial_2_title), getString(R.string.tutorial_2_desc));
+        TutorialFragment fragment3 = TutorialFragment.newInstance(getString(R.string.tutorial_3_title), getString(R.string.tutorial_3_desc));
+        TutorialFragment fragment4 = TutorialFragment.newInstance(getString(R.string.tutorial_4_title), getString(R.string.tutorial_4_desc));
+        fragmentList.add(fragment1);
+        fragmentList.add(fragment2);
+        fragmentList.add(fragment3);
+        fragmentList.add(fragment4);
+        mPagerAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+        private ArrayList<Fragment> fragmentList = new ArrayList<>();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_tutorial, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private MyPagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        public void addFrag(Fragment fragment) {
+            fragmentList.add(fragment);
         }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return fragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return fragmentList.size();
+        }
+
+        public ArrayList<Fragment> getFragmentList() {
+            return fragmentList;
         }
     }
 }

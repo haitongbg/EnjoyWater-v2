@@ -317,6 +317,14 @@ public class Utils {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultValue);
     }
 
+    public static boolean getBoolean(Context context, String key, boolean defaultValue) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, defaultValue);
+    }
+
+    public static void saveBoolean(Context context, String key, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value).commit();
+    }
+
     //Login
     public static void saveUser(Context context, User user) {
         EventBus.getDefault().post(new EventBusMessage(Constants.Key.PROFILE_UPDATED, user));

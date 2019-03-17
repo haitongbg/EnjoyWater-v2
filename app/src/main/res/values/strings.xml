@@ -96,4 +96,14 @@
     <string name="share_now">Chia sẻ ngay</string>
     <string name="your_code">Lấy mã giới thiệu</string>
     <string name="my_bonus_coin"><u>Kho điểm của tôi</u></string>
+    <string name="tutorial_1_title">ỨNG DỤNG GIAO NƯỚC THÔNG MINH 4.0</string>
+    <string name="tutorial_1_desc">• Chỉ với 1 click, chúng tôi đã sẵn sàng phục vụ nhu cầu uống nước sạch của bạn!</string>
+    <string name="tutorial_2_title">ĐẢM BẢO AN TOÀN TUYỆT ĐỐI CHO SỨC KHỎE CỦA BẠN</string>
+    <string name="tutorial_2_desc">• Chúng tôi thẩm định và lựa chọn những sản phẩm tốt nhất cho sức khỏe.\n• Chúng tôi mang nước kiềm đến giúp cơ thể bạn trung hòa axit và ngăn ngừa ung thư.\n• Chúng tôi mua bảo hiểm cho từng sản phẩm bạn dùng</string>
+    <string name="tutorial_3_title">TẶNG 10.000 ĐIỂM THƯỞNG/SẢN PHẨM CHO ĐƠN HÀNG ĐẦU TIÊN CỦA BẠN</string>
+    <string name="tutorial_3_desc"></string>
+    <string name="tutorial_4_title">TẶNG ĐIỂM THƯỞNG MÃI MÃI KHI GIỚI THIỆU APP CHO BẠN BÈ</string>
+    <string name="tutorial_4_desc"></string>
+    <string name="next">Tiếp</string>
+    <string name="start">Bắt đầu</string>
 </resources>
