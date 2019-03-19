@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -73,6 +74,10 @@ public class PersonalFragment extends Fragment {
     ImageView ivCoin;
     @BindView(R.id.tv_coin)
     TextView tvCoin;
+    @BindView(R.id.group_user_info)
+    Group groupUserInfo;
+    @BindView(R.id.tv_wellcome)
+    TextView tvWellcome;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.iv_user_code)
@@ -93,6 +98,8 @@ public class PersonalFragment extends Fragment {
     ImageView ivSubmitCode;
     @BindView(R.id.text_submit_code)
     TextView textSubmitCode;
+    @BindView(R.id.v_overlay_submit_code)
+    View vOverlaySubmitCode;
     @BindView(R.id.btn_submit_code)
     ConstraintLayout btnSubmitCode;
     @BindView(R.id.iv_rate_app)
@@ -125,10 +132,16 @@ public class PersonalFragment extends Fragment {
     TextView textLogout;
     @BindView(R.id.btn_logout)
     ConstraintLayout btnLogout;
+    @BindView(R.id.btn_login_now)
+    Button btnLoginNow;
+    @BindView(R.id.group_user_action)
+    Group groupUserAction;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
     @BindView(R.id.btn_event)
     ImageView btnEvent;
+    @BindView(R.id.ripple_event)
+    RippleView rippleEvent;
     @BindView(R.id.layout_content)
     ConstraintLayout layoutContent;
     @BindView(R.id.progress_loading)
@@ -143,10 +156,6 @@ public class PersonalFragment extends Fragment {
     RelativeLayout layoutError;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.v_overlay_submit_code)
-    View vOverlaySubmitCode;
-    @BindView(R.id.ripple_event)
-    RippleView rippleEvent;
     private Context mContext;
     private MainService mainService;
     private User mUser;
@@ -204,15 +213,11 @@ public class PersonalFragment extends Fragment {
                 progressLoading.setProgress(0.0f);
             }
         });
-        btnLogin.setOnClickListener(v -> {
+        btnLoginNow.setOnClickListener(v -> {
             if (!isLoading) {
                 getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
                 (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
             }
-        });
-        appbar.setOnClickListener(v -> {
-            startActivity(new Intent(mContext, PersonalActivity.class));
-            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         btnUserCode.setOnClickListener(v -> {
             Utils.copyTextToClipboard(mContext, mUser.getUserInfo().getMyCode());
@@ -333,6 +338,11 @@ public class PersonalFragment extends Fragment {
     private void setDataUser() {
         if (mUser != null) {
             showContent();
+            btnLoginNow.setVisibility(View.GONE);
+            tvWellcome.setVisibility(View.GONE);
+            groupUserInfo.setVisibility(View.VISIBLE);
+            groupUserAction.setVisibility(View.VISIBLE);
+            btnEvent.setVisibility(View.VISIBLE);
             String avatar = mUser.getUserInfo().getAvatar();
             if (avatar != null && !avatar.isEmpty())
                 Glide.with(mContext).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).into(ivAvatar);
@@ -347,6 +357,10 @@ public class PersonalFragment extends Fragment {
                 vOverlaySubmitCode.setVisibility(View.VISIBLE);
             else vOverlaySubmitCode.setVisibility(View.GONE);
             Glide.with(mContext).load(R.drawable.gif_event).into(btnEvent);
+            appbar.setOnClickListener(v -> {
+                startActivity(new Intent(mContext, PersonalActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+            });
         } else showError(Constants.DataNotify.NOT_LOGIN_YET);
     }
 
@@ -417,14 +431,26 @@ public class PersonalFragment extends Fragment {
     }
 
     private void showError(String error) {
-        appbar.setVisibility(View.GONE);
-        layoutLoading.setVisibility(View.GONE);
-        layoutContent.setVisibility(View.GONE);
-        layoutError.setVisibility(View.VISIBLE);
-        tvError.setText(error);
-        if (error.equals(Constants.DataNotify.NOT_LOGIN_YET))
-            btnLogin.setVisibility(View.VISIBLE);
-        else btnLogin.setVisibility(View.GONE);
+        if (error.equals(Constants.DataNotify.NOT_LOGIN_YET)) {
+            showContent();
+            groupUserInfo.setVisibility(View.GONE);
+            groupUserAction.setVisibility(View.GONE);
+            btnEvent.setVisibility(View.GONE);
+            tvWellcome.setVisibility(View.VISIBLE);
+            btnLoginNow.setVisibility(View.VISIBLE);
+            ivAvatar.setImageResource(R.drawable.avatar_default);
+            appbar.setOnClickListener(v -> {
+                getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
+                (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
+            });
+        } else {
+            appbar.setVisibility(View.GONE);
+            layoutLoading.setVisibility(View.GONE);
+            layoutContent.setVisibility(View.GONE);
+            layoutError.setVisibility(View.VISIBLE);
+            tvError.setText(error);
+            btnLogin.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -445,7 +471,7 @@ public class PersonalFragment extends Fragment {
                 setDataUser();
                 break;
             }
-            default:{
+            default: {
                 //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
                 break;
             }

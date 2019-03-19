@@ -163,10 +163,6 @@ public class HomeFragment extends Fragment {
                 progressLoading.setProgress(0.0f);
             }
         });
-        appbar.setOnClickListener(v -> {
-            startActivity(new Intent(mContext, PersonalActivity.class));
-            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
-        });
         btnEvent.setOnClickListener(view -> {
             startActivity(new Intent(mContext, EventActivity.class));
             getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
@@ -208,10 +204,18 @@ public class HomeFragment extends Fragment {
             tvUserType.setText(mUser.getUserInfo().getLevelInfo().getName());
             tvCoin.setText(formatVND.format(mUser.getUserInfo().getCoin()));
             Glide.with(mContext).load(R.drawable.gif_event).into(btnEvent);
+            appbar.setOnClickListener(v -> {
+                startActivity(new Intent(mContext, PersonalActivity.class));
+                getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+            });
         } else {
             tvWellcome.setVisibility(View.VISIBLE);
             groupUserInfo.setVisibility(View.GONE);
             ivAvatar.setImageResource(R.drawable.avatar_default);
+            appbar.setOnClickListener(v -> {
+                getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
+                (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
+            });
         }
     }
 
