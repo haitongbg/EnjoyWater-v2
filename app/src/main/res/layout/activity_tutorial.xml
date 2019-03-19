@@ -50,18 +50,15 @@
             android:textSize="@dimen/text_16" />
     </com.enjoywater.view.RippleViewLinear>
 
-    <com.enjoywater.view.RippleViewLinear
-        android:id="@+id/ripple_btn_next"
+    <LinearLayout
+        android:id="@+id/btn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/size_10"
         android:padding="@dimen/size_5"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:rv_alpha="0"
-        app:rv_color="@android:color/transparent"
-        app:rv_zoomScale="1.1">
+        app:layout_constraintRight_toRightOf="parent">
 
         <TextView
             android:id="@+id/tv_next"
@@ -82,6 +79,6 @@
             android:layout_marginTop="@dimen/size_1"
             android:rotation="180"
             android:src="@drawable/ic_back_blue" />
-    </com.enjoywater.view.RippleViewLinear>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

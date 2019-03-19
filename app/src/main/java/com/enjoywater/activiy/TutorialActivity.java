@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enjoywater.R;
@@ -32,8 +33,8 @@ public class TutorialActivity extends AppCompatActivity {
     RippleViewLinear rippleBtnSkip;
     @BindView(R.id.main_content)
     ConstraintLayout mainContent;
-    @BindView(R.id.ripple_btn_next)
-    RippleViewLinear rippleBtnNext;
+    @BindView(R.id.btn_next)
+    LinearLayout btnNext;
     @BindView(R.id.tv_next)
     TextView tvNext;
     @BindView(R.id.ic_next)
@@ -44,16 +45,10 @@ public class TutorialActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean isFirstRun = Utils.getBoolean(this,"first_run", true);
-        if (!isFirstRun) {
-            startActivity(new Intent(TutorialActivity.this, SplashActivity.class));
-            finish();
-        } else {
-            setContentView(R.layout.activity_tutorial);
-            ButterKnife.bind(this);
-            initUI();
-            Utils.saveBoolean(this,"first_run", false);
-        }
+        setContentView(R.layout.activity_tutorial);
+        ButterKnife.bind(this);
+        initUI();
+        Utils.saveBoolean(this,"first_run", false);
     }
 
     private void initUI() {
@@ -71,10 +66,10 @@ public class TutorialActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 mCurrentPosition = position;
                 switch (position) {
-                    case 3: {
+                    case 4: {
                         tvNext.setText(R.string.start);
                         icNext.setVisibility(View.GONE);
-                        rippleBtnNext.setOnRippleCompleteListener(rippleView -> {
+                        btnNext.setOnClickListener(v -> {
                             startActivity(new Intent(TutorialActivity.this, SplashActivity.class));
                             overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
                             finish();
@@ -84,7 +79,7 @@ public class TutorialActivity extends AppCompatActivity {
                     default: {
                         tvNext.setText(R.string.next);
                         icNext.setVisibility(View.VISIBLE);
-                        rippleBtnNext.setOnRippleCompleteListener(rippleView -> {
+                        btnNext.setOnClickListener(v -> {
                             viewPager.setCurrentItem(mCurrentPosition + 1);
                         });
                         break;
@@ -96,7 +91,7 @@ public class TutorialActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        rippleBtnNext.setOnRippleCompleteListener(rippleView -> {
+        btnNext.setOnClickListener(v -> {
             viewPager.setCurrentItem(mCurrentPosition + 1);
         });
         rippleBtnSkip.setOnRippleCompleteListener(rippleView -> {
@@ -109,14 +104,23 @@ public class TutorialActivity extends AppCompatActivity {
 
     private void initFragment() {
         ArrayList<Fragment> fragmentList = mPagerAdapter.getFragmentList();
-        TutorialFragment fragment1 = TutorialFragment.newInstance(getString(R.string.tutorial_1_title), getString(R.string.tutorial_1_desc));
-        TutorialFragment fragment2 = TutorialFragment.newInstance(getString(R.string.tutorial_2_title), getString(R.string.tutorial_2_desc));
-        TutorialFragment fragment3 = TutorialFragment.newInstance(getString(R.string.tutorial_3_title), getString(R.string.tutorial_3_desc));
-        TutorialFragment fragment4 = TutorialFragment.newInstance(getString(R.string.tutorial_4_title), getString(R.string.tutorial_4_desc));
+        TutorialFragment fragment1 = TutorialFragment.newInstance("Ứng dụng gọi nước thông minh 4.0", new String[] {"Chỉ với 1 click, chúng tôi đã sẵn sàng phục vụ nhu cầu uống nước sạch của bạn!"});
+        TutorialFragment fragment2 = TutorialFragment.newInstance("Ở đây chúng tôi chỉ có NƯỚC TỐT!", new String[] {"Nước tốt là nước không có tính Acid, gây ảnh hưởng đến dạ dày.",
+                "Nước tốt là nước có nhiều khoáng chất cho cơ thể.",
+                "Nước tốt là nước được kiểm tra vệ sinh ATTP 3 tháng/lần."});
+        TutorialFragment fragment3 = TutorialFragment.newInstance("Phục vụ Quý khách hàng TỪ TÂM", new String[] {"Sức khỏe của Quý khách hàng là sức khỏe của chúng tôi.",
+                "Chúng tôi mua bảo hiểm cho tất cả các sản phẩm đã cung cấp.",
+                "Chúng tôi phục vụ theo Lợi ích của Quý khách hàng."});
+        TutorialFragment fragment4 = TutorialFragment.newInstance("Tặng 20.000 điểm thưởng khi đăng ký tài khoản thành công!", new String[] {"Tặng ngay 5.000 điểm thưởng khi nhập mã giới thiệu của bạn bè.",
+                "Tặng 10% giá trị đơn hàng đầu tiên khi giao dịch thành công."});
+        TutorialFragment fragment5 = TutorialFragment.newInstance("Mỗi lời giới thiệu App là thêm một nguồn thu nhập thụ động cho bạn!", new String[] {"Tặng ngay 5.000 điểm thưởng khi bạn bè nhập mã giới thiệu của bạn.",
+                "Tặng 2% giá trị đơn hàng mỗi khi người được bạn giới thiệu mua hàng thành công.",
+                "Người được giới thiệu cũng sẽ nhận ngay 1% giá trị mỗi đơn hàng."});
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
         fragmentList.add(fragment3);
         fragmentList.add(fragment4);
+        fragmentList.add(fragment5);
         mPagerAdapter.notifyDataSetChanged();
     }
 

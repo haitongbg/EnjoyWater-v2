@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_logo"
@@ -20,28 +20,111 @@
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_30"
-        android:fontFamily="@font/opensans_semibold"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_70"
+        android:layout_marginRight="@dimen/size_20"
+        android:fontFamily="@font/opensans_bold"
         android:textAlignment="center"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="@color/black_3"
         android:textSize="@dimen/text_18"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo"
-        tools:text="ỨNG DỤNG GIAO NƯỚC THÔNG MINH 4.0" />
+        tools:text="Ứng dụng gọi nuước thông minh 4.0" />
+
+    <ImageView
+        android:id="@+id/ic_desc_1"
+        android:layout_width="@dimen/size_20"
+        android:layout_height="@dimen/size_20"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_35"
+        android:src="@drawable/ic_tick_green"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
     <TextView
-        android:id="@+id/tv_description"
+        android:id="@+id/tv_desc_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_20"
+        android:layout_marginRight="@dimen/size_20"
         android:fontFamily="@font/opensans_semibold"
+        android:includeFontPadding="false"
         android:textAllCaps="false"
         android:textColor="@color/black_3"
-        android:textSize="@dimen/text_16"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintLeft_toRightOf="@id/ic_desc_1"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintTop_toTopOf="@id/ic_desc_1"
         tools:text="Chỉ với 1 click, chúng tôi đã sẵn sàng phục vụ nhu cầu uống nước sạch của bạn!" />
+
+    <ImageView
+        android:id="@+id/ic_desc_2"
+        android:layout_width="@dimen/size_20"
+        android:layout_height="@dimen/size_20"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_5"
+        android:src="@drawable/ic_tick_green"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc_1" />
+
+    <TextView
+        android:id="@+id/tv_desc_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/size_20"
+        android:fontFamily="@font/opensans_semibold"
+        android:includeFontPadding="false"
+        android:textAllCaps="false"
+        android:textColor="@color/black_3"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintLeft_toRightOf="@id/ic_desc_2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ic_desc_2"
+        tools:text="Chỉ với 1 click, chúng tôi đã sẵn sàng phục vụ nhu cầu uống nước sạch của bạn!" />
+
+    <ImageView
+        android:id="@+id/ic_desc_3"
+        android:layout_width="@dimen/size_20"
+        android:layout_height="@dimen/size_20"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_5"
+        android:src="@drawable/ic_tick_green"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc_2" />
+
+    <TextView
+        android:id="@+id/tv_desc_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/size_20"
+        android:fontFamily="@font/opensans_semibold"
+        android:includeFontPadding="false"
+        android:textAllCaps="false"
+        android:textColor="@color/black_3"
+        android:textSize="@dimen/text_14"
+        app:layout_constraintLeft_toRightOf="@id/ic_desc_3"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ic_desc_3"
+        tools:text="Chỉ với 1 click, chúng tôi đã sẵn sàng phục vụ nhu cầu uống nước sạch của bạn!" />
+
+    <android.support.constraint.Group
+        android:id="@+id/group_desc_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="ic_desc_1,tv_desc_1" />
+
+    <android.support.constraint.Group
+        android:visibility="gone"
+        android:id="@+id/group_desc_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="ic_desc_2,tv_desc_2" />
+
+    <android.support.constraint.Group
+        android:visibility="gone"
+        android:id="@+id/group_desc_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="ic_desc_3,tv_desc_3" />
 </android.support.constraint.ConstraintLayout>

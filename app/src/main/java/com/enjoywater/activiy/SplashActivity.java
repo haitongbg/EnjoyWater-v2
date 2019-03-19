@@ -37,13 +37,19 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
-        mainService = MyApplication.getInstance().getMainService();
-        mHandler.postDelayed(goMainRunnable, 2000);
-        mToken = Utils.getToken(this);
-        if (!mToken.isEmpty()) loginByToken(mToken);
-        else registeDevice("");
+        boolean isFirstRun = Utils.getBoolean(this,"first_run", true);
+        if (isFirstRun) {
+            startActivity(new Intent(SplashActivity.this, TutorialActivity.class));
+            finish();
+        } else {
+            setContentView(R.layout.activity_splash);
+            ButterKnife.bind(this);
+            mainService = MyApplication.getInstance().getMainService();
+            mHandler.postDelayed(goMainRunnable, 2000);
+            mToken = Utils.getToken(this);
+            if (!mToken.isEmpty()) loginByToken(mToken);
+            else registeDevice("");
+        }
     }
 
     private Runnable goMainRunnable = this::goMain;
