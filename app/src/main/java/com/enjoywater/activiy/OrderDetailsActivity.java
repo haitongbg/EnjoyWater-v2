@@ -350,7 +350,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             tvStatusReceived.setTextColor(getResources().getColor(R.color.black_c));
             btnConfirmReceived.setVisibility(View.GONE);
             textDeliveryTime.setText(R.string.expected_delivery_time);
-            //((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_15);
+            ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_15);
             switch (status) {
                 case Constants.Value.PENDING: {
                     btnCancelOrder.setVisibility(View.VISIBLE);
@@ -380,8 +380,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusDelivering.setTextColor(getResources().getColor(R.color.colorAccent));
-                    //btnConfirmReceived.setVisibility(View.VISIBLE);
-                    //((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_60);
+                    btnConfirmReceived.setVisibility(View.VISIBLE);
+                    ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_60);
                     break;
                 }
                 case Constants.Value.DELIVERED: {

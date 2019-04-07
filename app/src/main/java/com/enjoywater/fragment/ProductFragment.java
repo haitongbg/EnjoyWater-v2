@@ -17,6 +17,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import com.enjoywater.R;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
 import com.enjoywater.activiy.MyApplication;
+import com.enjoywater.activiy.OrderAddressActivity;
 import com.enjoywater.activiy.OrderDetailsActivity;
 import com.enjoywater.adapter.product.ProductAdapter;
 import com.enjoywater.adapter.product.SelectedProductAdapter;
@@ -126,8 +128,8 @@ public class ProductFragment extends Fragment {
     CheckBox checkboxPayByBill;
     @BindView(R.id.btn_change_address)
     TextView btnChangeAddress;
-    @BindView(R.id.ripple_forget_password)
-    RippleView rippleForgetPassword;
+    @BindView(R.id.ripple_change_address)
+    RippleView rippleChangeAddress;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_phone)
@@ -327,7 +329,7 @@ public class ProductFragment extends Fragment {
         btnCancelCoupon.setOnClickListener(v -> {
             cancelCoupon();
         });
-        btnChangeAddress.setOnClickListener(v -> {
+        rippleChangeAddress.setOnRippleCompleteListener(rippleView -> {
             changeAddress();
         });
         btnOrder.setOnClickListener(v -> {
@@ -394,78 +396,77 @@ public class ProductFragment extends Fragment {
             } else {
                 mProductAdapter.notifyItemRangeInserted(insertPosition, products.size());
             }
-            setDataAddress();
+            setDataAddress(null);
         } else if (mProducts.isEmpty()) showError("Lỗi dữ liệu sản phẩm, xin thử lại");
     }
 
-    private void setDataAddress() {
-        if (mUser != null && mUser.getUserInfo().getOtherAddress() != null && !mUser.getUserInfo().getOtherAddress().isEmpty()) {
+    private void setDataAddress(Address address) {
+        if (address != null) mAddress = address;
+        else if (mUser != null && mUser.getUserInfo().getOtherAddress() != null && !mUser.getUserInfo().getOtherAddress().isEmpty())
             mAddress = mUser.getUserInfo().getOtherAddress().get(0);
-            if (mAddress != null) {
-                String name = mAddress.getName();
-                tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
-                tvName.setVisibility(View.VISIBLE);
-                String phone = mAddress.getPhone();
-                tvPhone.setText(((phone != null && !phone.isEmpty()) ? phone : "unknown phone") + ",");
-                tvPhone.setVisibility(View.VISIBLE);
-                int count = 0;
-                String fullAddress = mAddress.getAddress();
-                if (mAddress.getCityId() != null && !mAddress.getCityId().isEmpty()) {
-                    for (City city : mCities) {
-                        if (city.getId() != null && city.getId().equals(mAddress.getCityId()) && city.getName() != null && !city.getName().isEmpty()) {
-                            ArrayList<District> districts = city.getDistricts();
-                            if (districts != null && !districts.isEmpty() && mAddress.getDistrictId() != null && !mAddress.getDistrictId().isEmpty()) {
-                                for (District district : districts) {
-                                    if (district.getId() != null && district.getId().equals(mAddress.getDistrictId()) && district.getName() != null && !district.getName().isEmpty()) {
-                                        ArrayList<Ward> wards = district.getWards();
-                                        if (wards != null && !wards.isEmpty() && mAddress.getWardId() != null && !mAddress.getWardId().isEmpty()) {
-                                            for (Ward ward : wards) {
-                                                if (ward.getId() != null && !ward.getId().equals(mAddress.getWardId()) && ward.getName() != null && !ward.getName().isEmpty()) {
-                                                    if (ward.getType() != null && !ward.getType().isEmpty())
-                                                        fullAddress += (", " + ward.getType() + " " + ward.getName());
-                                                    else fullAddress += (", " + ward.getName());
-                                                    count++;
-                                                    break;
-                                                }
+        else mAddress = null;
+        if (mAddress != null) {
+            String name = mAddress.getName();
+            tvName.setText(((name != null && !name.isEmpty()) ? name : "Unknown name") + ",");
+            tvName.setVisibility(View.VISIBLE);
+            String phone = mAddress.getPhone();
+            tvPhone.setText(((phone != null && !phone.isEmpty()) ? phone : "unknown phone") + ",");
+            tvPhone.setVisibility(View.VISIBLE);
+            int count = 0;
+            String fullAddress = mAddress.getAddress();
+            if (mAddress.getCityId() != null && !mAddress.getCityId().isEmpty()) {
+                for (City city : mCities) {
+                    if (city.getId() != null && city.getId().equals(mAddress.getCityId()) && city.getName() != null && !city.getName().isEmpty()) {
+                        ArrayList<District> districts = city.getDistricts();
+                        if (districts != null && !districts.isEmpty() && mAddress.getDistrictId() != null && !mAddress.getDistrictId().isEmpty()) {
+                            for (District district : districts) {
+                                if (district.getId() != null && district.getId().equals(mAddress.getDistrictId()) && district.getName() != null && !district.getName().isEmpty()) {
+                                    ArrayList<Ward> wards = district.getWards();
+                                    if (wards != null && !wards.isEmpty() && mAddress.getWardId() != null && !mAddress.getWardId().isEmpty()) {
+                                        for (Ward ward : wards) {
+                                            if (ward.getId() != null && !ward.getId().equals(mAddress.getWardId()) && ward.getName() != null && !ward.getName().isEmpty()) {
+                                                if (ward.getType() != null && !ward.getType().isEmpty())
+                                                    fullAddress += (", " + ward.getType() + " " + ward.getName());
+                                                else fullAddress += (", " + ward.getName());
+                                                count++;
+                                                break;
                                             }
                                         }
-                                        if (district.getType() != null && !district.getType().isEmpty())
-                                            fullAddress += (", " + district.getType() + " " + district.getName());
-                                        else fullAddress += (", " + district.getName());
-                                        count++;
-                                        break;
                                     }
+                                    if (district.getType() != null && !district.getType().isEmpty())
+                                        fullAddress += (", " + district.getType() + " " + district.getName());
+                                    else fullAddress += (", " + district.getName());
+                                    count++;
+                                    break;
                                 }
                             }
-                            if (city.getType() != null && !city.getType().isEmpty())
-                                fullAddress += (", " + city.getType() + " " + city.getName());
-                            else fullAddress += (", " + city.getName());
-                            count++;
-                            break;
                         }
+                        if (city.getType() != null && !city.getType().isEmpty())
+                            fullAddress += (", " + city.getType() + " " + city.getName());
+                        else fullAddress += (", " + city.getName());
+                        count++;
+                        break;
                     }
                 }
-                isValidAddress = count >= 2;
-                tvAddress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
-                btnChangeAddress.setVisibility(View.VISIBLE);
-            } else {
-                tvName.setVisibility(View.GONE);
-                tvPhone.setVisibility(View.GONE);
-                btnChangeAddress.setVisibility(View.GONE);
-                tvAddress.setText("Chưa có địa chỉ.");
-                isValidAddress = false;
             }
+            isValidAddress = count >= 2;
+            tvAddress.setText((fullAddress != null && !fullAddress.isEmpty()) ? fullAddress : "Chưa có địa chỉ.");
+            rippleChangeAddress.setVisibility(View.VISIBLE);
+            setAddressDefault();
         } else {
             tvName.setVisibility(View.GONE);
             tvPhone.setVisibility(View.GONE);
-            btnChangeAddress.setVisibility(View.GONE);
+            rippleChangeAddress.setVisibility(View.GONE);
             tvAddress.setText("Chưa có địa chỉ.");
             isValidAddress = false;
         }
     }
 
     private void changeAddress() {
-
+        Intent intent = new Intent(mContext, OrderAddressActivity.class);
+        if (mAddress != null) intent.putExtra(Constants.Key.ADDRESS, mAddress);
+        getActivity().startActivityForResult(intent, MainActivity.REQUEST_CODE_CHANGE_ADDRESS);
+        (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
     }
 
     private ProductListener mProductListener = new ProductListener() {
@@ -495,10 +496,11 @@ public class ProductFragment extends Fragment {
                 }
             }
             if (!mSelectedProducts.isEmpty()) {
-                if (mSelectedProductAdapter == null) {
-                    mSelectedProductAdapter = new SelectedProductAdapter(mContext, mSelectedProducts, mProductListener);
-                    rvSelectedProducts.setAdapter(mSelectedProductAdapter);
-                } else mSelectedProductAdapter.notifyDataSetChanged();
+                /*if (mSelectedProductAdapter == null) {
+
+                } else mSelectedProductAdapter.notifyDataSetChanged();*/
+                mSelectedProductAdapter = new SelectedProductAdapter(mContext, mSelectedProducts, mProductListener);
+                rvSelectedProducts.setAdapter(mSelectedProductAdapter);
                 rvSelectedProducts.setVisibility(View.VISIBLE);
             } else {
                 rvSelectedProducts.setVisibility(View.GONE);
@@ -746,9 +748,9 @@ public class ProductFragment extends Fragment {
                     super.handleMessage(msg);
                     if (msg.what == Constants.Value.ACTION_SUCCESS) {
                         Address address = (Address) msg.obj;
-                        mUser.getUserInfo().getOtherAddress().add(address);
+                        mUser.getUserInfo().getOtherAddress().add(0, address);
                         Utils.saveUser(mContext, mUser);
-                        setDataAddress();
+                        setDataAddress(address);
                         //validateOrder();
                     }
                 }
@@ -840,6 +842,19 @@ public class ProductFragment extends Fragment {
         }
     }
 
+    private void setAddressDefault() {
+        Call<BaseResponse> setAddressDefault = mainService.setAddressDefault(mToken, String.valueOf(mAddress.getKey()));
+        setAddressDefault.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+            }
+        });
+    }
+
     private void showLoading(boolean goneContent) {
         layoutLoading.setVisibility(View.VISIBLE);
         layoutContent.setVisibility(goneContent ? View.GONE : View.VISIBLE);
@@ -865,12 +880,19 @@ public class ProductFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //Log.e(TAG, "onActivityResult, " + requestCode + ", " + resultCode);
         if (requestCode == MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN && resultCode == LoginActivity.RESULT_CODE_LOGIN_SUCCESS) {
             //Toast.makeText(mContext, "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
             mUser = Utils.getUser(mContext);
             mToken = Utils.getToken(mContext);
-            setDataAddress();
-        } //else Toast.makeText(mContext, "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
+            setDataAddress(null);
+        }
+        //else Toast.makeText(mContext, "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
+        else if (requestCode == MainActivity.REQUEST_CODE_CHANGE_ADDRESS && resultCode == OrderAddressActivity.RESULT_CODE_CHANGE_ADDRESS) {
+            mUser = Utils.getUser(mContext);
+            Address address = data.getParcelableExtra(Constants.Key.ADDRESS);
+            setDataAddress(address);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -878,7 +900,7 @@ public class ProductFragment extends Fragment {
         switch (event.getAction()) {
             case Constants.Key.PROFILE_UPDATED: {
                 mUser = (User) event.getObject();
-                setDataAddress();
+                setDataAddress(null);
                 break;
             }
             default: {

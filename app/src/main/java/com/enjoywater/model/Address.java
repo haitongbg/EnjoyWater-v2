@@ -20,6 +20,7 @@ public class Address implements Parcelable {
     private String wardId;
     @SerializedName("address")
     private String address;
+    private boolean selected = false;
 
     public Address() {
     }
@@ -43,23 +44,25 @@ public class Address implements Parcelable {
 
     protected Address(Parcel in) {
         key = in.readInt();
-        districtId = in.readString();
-        cityId = in.readString();
-        wardId = in.readString();
-        phone = in.readString();
         name = in.readString();
+        phone = in.readString();
+        cityId = in.readString();
+        districtId = in.readString();
+        wardId = in.readString();
         address = in.readString();
+        selected = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(key);
-        dest.writeString(districtId);
-        dest.writeString(cityId);
-        dest.writeString(wardId);
-        dest.writeString(phone);
         dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeString(cityId);
+        dest.writeString(districtId);
+        dest.writeString(wardId);
         dest.writeString(address);
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 
     @Override
@@ -87,28 +90,12 @@ public class Address implements Parcelable {
         this.key = key;
     }
 
-    public String getDistrictId() {
-        return districtId;
+    public String getName() {
+        return name;
     }
 
-    public void setDistrictId(String districtId) {
-        this.districtId = districtId;
-    }
-
-    public String getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(String cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getWardId() {
-        return wardId;
-    }
-
-    public void setWardId(String wardId) {
-        this.wardId = wardId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {
@@ -119,12 +106,28 @@ public class Address implements Parcelable {
         this.phone = phone;
     }
 
-    public String getName() {
-        return name;
+    public String getCityId() {
+        return cityId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getWardId() {
+        return wardId;
+    }
+
+    public void setWardId(String wardId) {
+        this.wardId = wardId;
     }
 
     public String getAddress() {
@@ -133,5 +136,13 @@ public class Address implements Parcelable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

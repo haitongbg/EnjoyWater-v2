@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
+import com.enjoywater.activiy.BonusHistoryActivity;
 import com.enjoywater.activiy.EventActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
@@ -287,8 +288,12 @@ public class PersonalFragment extends Fragment {
             AlertDialog alert = builder.create();
             alert.show();
         });
-        btnEvent.setOnClickListener(view -> {
+        rippleEvent.setOnRippleCompleteListener(rippleView -> {
             startActivity(new Intent(mContext, EventActivity.class));
+            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+        });
+        tvCoin.setOnClickListener(view -> {
+            startActivity(new Intent(mContext, BonusHistoryActivity.class));
             getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         setDataUser();
@@ -342,7 +347,7 @@ public class PersonalFragment extends Fragment {
             tvWellcome.setVisibility(View.GONE);
             groupUserInfo.setVisibility(View.VISIBLE);
             groupUserAction.setVisibility(View.VISIBLE);
-            btnEvent.setVisibility(View.VISIBLE);
+            rippleEvent.setVisibility(View.VISIBLE);
             String avatar = mUser.getUserInfo().getAvatar();
             if (avatar != null && !avatar.isEmpty())
                 Glide.with(mContext).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).into(ivAvatar);
@@ -435,7 +440,7 @@ public class PersonalFragment extends Fragment {
             showContent();
             groupUserInfo.setVisibility(View.GONE);
             groupUserAction.setVisibility(View.GONE);
-            btnEvent.setVisibility(View.GONE);
+            rippleEvent.setVisibility(View.GONE);
             tvWellcome.setVisibility(View.VISIBLE);
             btnLoginNow.setVisibility(View.VISIBLE);
             ivAvatar.setImageResource(R.drawable.avatar_default);

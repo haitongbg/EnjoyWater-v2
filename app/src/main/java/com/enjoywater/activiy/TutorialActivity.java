@@ -48,7 +48,7 @@ public class TutorialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tutorial);
         ButterKnife.bind(this);
         initUI();
-        Utils.saveBoolean(this,"first_run", false);
+        Utils.saveBoolean(this, "first_run", false);
     }
 
     private void initUI() {
@@ -104,7 +104,7 @@ public class TutorialActivity extends AppCompatActivity {
 
     private void initFragment() {
         ArrayList<Fragment> fragmentList = mPagerAdapter.getFragmentList();
-        TutorialFragment fragment1 = TutorialFragment.newInstance("Ứng dụng gọi nước thông minh 4.0", new String[] {"Chỉ với 1 click, chúng tôi đã sẵn sàng phục vụ nhu cầu uống nước sạch của bạn!"});
+        /*TutorialFragment fragment1 = TutorialFragment.newInstance("Ứng dụng gọi nước thông minh 4.0", new String[] {"Chỉ với 1 click, chúng tôi đã sẵn sàng phục vụ nhu cầu uống nước sạch của bạn!"});
         TutorialFragment fragment2 = TutorialFragment.newInstance("Ở đây chúng tôi chỉ có NƯỚC TỐT!", new String[] {"Nước tốt là nước không có tính Acid, gây ảnh hưởng đến dạ dày.",
                 "Nước tốt là nước có nhiều khoáng chất cho cơ thể.",
                 "Nước tốt là nước được kiểm tra vệ sinh ATTP 3 tháng/lần."});
@@ -115,7 +115,24 @@ public class TutorialActivity extends AppCompatActivity {
                 "Tặng 10% giá trị đơn hàng đầu tiên khi giao dịch thành công."});
         TutorialFragment fragment5 = TutorialFragment.newInstance("Mỗi lời giới thiệu App là thêm một nguồn thu nhập thụ động cho bạn!", new String[] {"Tặng ngay 5.000 điểm thưởng khi bạn bè nhập mã giới thiệu của bạn.",
                 "Tặng 2% giá trị đơn hàng mỗi khi người được bạn giới thiệu mua hàng thành công.",
-                "Người được giới thiệu cũng sẽ nhận ngay 1% giá trị mỗi đơn hàng."});
+                "Người được giới thiệu cũng sẽ nhận ngay 1% giá trị mỗi đơn hàng."});*/
+        TutorialFragment fragment1 = TutorialFragment.newInstance("Ứng dụng \"Đặt nước 1 chạm trong kỷ  nguyên 4.0\"",
+                new String[]{"Một chạm khi hết nước, 1 chạm để phục vụ.",
+                        "Một chạm thông minh, 1 chạm tiết kiệm."});
+        TutorialFragment fragment2 = TutorialFragment.newInstance("Chúng tôi chỉ có NƯỚC TỐT",
+                new String[]{"Nước tốt để trung hòa acid thừa trong cơ thể, ngừa đau dạ dày và ung thư.",
+                        "Nước tốt làm chậm quá trình lão hóa trong cơ thể.",
+                        "Nước tốt bổ sung khoáng chất hàng ngày cho cơ thể bạn."});
+        TutorialFragment fragment3 = TutorialFragment.newInstance("Phục vụ TỪ TÂM",
+                new String[]{"Sức khỏe của khách hàng quan trọng hơn sức khỏe của chúng tôi.",
+                        "Sản phẩm được Bảo Việt bảo hiểm VSATTP.",
+                        "Phục vụ vì \"Lợi ích của Khách hàng\"."});
+        TutorialFragment fragment4 = TutorialFragment.newInstance("Tặng 20.000 điểm thưởng khi đăng ký tài khoản thành công!",
+                new String[]{"Tặng 5.000 điểm thưởng khi bạn bè nhập mã giới thiệu của bạn.",
+                        "Tặng điểm thưởng bằng 10% giá trị đơn hàng đầu tiên."});
+        TutorialFragment fragment5 = TutorialFragment.newInstance("Giới thiệu app cho bạn bè, tạo thu nhập thụ động.",
+                new String[]{"Khi bạn của bạn mua hàng, bạn được điểm thưởng bằng 2% giá trị đơn hàng đó.",
+                        "Mọi đơn hàng phát sinh đều được tích điểm thưởng."});
         fragmentList.add(fragment1);
         fragmentList.add(fragment2);
         fragmentList.add(fragment3);

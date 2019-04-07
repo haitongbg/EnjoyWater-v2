@@ -19,6 +19,8 @@ public class Constants {
         public static final String FORGET_PASSWORD = "user/forget-password";
         public static final String RESET_PASSWORD = "user/reset-password";
         public static final String ADD_NEW_ADDRESS = "user/add-address";
+        public static final String REMOVE_ADDRESS = "user/remove-address/{key}";
+        public static final String SET_ADDRESS_DEFAULT = "user/default-address/{key}";
         public static final String SUBMIT_REF_CODE = "user/update-referral-code";
         public static final String GET_BONUS_HISTORY = "user/bonus-history";
         //Home
@@ -105,6 +107,7 @@ public class Constants {
         public static final String PROFILE_UPDATED = "profileUpdated";
         public static final String ORDER = "order";
         public static final String LAST_ORDER_CREATED = "lastOrderCreated";
+        public static final String KEY = "key";
     }
 
     public static class Value {

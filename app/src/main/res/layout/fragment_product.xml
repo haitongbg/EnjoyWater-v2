@@ -359,7 +359,7 @@
                             android:fontFamily="@font/opensans_semibold"
                             android:text="0 đ"
                             android:textColor="@color/colorAccentDark"
-                            android:textSize="@dimen/text_20" />
+                            android:textSize="@dimen/text_18" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -431,7 +431,7 @@
                             android:textSize="@dimen/text_15" />
 
                         <com.enjoywater.view.RippleView
-                            android:id="@+id/ripple_forget_password"
+                            android:id="@+id/ripple_change_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/size_10"

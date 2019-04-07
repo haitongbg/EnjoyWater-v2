@@ -297,7 +297,7 @@
         android:fontFamily="@font/opensans_semibold"
         android:includeFontPadding="false"
         android:textColor="@color/colorAccentDark"
-        android:textSize="@dimen/text_17"
+        android:textSize="@dimen/text_18"
         app:layout_constraintBottom_toBottomOf="@id/text_total_payment"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/text_total_payment"

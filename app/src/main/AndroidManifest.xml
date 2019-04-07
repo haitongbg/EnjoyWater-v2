@@ -112,6 +112,7 @@
         <activity
             android:name=".activiy.EventActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activiy.OrderAddressActivity" />
     </application>
 
 </manifest>

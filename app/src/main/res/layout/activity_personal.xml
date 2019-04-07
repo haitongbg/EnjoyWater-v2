@@ -425,6 +425,7 @@
                             app:layout_constraintTop_toBottomOf="@id/text_email" />
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/text_password"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -440,6 +441,7 @@
                             app:layout_constraintWidth_percent="0.3" />
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/tv_password"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_30"
@@ -458,6 +460,7 @@
                             app:layout_constraintTop_toTopOf="@id/text_password" />
 
                         <com.enjoywater.view.RippleView
+                            android:visibility="gone"
                             android:id="@+id/ripple_btn_change_password"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/size_30"
@@ -484,6 +487,7 @@
                         </com.enjoywater.view.RippleView>
 
                         <View
+                            android:visibility="gone"
                             android:id="@+id/v_underline_password"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/size_0_5"

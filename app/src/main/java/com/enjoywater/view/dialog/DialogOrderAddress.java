@@ -187,6 +187,11 @@ public class DialogOrderAddress {
         });
         mAddressListener = new AddressListener() {
             @Override
+            public void selectAddress(Address address) {
+
+            }
+
+            @Override
             public void selectCity(City city) {
                 if (mCitySelected == null || !mCitySelected.getId().equals(city.getId())) {
                     mDistrictSelected = null;
@@ -215,6 +220,11 @@ public class DialogOrderAddress {
                 mWardSelected = ward;
                 tvWard.setText(mWardSelected.getName() != null ? mWardSelected.getName() : "");
                 rvWard.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void deteleAddress(Address address) {
+
             }
         };
         btnClose.setOnClickListener(v -> {

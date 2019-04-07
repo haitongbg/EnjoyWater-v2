@@ -127,6 +127,16 @@ public interface MainService {
                                      @Field(Constants.Key.ADDRESS) String address,
                                      @Field(Constants.Key.IS_DEFAULT) int isDefault);
 
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.REMOVE_ADDRESS)
+    Call<BaseResponse> removeAddress(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                     @Path(Constants.Key.KEY) String key);
+
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.SET_ADDRESS_DEFAULT)
+    Call<BaseResponse> setAddressDefault(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                     @Path(Constants.Key.KEY) String key);
+
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.SUBMIT_REF_CODE)

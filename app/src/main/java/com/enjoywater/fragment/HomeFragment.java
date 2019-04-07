@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.enjoywater.R;
+import com.enjoywater.activiy.BonusHistoryActivity;
 import com.enjoywater.activiy.EventActivity;
 import com.enjoywater.activiy.LoginActivity;
 import com.enjoywater.activiy.MainActivity;
@@ -163,8 +164,12 @@ public class HomeFragment extends Fragment {
                 progressLoading.setProgress(0.0f);
             }
         });
-        btnEvent.setOnClickListener(view -> {
+        rippleEvent.setOnRippleCompleteListener(rippleView -> {
             startActivity(new Intent(mContext, EventActivity.class));
+            getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
+        });
+        tvCoin.setOnClickListener(view -> {
+            startActivity(new Intent(mContext, BonusHistoryActivity.class));
             getActivity().overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
         });
         mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);

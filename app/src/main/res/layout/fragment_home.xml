@@ -7,15 +7,15 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_55"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:clickable="true">
 
         <android.support.constraint.ConstraintLayout
-            android:background="@drawable/bg_ripple_primary_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg_ripple_primary_color"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -109,6 +109,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_3"
+                android:clickable="true"
                 android:fontFamily="@font/opensans_semibold"
                 android:includeFontPadding="false"
                 android:singleLine="true"
