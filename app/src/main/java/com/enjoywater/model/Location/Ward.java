@@ -12,6 +12,8 @@ public class Ward implements Parcelable {
     private String name;
     @SerializedName("t")
     private String type;
+    @SerializedName("available")
+    private boolean available = false;
 
     public Ward() {
     }
@@ -20,6 +22,7 @@ public class Ward implements Parcelable {
         id = in.readString();
         name = in.readString();
         type = in.readString();
+        available = in.readByte() != 0;
     }
 
     @Override
@@ -27,6 +30,7 @@ public class Ward implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(type);
+        dest.writeByte((byte) (available ? 1 : 0));
     }
 
     @Override
@@ -68,5 +72,13 @@ public class Ward implements Parcelable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

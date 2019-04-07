@@ -5,7 +5,7 @@ public class Constants {
         //Google
         public static final String GOOGLE_OAUTH2_TOKEN = "https://www.googleapis.com/oauth2/v4/token";
         // DOMAIN
-        public static final String DOMAIN = "http://157.230.38.81:8081/api/app/";
+        public static final String DOMAIN = "https://enjoy.sdmcsoftware.com/api/app/";
         //UserInfo
         public static final String LOGIN = "user/login";
         public static final String LOGIN_BY_TOKEN = "user/login-by-token";
@@ -104,6 +104,7 @@ public class Constants {
         public static final String NEWS_UPDATED = "newsUpdated";
         public static final String PROFILE_UPDATED = "profileUpdated";
         public static final String ORDER = "order";
+        public static final String LAST_ORDER_CREATED = "lastOrderCreated";
     }
 
     public static class Value {

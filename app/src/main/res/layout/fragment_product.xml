@@ -84,7 +84,7 @@
                             android:fontFamily="@font/opensans_semibold"
                             android:text="0 đ"
                             android:textColor="@color/colorAccentDark"
-                            android:textSize="@dimen/text_15" />
+                            android:textSize="@dimen/text_14" />
                     </LinearLayout>
 
                     <View
@@ -359,7 +359,7 @@
                             android:fontFamily="@font/opensans_semibold"
                             android:text="0 đ"
                             android:textColor="@color/colorAccentDark"
-                            android:textSize="@dimen/text_16" />
+                            android:textSize="@dimen/text_20" />
                     </LinearLayout>
 
                     <LinearLayout

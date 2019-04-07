@@ -17,6 +17,8 @@ public class District implements Parcelable {
     private String type;
     @SerializedName("c")
     private ArrayList<Ward> wards;
+    @SerializedName("available")
+    private boolean available = false;
 
     public District() {
     }
@@ -25,6 +27,8 @@ public class District implements Parcelable {
         id = in.readString();
         name = in.readString();
         type = in.readString();
+        wards = in.createTypedArrayList(Ward.CREATOR);
+        available = in.readByte() != 0;
     }
 
     @Override
@@ -32,6 +36,8 @@ public class District implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(type);
+        dest.writeTypedList(wards);
+        dest.writeByte((byte) (available ? 1 : 0));
     }
 
     @Override
@@ -81,5 +87,13 @@ public class District implements Parcelable {
 
     public void setWards(ArrayList<Ward> wards) {
         this.wards = wards;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

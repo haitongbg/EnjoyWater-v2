@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.layout_tab_personal)
     RelativeLayout layoutTabPersonal;
     private MyViewPagerAdapter myViewPagerAdapter;
-    private int mTabSelected = 1;
+    private int mTabSelected = 0;
     private MainService mainService;
     private Gson gson = new Gson();
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mainService = MyApplication.getInstance().getMainService();
-        mTabSelected = getIntent().getIntExtra("tab_selected", 1);
+        mTabSelected = getIntent().getIntExtra("tab_selected", 0);
         initUI();
     }
 

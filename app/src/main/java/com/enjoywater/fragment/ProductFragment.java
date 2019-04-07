@@ -168,15 +168,16 @@ public class ProductFragment extends Fragment {
     private SelectedProductAdapter mSelectedProductAdapter;
     private Address mAddress;
     private boolean isValidAddress = false;
-    private int mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee, mCouponDiscount;
+    private int mTotalPrice, mTotalProductsPrice, mTotalProductDiscount, mTotalDeliveryFee;
     private ArrayList<City> mCities;
     private int mShipType;
     private String mPaymentType;
     private DatePickerDialog datePickerDialog;
     private Calendar calendar = Calendar.getInstance();
-    private String mCouponCode = "";
+    private Coupon mCoupon;
     private DecimalFormat formatVND = new DecimalFormat("###,###,###");
     private DecimalFormat formatPercent = new DecimalFormat("#.0");
+    private Order mLastOrderCreated;
 
     public static ProductFragment newInstance() {
         ProductFragment productFragment = new ProductFragment();
@@ -385,9 +386,11 @@ public class ProductFragment extends Fragment {
             mProducts.addAll(products);
             if (mProductAdapter == null) {
                 mProducts.get(0).setSelected(true);
+                mProducts.get(1).setSelected(true);
                 mProductAdapter = new ProductAdapter(mContext, mProducts, mProductListener);
                 rvProducts.setAdapter(mProductAdapter);
                 mProductListener.selectProduct(mProducts.get(0));
+                mProductListener.selectProduct(mProducts.get(1));
             } else {
                 mProductAdapter.notifyItemRangeInserted(insertPosition, products.size());
             }
@@ -523,6 +526,8 @@ public class ProductFragment extends Fragment {
         } else {
             isLoading = true;
             layoutLoading.setVisibility(View.VISIBLE);
+            mCoupon = null;
+            updatePrice();
             Call<BaseResponse> getCouponDetails = mainService.getCouponDetails(code);
             getCouponDetails.enqueue(new Callback<BaseResponse>() {
                 @Override
@@ -534,34 +539,27 @@ public class ProductFragment extends Fragment {
                         if (getCounponDetailsResponse.isSuccess() && getCounponDetailsResponse.getData() != null) {
                             if (getCounponDetailsResponse.getData().isJsonObject()) {
                                 Coupon coupon = gson.fromJson(getCounponDetailsResponse.getData(), Coupon.class);
-                                if (coupon != null && coupon.isEnabled() && (coupon.getEnded() * 1000 + 300000) > System.currentTimeMillis()) {
-                                    mCouponCode = code;
-                                    layoutCouponDiscount.setVisibility(View.VISIBLE);
-                                    edtCoupon.setText("");
-                                    tvCouponCode.setText(code);
-                                    mCouponDiscount = 0;
-                                    if (coupon.getType() != null) {
-                                        if (coupon.getType().equals("unit")) {
-                                            mCouponDiscount = coupon.getValue();
-                                        } else if (coupon.getType().equals("percent")) {
-
-                                        }
+                                if (coupon != null && coupon.isEnabled()) {
+                                    if (coupon.getStarted() * 1000 > System.currentTimeMillis())
+                                        Toast.makeText(mContext, "Rất tiếc voucher này chưa được áp dụng.", Toast.LENGTH_SHORT).show();
+                                    else if ((coupon.getEnded() * 1000 + 300000) < System.currentTimeMillis())
+                                        Toast.makeText(mContext, "Rất tiếc voucher này đã hết hạn.", Toast.LENGTH_SHORT).show();
+                                    else {
+                                        mCoupon = coupon;
+                                        updatePrice();
                                     }
-                                    tvCounponDiscount.setText("-" + formatVND.format(mCouponDiscount) + " đ");
-                                    updatePrice();
-                                } else {
-                                    layoutCouponDiscount.setVisibility(View.GONE);
-                                    Toast.makeText(mContext, "Mã đã hết hạn", Toast.LENGTH_SHORT).show();
-                                }
+                                } else
+                                    Toast.makeText(mContext, "Rất tiếc voucher này đã hết hạn.", Toast.LENGTH_SHORT).show();
                             } else
-                                Toast.makeText(mContext, "Mã không đúng", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "Voucher không tồn tại.", Toast.LENGTH_SHORT).show();
                         } else {
-                            String message = "Mã không đúng";
-                            if (getCounponDetailsResponse.getError() != null && getCounponDetailsResponse.getError().getMessage() != null && !getCounponDetailsResponse.getError().getMessage().isEmpty())
+                            String message = "Voucher không tồn tại.";
+                            if (getCounponDetailsResponse.getError() != null && getCounponDetailsResponse.getError().getMessage() != null && !getCounponDetailsResponse.getError().getMessage().isEmpty() && !getCounponDetailsResponse.getError().getMessage().equalsIgnoreCase("Invalid coupon"))
                                 message = getCounponDetailsResponse.getError().getMessage();
                             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
                         }
-                    } else Toast.makeText(mContext, "Mã không đúng", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(mContext, "Voucher không tồn tại.", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -581,8 +579,7 @@ public class ProductFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mCouponCode = "";
-                        mCouponDiscount = 0;
+                        mCoupon = null;
                         layoutCouponDiscount.setVisibility(View.GONE);
                         updatePrice();
                     }
@@ -650,7 +647,31 @@ public class ProductFragment extends Fragment {
             }
         } else
             tvChooseShipDateDiscount.setTextColor(mContext.getResources().getColor(R.color.black_c));
-        if (mCouponCode != null && !mCouponCode.isEmpty()) mTotalPrice -= mCouponDiscount;
+        if (mCoupon != null) {
+            if (mTotalProductsPrice < mCoupon.getRequireMinOrderValue()) {
+                layoutCouponDiscount.setVisibility(View.GONE);
+                Toast.makeText(mContext, "Rất tiếc, giá trị đơn hàng của bạn chưa đủ để sử dụng mã giảm giá này.", Toast.LENGTH_LONG).show();
+                mCoupon = null;
+            } else {
+                layoutCouponDiscount.setVisibility(View.VISIBLE);
+                edtCoupon.setText("");
+                tvCouponCode.setText(mCoupon.getCode());
+                int couponDiscount = 0;
+                if (mCoupon.getType().equals("unit")) {
+                    couponDiscount = mCoupon.getValue();
+                } else if (mCoupon.getType().equals("percent")) {
+                    couponDiscount = mTotalProductsPrice * mCoupon.getValue() / 100;
+                    if (mCoupon.getMaxDiscountValue() > 0 && couponDiscount > mCoupon.getMaxDiscountValue())
+                        couponDiscount = mCoupon.getMaxDiscountValue();
+                    couponDiscount -= couponDiscount % 1000;
+                }
+                couponDiscount -= couponDiscount % 1000;
+                tvCounponDiscount.setText("-" + formatVND.format(couponDiscount) + " đ");
+                mTotalPrice -= couponDiscount;
+            }
+        } else {
+            layoutCouponDiscount.setVisibility(View.GONE);
+        }
         tvTotalPrice.setText((mTotalPrice > 0 ? formatVND.format(mTotalPrice) : 0) + " đ");
     }
 
@@ -776,7 +797,7 @@ public class ProductFragment extends Fragment {
             order.setReceiverName(mAddress.getName());
             order.setPhone(mAddress.getPhone());
             order.setOrderBySchedule(mShipType == SHIP_TYPE_DATE ? calendar.getTimeInMillis() / 1000 : 0);
-            order.setCouponCode(mCouponCode);
+            if (mCoupon != null) order.setCouponCode(mCoupon.getCode());
             order.setDeliveryOpts(mShipType == SHIP_TYPE_2H ? "2h" : "24h");
             order.setDeliveryClimb(checkboxDeliveryClimb.isChecked());
             order.setPaymentMethod(mPaymentType);
@@ -791,10 +812,13 @@ public class ProductFragment extends Fragment {
                     if (createOrderResponse != null) {
                         if (createOrderResponse.isSuccess() && createOrderResponse.getData() != null && createOrderResponse.getData().isJsonObject()) {
                             Toast.makeText(mContext, R.string.order_success, Toast.LENGTH_SHORT).show();
-                            Order orderCreated = gson.fromJson(createOrderResponse.getData(), Order.class);
-                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.INSERT_ORDER, orderCreated));
+                            mCoupon = null;
+                            mLastOrderCreated = gson.fromJson(createOrderResponse.getData(), Order.class);
+                            Utils.saveString(mContext, Constants.Key.LAST_ORDER_CREATED, createOrderResponse.getData().toString());
+                            updatePrice();
+                            EventBus.getDefault().post(new EventBusMessage(Constants.Key.INSERT_ORDER, mLastOrderCreated));
                             Intent intent = new Intent(mContext, OrderDetailsActivity.class);
-                            intent.putExtra(Constants.Key.ORDER, orderCreated);
+                            intent.putExtra(Constants.Key.ORDER, mLastOrderCreated);
                             startActivity(intent);
                             (getActivity()).overridePendingTransition(R.anim.slide_right_to_left_in, R.anim.slide_right_to_left_out);
                         } else {
@@ -857,7 +881,7 @@ public class ProductFragment extends Fragment {
                 setDataAddress();
                 break;
             }
-            default:{
+            default: {
                 //Log.e(TAG, "onMessageEvent " + gson.toJson(event));
                 break;
             }

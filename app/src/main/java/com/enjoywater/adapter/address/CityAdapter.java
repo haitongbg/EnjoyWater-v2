@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enjoywater.R;
 import com.enjoywater.listener.AddressListener;
@@ -67,10 +68,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CustomViewhold
         public void setData(int position) {
             City city = mCities.get(position);
             tvName.setText(city.getName() != null ? city.getName() : "");
-            if (mCitySelected != null && city.getId() == mCitySelected.getId())
+            tvName.setTextColor(city.isAvailable() ? mContext.getResources().getColor(R.color.black_0) : mContext.getResources().getColor(R.color.black_9));
+            if (mCitySelected != null && city.getId().equals(mCitySelected.getId()))
                 ivSelected.setVisibility(View.VISIBLE);
             else ivSelected.setVisibility(View.GONE);
-            itemView.setOnClickListener(v -> mAddressListener.selectCity(city));
+            itemView.setOnClickListener(v -> {
+                if (city.isAvailable()) mAddressListener.selectCity(city);
+                else Toast.makeText(mContext, "Xin lỗi, chúng tôi hiện chưa thể phục vụ quý khách hàng ở khu vực này.", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enjoywater.R;
 import com.enjoywater.listener.AddressListener;
@@ -65,12 +66,16 @@ public class WardAdapter extends RecyclerView.Adapter<WardAdapter.CustomViewhold
         }
 
         public void setData(int position) {
-            Ward Ward = mWards.get(position);
-            tvName.setText(Ward.getName() != null ? Ward.getName() : "");
-            if (mWardSelected != null && Ward.getId() == mWardSelected.getId())
+            Ward ward = mWards.get(position);
+            tvName.setText(ward.getName() != null ? ward.getName() : "");
+            if (mWardSelected != null && ward.getId().equals(mWardSelected.getId()))
                 ivSelected.setVisibility(View.VISIBLE);
             else ivSelected.setVisibility(View.GONE);
-            itemView.setOnClickListener(v -> mAddressListener.selectWard(Ward));
+            itemView.setOnClickListener(v -> {
+                if (ward.isAvailable()) mAddressListener.selectWard(ward);
+                else Toast.makeText(mContext, "Xin lỗi, chúng tôi hiện chưa thể phục vụ quý khách hàng ở khu vực này.", Toast.LENGTH_SHORT).show();
+
+            });
         }
     }
 }

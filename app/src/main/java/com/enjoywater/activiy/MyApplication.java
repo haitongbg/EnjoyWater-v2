@@ -47,7 +47,7 @@ public class MyApplication extends MultiDexApplication {
         FacebookSdk.sdkInitialize(this);
         AppEventsLogger.activateApp(this);
         mFaceBookCallbackManager = CallbackManager.Factory.create();
-        Log.e("AppLog", "key:" + FacebookSdk.getApplicationSignature(this));
+        //Log.e("AppLog", "key:" + FacebookSdk.getApplicationSignature(this));
         mCities = Utils.getCities(this);
     }
 

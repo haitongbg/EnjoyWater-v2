@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -154,13 +155,34 @@ public class DialogOrderAddress {
             if (mUser.getUserInfo().getPhone() != null && !mUser.getUserInfo().getPhone().isEmpty())
                 edtPhone.setText(mUser.getUserInfo().getPhone());
         }
+        edtName.setOnTouchListener((view, motionEvent) -> {
+            rvCity.setVisibility(View.GONE);
+            rvDistrict.setVisibility(View.GONE);
+            rvWard.setVisibility(View.GONE);
+            return false;
+        });
+        edtPhone.setOnTouchListener((view, motionEvent) -> {
+            rvCity.setVisibility(View.GONE);
+            rvDistrict.setVisibility(View.GONE);
+            rvWard.setVisibility(View.GONE);
+            return false;
+        });
+        edtAddressDetail.setOnTouchListener((view, motionEvent) -> {
+            rvCity.setVisibility(View.GONE);
+            rvDistrict.setVisibility(View.GONE);
+            rvWard.setVisibility(View.GONE);
+            return false;
+        });
         btnSelectCity.setOnClickListener(v -> {
+            Utils.hideSoftKeyboard(v);
             showListCity();
         });
         btnSelectDistrict.setOnClickListener(v -> {
+            Utils.hideSoftKeyboard(v);
             if (!tvCity.getText().toString().isEmpty()) showListDistrict();
         });
         btnSelectWard.setOnClickListener(v -> {
+            Utils.hideSoftKeyboard(v);
             if (!tvDistrict.getText().toString().isEmpty()) showListWard();
         });
         mAddressListener = new AddressListener() {
@@ -294,7 +316,7 @@ public class DialogOrderAddress {
                 rvWard.setVisibility(View.GONE);
                 if (mCitySelected != null) {
                     for (int i = 0, z = mCities.size(); i < z; i++) {
-                        if (mCities.get(i).getId() == mCitySelected.getId()) {
+                        if (mCities.get(i).getId().equals(mCitySelected.getId())) {
                             rvCity.scrollToPosition(i);
                             break;
                         }
