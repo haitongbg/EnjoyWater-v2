@@ -1,6 +1,6 @@
 <resources>
-    <string name="google_client_id">269078269723-7lqj6of20rs7603239f0jupneslk91fd.apps.googleusercontent.com</string>
-    <string name="google_client_secret">tCTdJTgvsz9HWjE_rVnQT2yy</string>
+    <string name="google_client_id">275110851723-tp16v7h7vfic0clacpq9pccknn6ie0vh.apps.googleusercontent.com</string>
+    <string name="google_client_secret">RxSRDiQ5EzggEMAYC1C1E6P-</string>
     <string name="facebook_app_id">307827609771860</string>
     <string name="fb_login_protocol_scheme">fb307827609771860</string>
     <string name="app_name">Gọi nước</string>
@@ -106,4 +106,5 @@
     <string name="tutorial_4_desc"></string>
     <string name="next">Tiếp</string>
     <string name="start">Bắt đầu</string>
+    <string name="tutorial_order_rating">Bạn có hài lòng về đơn hàng này không? Xin vui lòng cho chúng tôi biết cảm nhận và đánh giá của bạn.</string>
 </resources>

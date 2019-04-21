@@ -1,8 +1,11 @@
 package com.enjoywater.activiy;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.constraint.Barrier;
 import android.support.constraint.ConstraintLayout;
@@ -26,11 +29,14 @@ import com.enjoywater.adapter.product.SelectedProductAdapter;
 import com.enjoywater.model.EventBusMessage;
 import com.enjoywater.model.Order;
 import com.enjoywater.model.Product;
+import com.enjoywater.model.User;
 import com.enjoywater.retrofit.MainService;
 import com.enjoywater.retrofit.response.BaseResponse;
 import com.enjoywater.utils.Constants;
 import com.enjoywater.utils.Utils;
 import com.enjoywater.view.ProgressWheel;
+import com.enjoywater.view.dialog.DialogOrderRating;
+import com.enjoywater.view.dialog.DialogSubmitRefCode;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -380,8 +386,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     tvStatusOrdered.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusConfirmed.setTextColor(getResources().getColor(R.color.colorAccent));
                     tvStatusDelivering.setTextColor(getResources().getColor(R.color.colorAccent));
-                    btnConfirmReceived.setVisibility(View.VISIBLE);
-                    ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_60);
+                    if (mOrder.isReceived()) {
+                        mHandler.removeCallbacks(null);
+                        if (mOrder.getRate() == 0) mHandler.postDelayed(openRatingRunnable, 1500);
+                    } else {
+                        btnConfirmReceived.setVisibility(View.VISIBLE);
+                        ((ConstraintLayout.LayoutParams) layoutSelectedProducts.getLayoutParams()).bottomMargin = getResources().getDimensionPixelSize(R.dimen.size_60);
+                    }
                     break;
                 }
                 case Constants.Value.DELIVERED: {
@@ -505,6 +516,23 @@ public class OrderDetailsActivity extends AppCompatActivity {
         }
     }
 
+    private Handler mHandler = new Handler();
+    private Runnable openRatingRunnable = this::openRatingDialog;
+
+    @SuppressLint("HandlerLeak")
+    private void openRatingDialog() {
+        new DialogOrderRating(OrderDetailsActivity.this, new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == Constants.Value.ACTION_SUCCESS) {
+                    mOrder = (Order) msg.obj;
+                    setDataOrder();
+                }
+            }
+        }, mOrder);
+    }
+
     private void cancelOrder() {
         isLoading = true;
         Call<BaseResponse> cancelOrder = mainService.cancelOrder(mToken, mOrderId);
@@ -551,9 +579,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 if (cancelOrderResponse != null) {
                     if (cancelOrderResponse.isSuccess()) {
                         Toast.makeText(OrderDetailsActivity.this, "Xác nhận thành công", Toast.LENGTH_SHORT).show();
-                        mOrder.setStatus(Constants.Value.DELIVERED);
+                        mOrder.setReceived(true);
                         setDataOrder();
-                        showRatingDialog();
                     } else {
                         String message = Constants.DataNotify.DATA_ERROR;
                         if (cancelOrderResponse.getError() != null && cancelOrderResponse.getError().getMessage() != null && !cancelOrderResponse.getError().getMessage().isEmpty())
@@ -575,10 +602,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 showContent();
             }
         });
-    }
-
-    private void showRatingDialog() {
-
     }
 
     private void showLoading(boolean goneContent) {
@@ -620,7 +643,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         switch (event.getAction()) {
             case Constants.Key.INSERT_ORDER: {
                 Order order = (Order) event.getObject();
-                if (order != null && order.getId() != 0) {
+                if (order != null && order.getId() == mOrder.getId()) {
                     mOrder = order;
                     setDataOrder();
                 }

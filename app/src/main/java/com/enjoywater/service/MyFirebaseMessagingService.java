@@ -61,23 +61,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             case Constants.Value.ORDER: {
                 intent = new Intent(this, OrderDetailsActivity.class);
                 intent.putExtra(Constants.Key.ORDER_ID, Integer.parseInt(notification.getContent()));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
             }
             case Constants.Value.NEWS: {
                 intent = new Intent(this, NewsDetailsActivity.class);
                 intent.putExtra(Constants.Key.NEWS_ID, Integer.parseInt(notification.getContent()));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
             }
             case Constants.Value.BONUS: {
                 intent = new Intent(this, BonusHistoryActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
             }
             default: {
                 intent = new Intent(this, SplashActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
             }
         }

@@ -135,19 +135,19 @@ public interface MainService {
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.SET_ADDRESS_DEFAULT)
     Call<BaseResponse> setAddressDefault(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                     @Path(Constants.Key.KEY) String key);
+                                         @Path(Constants.Key.KEY) String key);
 
     @FormUrlEncoded
     @Headers(Constants.Value.SECRET_HEADER)
     @POST(Constants.Url.SUBMIT_REF_CODE)
     Call<BaseResponse> submitRefCode(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                      @Field(Constants.Key.CODE) String code);
+                                     @Field(Constants.Key.CODE) String code);
 
     @Headers(Constants.Value.SECRET_HEADER)
     @GET(Constants.Url.GET_BONUS_HISTORY)
     Call<BaseResponse> getBonusHistory(@Header(Constants.Key.TOKEN_LOGIN) String token,
-                                     @Query(Constants.Key.LIMIT) int limit,
-                                     @Query(Constants.Key.PAGE) int page);
+                                       @Query(Constants.Key.LIMIT) int limit,
+                                       @Query(Constants.Key.PAGE) int page);
 
     //Home
     @Headers(Constants.Value.SECRET_HEADER)
@@ -195,6 +195,14 @@ public interface MainService {
     @POST(Constants.Url.CONFIRM_RECEIVED)
     Call<BaseResponse> confirmReceived(@Header(Constants.Key.TOKEN_LOGIN) String token,
                                        @Path(Constants.Key.ORDER_ID) int orderId);
+
+    @FormUrlEncoded
+    @Headers(Constants.Value.SECRET_HEADER)
+    @POST(Constants.Url.RATE_ORDER)
+    Call<BaseResponse> rateOrder(@Header(Constants.Key.TOKEN_LOGIN) String token,
+                                 @Path(Constants.Key.ORDER_ID) int orderId,
+                                 @Field(Constants.Key.RATE) int rating,
+                                 @Field(Constants.Key.COMMENT) String comment);
 
     //promotion
     @Headers(Constants.Value.SECRET_HEADER)

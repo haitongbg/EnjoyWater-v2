@@ -24,4 +24,6 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="red">#ed410c</color>
+    <color name="gold">#FFD700</color>
+    <color name="silver">#C0C0C0</color>
 </resources>

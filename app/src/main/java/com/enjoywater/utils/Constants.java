@@ -108,6 +108,8 @@ public class Constants {
         public static final String ORDER = "order";
         public static final String LAST_ORDER_CREATED = "lastOrderCreated";
         public static final String KEY = "key";
+        public static final String RATE = "rate";
+        public static final String COMMENT = "comment";
     }
 
     public static class Value {
@@ -135,7 +137,7 @@ public class Constants {
         public static final String SALE = "sale";
         public static final String HOME = "home";
         public static final String ANDROID_LINK = "https://play.google.com/store/apps/details?id=com.enjoywater";
-        public static final String IOS_LINK = "https://itunes.apple.com/vn/app/enjoy-water/id959449140";
+        public static final String APP_LINK = "https://bit.ly/2OV5Amf";
         public static final String WEBSITE_LINK = "http://www.nuocsach.online";
         public static final String HOTLINE = "0966555779";
         public static final String MALE = "male";

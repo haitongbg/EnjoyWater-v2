@@ -62,9 +62,7 @@ public class EventActivity extends AppCompatActivity {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "Bạn tôi ơi! Muốn gọi nước sạch và tốt cho sức khỏe hãy tải ngay app Enjoy Water tại:\n"
-                    + Constants.Value.ANDROID_LINK
-                    + "\nhoặc\n"
-                    + Constants.Value.IOS_LINK
+                    + Constants.Value.APP_LINK
                     + "\nNhớ nhập mã giới thiệu của tôi là " + mUser.getUserInfo().getMyCode() + " để được tích điểm khi mua hàng nhé!");
             sendIntent.setType("text/plain");
             startActivity((Intent.createChooser(sendIntent, "Chia sẻ tới")));

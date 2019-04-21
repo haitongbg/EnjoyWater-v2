@@ -1,29 +1,21 @@
 {
   "project_info": {
-    "project_number": "269078269723",
-    "firebase_url": "https://enjoy-water-1550131533709.firebaseio.com",
-    "project_id": "enjoy-water-1550131533709",
-    "storage_bucket": "enjoy-water-1550131533709.appspot.com"
+    "project_number": "275110851723",
+    "firebase_url": "https://enjoywater-1521973596795.firebaseio.com",
+    "project_id": "enjoywater-1521973596795",
+    "storage_bucket": "enjoywater-1521973596795.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:269078269723:android:dd2ca209be348292",
+        "mobilesdk_app_id": "1:275110851723:android:dd2ca209be348292",
         "android_client_info": {
           "package_name": "com.enjoywater"
         }
       },
       "oauth_client": [
         {
-          "client_id": "269078269723-nlfo559naloo4hhpc9rhgno9c47j2mto.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.enjoywater",
-            "certificate_hash": "fc9b913d54018f815c303261f438cd2f140f7edd"
-          }
-        },
-        {
-          "client_id": "269078269723-1g15cf8afr6eijfjgia9rfpj9e4e5bmg.apps.googleusercontent.com",
+          "client_id": "275110851723-emmro9rn46l8r2g29sjqoeue7b6f8rae.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.enjoywater",
@@ -31,38 +23,34 @@
           }
         },
         {
-          "client_id": "269078269723-05h6td9n0533ts1erere8bqq3amdrpdt.apps.googleusercontent.com",
+          "client_id": "275110851723-nhmchmr0hsb34pn6veeqgseevmvf4bab.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.enjoywater",
             "certificate_hash": "beef11fec4efdd947ee7fb9f993720a6e8b53a13"
           }
-        },
-        {
-          "client_id": "269078269723-0u333b650l1o24lhv8j8eattq10motba.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDdvV00xiSmrr7aDxIqVfcFgFe4ceYAyfw"
+          "current_key": "AIzaSyDIu0p6kXG_wzqbyknYAahEO6Dvc7oc5D8"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "269078269723-0u333b650l1o24lhv8j8eattq10motba.apps.googleusercontent.com",
+              "client_id": "275110851723-tp16v7h7vfic0clacpq9pccknn6ie0vh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "275110851723-ibh39c8kjmsfe5dq21sn4e0i4atavk79.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.enjoywater"
+              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

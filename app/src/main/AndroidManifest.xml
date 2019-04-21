@@ -85,34 +85,26 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activiy.OrderDetailsActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity=""
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activiy.NewsDetailsActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activiy.PersonalActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activiy.BonusHistoryActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activiy.TutorialActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activiy.EventActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activiy.OrderAddressActivity" />
+        <activity
+            android:name=".activiy.OrderAddressActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
