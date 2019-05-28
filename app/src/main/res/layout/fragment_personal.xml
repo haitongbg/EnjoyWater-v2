@@ -34,7 +34,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/size_15"
                         android:clickable="true"
-                        android:src="@drawable/avatar_default"
+                        android:src="@drawable/logo_app"
                         app:civ_border_color="@color/black_c"
                         app:civ_border_width="@dimen/size_0_5"
                         app:layout_constraintBottom_toBottomOf="parent"

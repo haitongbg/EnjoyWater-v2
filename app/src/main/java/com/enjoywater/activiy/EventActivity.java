@@ -67,6 +67,7 @@ public class EventActivity extends AppCompatActivity {
             sendIntent.setType("text/plain");
             startActivity((Intent.createChooser(sendIntent, "Chia sẻ tới")));
         });
+        btnCopyCode.setText("Mã của bạn là: " + mUser.getUserInfo().getMyCode());
         btnCopyCode.setOnClickListener(view -> {
             Utils.copyTextToClipboard(this, mUser.getUserInfo().getMyCode());
         });

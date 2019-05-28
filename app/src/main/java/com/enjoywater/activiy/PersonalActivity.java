@@ -263,7 +263,7 @@ public class PersonalActivity extends AppCompatActivity {
         showContent();
         String avatar = mUser.getUserInfo().getAvatar();
         if (avatar != null && !avatar.isEmpty())
-            Glide.with(this).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).listener(new RequestListener<Drawable>() {
+            Glide.with(this).load(avatar).apply(RequestOptions.errorOf(R.drawable.logo_app)).listener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                     ivBackground.setImageResource(R.drawable.bg_splash);
@@ -277,7 +277,7 @@ public class PersonalActivity extends AppCompatActivity {
                 }
             }).into(ivAvatar);
         else {
-            ivAvatar.setImageResource(R.drawable.avatar_default);
+            ivAvatar.setImageResource(R.drawable.logo_app);
             //ivBackground.setImageResource(R.drawable.bg_splash);
         }
         String name = mUser.getUserInfo().getName();

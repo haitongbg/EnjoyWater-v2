@@ -348,8 +348,8 @@ public class PersonalFragment extends Fragment {
             rippleEvent.setVisibility(View.VISIBLE);
             String avatar = mUser.getUserInfo().getAvatar();
             if (avatar != null && !avatar.isEmpty())
-                Glide.with(mContext).load(avatar).apply(RequestOptions.errorOf(R.drawable.avatar_default)).into(ivAvatar);
-            else ivAvatar.setImageResource(R.drawable.avatar_default);
+                Glide.with(mContext).load(avatar).apply(RequestOptions.errorOf(R.drawable.logo_app)).into(ivAvatar);
+            else ivAvatar.setImageResource(R.drawable.logo_app);
             String name = mUser.getUserInfo().getName();
             if (name != null && !name.isEmpty()) tvUserName.setText(name);
             else tvUserName.setText(R.string.guest);
@@ -441,7 +441,7 @@ public class PersonalFragment extends Fragment {
             rippleEvent.setVisibility(View.GONE);
             tvWellcome.setVisibility(View.VISIBLE);
             btnLoginNow.setVisibility(View.VISIBLE);
-            ivAvatar.setImageResource(R.drawable.avatar_default);
+            ivAvatar.setImageResource(R.drawable.logo_app);
             appbar.setOnClickListener(v -> {
                 getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), MainActivity.REQUEST_CODE_LOGIN_FROM_MAIN);
                 (getActivity()).overridePendingTransition(R.anim.fade_in_600, R.anim.fade_out_300);
